@@ -36,15 +36,43 @@ for (int i=0;i<15;i++){
     }
 }
 
-Zombie * zombie=new Zombie();
+
+int random_posx=qrand() %15;
+int random_posy;
+do{
+    random_posy=qrand() % 15;
+
+}while (blocksarray[random_posx][random_posy] ==true);
+
 Player * player=new Player();
-player->setPos(50,50);
-zombie->setPos(240,50);
+player->setPos(random_posx*40+50,random_posy*40+50);
+player->setFlag(QGraphicsItem::ItemIsFocusable);
+player->setFocus();
+scene->addItem(player);
+
+for (int i=0;i<6;i++){
+    int zrandom_posy;
+    int zrandom_posx;
+    do{
+zrandom_posx=qrand() % 15;
+zrandom_posy=qrand() % 15;
+}while ((blocksarray[zrandom_posx][zrandom_posy] ==true)||((!(zrandom_posy < random_posy-3)||(zrandom_posy>random_posy+3))&&(!(zrandom_posx < random_posx-3)||(zrandom_posx>random_posx+3))));
+
+
+Zombie * zombie=new Zombie();
+zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
 scene->addItem(zombie);
+}
+/*Player * player=new Player();
+player->setPos(50,50);
+//zombie->setPos(240,50);
+//scene->addItem(zombie);
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
 
 scene->addItem(player);
+*/
+
 
 show();
 }

@@ -7,7 +7,10 @@ class Zombie: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         Zombie(QGraphicsItem*parent=nullptr);
-        void create();
+ public slots:
+        void move();
+private:
+        int zmove;
 };
 
 #endif // ZOMBIE_H
