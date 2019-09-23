@@ -7,7 +7,6 @@
 #include "Zombie.h"
 #include "Player.h"
 
-//extern bool blocksarray;
 
 Game::Game(QWidget*parent){
 scene=new QGraphicsScene();
@@ -16,21 +15,16 @@ setScene(scene);
 
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//setFixedSize(900,700);
 
 for (int i=0;i<15;i++){
     for(int j=0;j<15;j++){
         if (blocksarray[i][j]==true) {
         GBlocks* gblocks=new GBlocks();
         gblocks->setPos(i*40+50,j*40+50);
-        //gblocks->setFlag(QGraphicsItem::ItemIsFocusable);
-       // gblocks->setFocus();
         scene->addItem(gblocks);
         } else {
             EBlocks* eblocks=new EBlocks();
             eblocks->setPos(i*40+50,j*40+50);
-            //gblocks->setFlag(QGraphicsItem::ItemIsFocusable);
-           // gblocks->setFocus();
             scene->addItem(eblocks);
         }
     }
@@ -63,16 +57,6 @@ Zombie * zombie=new Zombie();
 zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
 scene->addItem(zombie);
 }
-/*Player * player=new Player();
-player->setPos(50,50);
-//zombie->setPos(240,50);
-//scene->addItem(zombie);
-player->setFlag(QGraphicsItem::ItemIsFocusable);
-player->setFocus();
-
-scene->addItem(player);
-*/
-
 
 show();
 }
