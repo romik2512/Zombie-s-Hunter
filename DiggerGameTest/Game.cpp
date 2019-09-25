@@ -6,7 +6,7 @@
 #include "EarthBlocks.h"
 #include "Zombie.h"
 #include "Player.h"
-
+#include <QDebug>
 
 Game::Game(QWidget*parent){
 scene=new QGraphicsScene();
@@ -56,6 +56,70 @@ zrandom_posy=qrand() % 15;
 Zombie * zombie=new Zombie();
 zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
 scene->addItem(zombie);
+
+        //if(pos().x()>89) {if (!((typeid(GBlocks))==(typeid(*(scene->itemAt(pos().x()-40,pos().y(),QTransform())))))) {zombie->path[0]=true; zombie->schetchik++;} else zombie->path[0]=false;} else {zombie->path[0]=false;}
+      //  if(pos().y()>89) {if (!((typeid(GBlocks))==(typeid(*(scene->itemAt(pos().x(),pos().y()-40,QTransform())))))) {zombie->path[1]=true; zombie->schetchik++;} else zombie->path[1]=false;} else {zombie->path[1]=false;}
+       // if(pos().x()<571){if (!((typeid(GBlocks))==(typeid(*(scene->itemAt(pos().x()+40,pos().y(),QTransform())))))) {zombie->path[2]=true; zombie->schetchik++;} else zombie->path[2]=false;} else {zombie->path[2]=false;}
+        //if(pos().y()<571){if (!((typeid(GBlocks))==(typeid(*(scene->itemAt(pos().x(),pos().y()+40,QTransform())))))) {zombie->path[3]=true; zombie->schetchik++;} else zombie->path[3]=false;} else {zombie->path[3]=false;}
+//qDebug() << (zrandom_posx*40+50);
+        if((zrandom_posx*40+50)>89) {
+          //  qDebug() << typeid (*(scene->itemAt((zrandom_posx*40+10),zrandom_posy*40+50,QTransform()))).name();
+            if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+10),zrandom_posy*40+50,QTransform()))))))  {
+                    zombie->path[0]=true;
+                   zombie-> schetchik++;
+                //   qDebug() <<"Left";
+                }
+            } else zombie->path[0]=false;
+
+        if((zrandom_posy*40+50)>89) {
+           // qDebug() << typeid (*(scene->itemAt((zrandom_posx*40+50),zrandom_posy*40+10,QTransform()))).name();
+            if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+50),zrandom_posy*40+10,QTransform())))))) {
+                 zombie->  path[1]=true;
+                  zombie-> schetchik++;
+                 // qDebug() <<"TOP";
+               }
+            }else zombie->path[1]=false;
+
+
+        if((zrandom_posx*40+50)<571){
+            if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+90),(zrandom_posy*40+50),QTransform())))))) {
+                zombie->  path[2]=true;
+                zombie->  schetchik++;
+              }
+            }else zombie->path[2]=false;
+
+        if((zrandom_posy*40+50)<571){
+            if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+50),(zrandom_posy*40+90),QTransform())))))) {
+
+               zombie->path[3]=true;
+               zombie->schetchik++;
+             }
+            }else zombie->path[3]=false;
+
+        qDebug() <<"SCHETCHIK: "<<zombie->schetchik;
+
+int randomys=qrand()%zombie->schetchik;
+int lol=0;
+int zmove=0;
+while (lol<randomys+1){
+if (zombie->path[zmove]==true){
+    lol++;
+}
+zmove++;
+}
+
+if ((zmove-1)>1) {
+zombie->zadnapr=zmove-3;
+} else {
+zombie->zadnapr=zmove+1;
+}
+
+qDebug() <<"napravleniye zombie: "<<zmove-1<<"zadneenapravleniye: "<<zombie->zadnapr;
+
+       /* for (int i=0;i<=zombie->schetchik;i++){
+
+        }*/
+
 }
 
 show();
