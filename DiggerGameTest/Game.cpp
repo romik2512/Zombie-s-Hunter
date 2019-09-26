@@ -114,7 +114,23 @@ zombie->zadnapr=zmove-3;
 zombie->zadnapr=zmove+1;
 }
 
+
 qDebug() <<"napravleniye zombie: "<<zmove-1<<"zadneenapravleniye: "<<zombie->zadnapr;
+
+if ((zmove-1)==0) {
+          zombie->setPos(zrandom_posx*40+48,zrandom_posy*40+50);
+          qDebug() << "POSX: "<<zrandom_posx*40+48<<" POSY: "<<zrandom_posy*40+50;
+        }
+        else if((zmove-1)==1){
+             zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+48);
+             qDebug() << "POSX: "<<zrandom_posx*40+50<<" POSY: "<<zrandom_posy*40+48;
+        }else if((zmove-1)==2){
+             zombie->setPos(zrandom_posx*40+52,zrandom_posy*40+50);
+             qDebug() << "POSX: "<<zrandom_posx*40+52<<" POSY: "<<zrandom_posy*40+50;
+        }else if((zmove-1)==3){
+             zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+52);
+             qDebug() << "POSX: "<<zrandom_posx*40+50<<" POSY: "<<zrandom_posy*40+52;
+        }
 
        /* for (int i=0;i<=zombie->schetchik;i++){
 
