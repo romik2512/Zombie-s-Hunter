@@ -6,6 +6,7 @@
 #include "GBlocks.h"
 #include "QList"
 #include "Dynamit.h"
+#include "Zombie.h"
 
 
 extern Game * game;
@@ -62,16 +63,34 @@ if (event->key() ==Qt::Key_Left){
         if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-8,pos().y()-osty,QTransform())))))){
 
              setPos(x()-8,y()-osty);
+             QList<QGraphicsItem*> collides=collidingItems();
+             for(int i =0,n=collides.size();i<n;++i){
+
+             if (typeid(*(collides[i]))==typeid(Zombie)){
+                 scene()->removeItem(this);
+                 delete this;
+                 return;
+             }
+     }
         }
     } else if (osty>30){
             qDebug()<<typeid(*(game->scene->itemAt(pos().x()-8,pos().y()+40-osty,QTransform()))).name();
             if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-8,pos().y()+40-osty,QTransform())))))){
                 qDebug() <<"YES";
                 setPos(x()-8,y()+40-osty);
-            }
+
+                QList<QGraphicsItem*> collides=collidingItems();
+                for(int i =0,n=collides.size();i<n;++i){
+
+                if (typeid(*(collides[i]))==typeid(Zombie)){
+                    scene()->removeItem(this);
+                    delete this;
+                    return;
+                }
         }
     }
-
+    }
+}
 }else if(event->key()==Qt::Key_Right){
 
 if(pos().x()+40<650){
@@ -86,12 +105,30 @@ if(pos().x()+40<650){
         if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))){
 
              setPos(x()+8,y()-osty);
+             QList<QGraphicsItem*> collides=collidingItems();
+             for(int i =0,n=collides.size();i<n;++i){
+
+             if (typeid(*(collides[i]))==typeid(Zombie)){
+                 scene()->removeItem(this);
+                 delete this;
+                 return;
+             }
+     }
         }
     } else if (osty>30){
             qDebug()<<typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform()))).name();
             if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))){
                 qDebug() <<"YES";
                 setPos(x()+8,y()+40-osty);
+                QList<QGraphicsItem*> collides=collidingItems();
+                for(int i =0,n=collides.size();i<n;++i){
+
+                if (typeid(*(collides[i]))==typeid(Zombie)){
+                    scene()->removeItem(this);
+                    delete this;
+                    return;
+                }
+        }
             }
         }
     }
@@ -108,6 +145,15 @@ if(pos().x()+40<650){
                 qDebug() << typeid (GBlocks).name();
                 qDebug() << typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-8,QTransform()))).name();
                  setPos(x()-ostx,y()-8);
+                 QList<QGraphicsItem*> collides=collidingItems();
+                 for(int i =0,n=collides.size();i<n;++i){
+
+                 if (typeid(*(collides[i]))==typeid(Zombie)){
+                     scene()->removeItem(this);
+                     delete this;
+                     return;
+                 }
+         }
                  qDebug() <<"X:"<<x()<<"  Y"<<y();
             }
         }else if (ostx>30) {
@@ -116,6 +162,15 @@ if(pos().x()+40<650){
         qDebug() << typeid (GBlocks).name();
         qDebug() << typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-8,QTransform()))).name();
          setPos(x()+40-ostx,y()-8);
+         QList<QGraphicsItem*> collides=collidingItems();
+         for(int i =0,n=collides.size();i<n;++i){
+
+         if (typeid(*(collides[i]))==typeid(Zombie)){
+             scene()->removeItem(this);
+             delete this;
+             return;
+         }
+ }
          qDebug() <<"X:"<<x()<<"  Y"<<y();
     }else qDebug() <<"X:"<<game->scene->itemAt(pos().x(),pos().y()-8,QTransform())<<"  Y"<<y();
  }
@@ -130,6 +185,15 @@ if(pos().x()+40<650){
                 qDebug() << typeid (GBlocks).name();
                 qDebug() << typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+8,QTransform()))).name();
                  setPos(x()-ostx,y()+8);
+                 QList<QGraphicsItem*> collides=collidingItems();
+                 for(int i =0,n=collides.size();i<n;++i){
+
+                 if (typeid(*(collides[i]))==typeid(Zombie)){
+                     scene()->removeItem(this);
+                     delete this;
+                     return;
+                 }
+         }
                  qDebug() <<"X:"<<x()<<"  Y"<<y();
             }
         }else if (ostx>30) {
@@ -138,6 +202,15 @@ if(pos().x()+40<650){
         qDebug() << typeid (GBlocks).name();
         qDebug() << typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()+8,QTransform()))).name();
          setPos(x()+40-ostx,y()+8);
+         QList<QGraphicsItem*> collides=collidingItems();
+         for(int i =0,n=collides.size();i<n;++i){
+
+         if (typeid(*(collides[i]))==typeid(Zombie)){
+             scene()->removeItem(this);
+             delete this;
+             return;
+         }
+ }
          qDebug() <<"X:"<<x()<<"  Y"<<y();
     }else qDebug() <<"X:"<<game->scene->itemAt(pos().x()+40-ostx,pos().y()+8,QTransform())<<"  Y"<<y();
  }

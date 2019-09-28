@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include "Game.h"
 #include "GBlocks.h"
-
+#include "Dynamit.h"
+#include "LavaBlocks.h"
+#include "Player.h"
 
 extern Game * game;
 
@@ -28,10 +30,6 @@ int zostx=(zposx-50) % 40;
 int zposy=pos().y();
 int zosty=(zposy-50) % 40;
 
-//      if(pos().x()>89) {if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-40+zostx,pos().y(),QTransform())))))) {path[0]=true; schetchik++;} else path[0]=false;} else {path[0]=false;}
-//    if(pos().y()>89) {if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x(),pos().y()-40+zosty,QTransform())))))) {path[1]=true; schetchik++;} else path[1]=false;} else {path[1]=false;}
-//     if(pos().x()<571){if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-zostx,pos().y(),QTransform())))))) {path[2]=true; schetchik++;} else path[2]=false;} else {path[2]=false;}
-//     if(pos().y()<571){if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x(),pos().y()+40-zosty,QTransform())))))) {path[3]=true; schetchik++;} else path[3]=false;} else {path[3]=false;}
 
 if(pos().x()>89) {
     if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y(),QTransform()))))))  {
@@ -118,19 +116,13 @@ if(pos().y()<571){
     path[3]=false;
 }
 
-
-
-
-
-
-
      int k=0;
       int i=0;
      for(int z=0;z<4;z++) {if (path[z]==true) {
-             qDebug() <<"Napravleniye razresheno: "<<z;
+            // qDebug() <<"Napravleniye razresheno: "<<z;
          }
      }
-    qDebug() <<"SHETCHIK: " << schetchik;
+   // qDebug() <<"SHETCHIK: " << schetchik;
 
     if (path[zadnapr]==true){
         int joke=qrand() % 1000;
@@ -144,13 +136,14 @@ if(pos().y()<571){
             path[zadnapr]=false;
             schetchik--;
             }
-                if (schetchik==0){ qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();} else {
+                if (schetchik==0){
+                    //qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();
+                } else {
              int randoooom=qrand()%(schetchik);
-             qDebug() << "Random vybral: "<<randoooom+1;
+           //  qDebug() << "Random vybral: "<<randoooom+1;
 
                 while (i < randoooom+1){
                        if (path[k]==true){ i++;}
-                     // qDebug()<<"I= "<<i;}
                        k++;
                   }
               zmove=k-1;
@@ -159,18 +152,20 @@ if(pos().y()<571){
               }else {
                   zadnapr=zmove-2;
               }
-              qDebug() <<"Zombie idet v napravlenii: "<<zmove;
-        qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+             // qDebug() <<"Zombie idet v napravlenii: "<<zmove;
+      //  qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
             }
         }
    } else{
-    if (schetchik==0){ qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();} else {
+    if (schetchik==0){
+        //qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();
+    } else {
      int randoooom=qrand()%(schetchik);
-     qDebug() << "Random vybral: "<<randoooom+1;
+     //qDebug() << "Random vybral: "<<randoooom+1;
 
         while (i < randoooom+1){
                if (path[k]==true){ i++;}
-             // qDebug()<<"I= "<<i;}
+
                k++;
           }
       zmove=k-1;
@@ -179,18 +174,126 @@ if(pos().y()<571){
       }else {
           zadnapr=zmove-2;
       }
-      qDebug() <<"Zombie idet v napravlenii: "<<zmove;
-qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+    //  qDebug() <<"Zombie idet v napravlenii: "<<zmove;
+//qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
     }
     }
         if (zmove==0) {
             setPos(x()-2,y());
+            QList<QGraphicsItem*> colliding_items=collidingItems();
+            for(int i =0,n=colliding_items.size();i<n;++i){
+
+                if(typeid (*(colliding_items[i]))==typeid(Player)) {
+                    scene()->removeItem(colliding_items[i]);
+                    delete colliding_items[i];
+                    return;
+            } else
+
+                if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
+
+                    int lposx=colliding_items[i]->pos().x();
+                    int lposy=colliding_items[i]->pos().y();
+
+                    scene()->removeItem(colliding_items[i]);
+                    scene()->removeItem(this);
+
+                    delete colliding_items[i];
+                    delete this;
+
+                    Lava * lava=new Lava();
+                    lava->setPos(lposx,lposy);
+                    game->scene->addItem(lava);
+
+                    return;
+                }
+            }
         }
         else if(zmove==1){
              setPos(x(),y()-2);
+             QList<QGraphicsItem*> colliding_items=collidingItems();
+             for(int i =0,n=colliding_items.size();i<n;++i){
+
+                 if(typeid (*(colliding_items[i]))==typeid(Player)) {
+                     scene()->removeItem(colliding_items[i]);
+                     delete colliding_items[i];
+                     return;
+             } else
+
+                 if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
+
+                     int lposx=colliding_items[i]->pos().x();
+                     int lposy=colliding_items[i]->pos().y();
+
+                     scene()->removeItem(colliding_items[i]);
+                     scene()->removeItem(this);
+
+                     delete colliding_items[i];
+                     delete this;
+
+                     Lava * lava=new Lava();
+                     lava->setPos(lposx,lposy);
+                     game->scene->addItem(lava);
+
+                     return;
+                 }
+             }
         }else if(zmove==2){
              setPos(x()+2,y());
+             QList<QGraphicsItem*> colliding_items=collidingItems();
+             for(int i =0,n=colliding_items.size();i<n;++i){
+
+                 if(typeid (*(colliding_items[i]))==typeid(Player)) {
+                     scene()->removeItem(colliding_items[i]);
+                     delete colliding_items[i];
+                     return;
+             } else
+
+                 if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
+
+                     int lposx=colliding_items[i]->pos().x();
+                     int lposy=colliding_items[i]->pos().y();
+
+                     scene()->removeItem(colliding_items[i]);
+                     scene()->removeItem(this);
+
+                     delete colliding_items[i];
+                     delete this;
+
+                     Lava * lava=new Lava();
+                     lava->setPos(lposx,lposy);
+                     game->scene->addItem(lava);
+
+                     return;
+                 }
+             }
         }else if(zmove==3){
              setPos(x(),y()+2);
+             QList<QGraphicsItem*> colliding_items=collidingItems();
+             for(int i =0,n=colliding_items.size();i<n;++i){
+
+                 if(typeid (*(colliding_items[i]))==typeid(Player)) {
+                     scene()->removeItem(colliding_items[i]);
+                     delete colliding_items[i];
+                     return;
+             } else
+
+                 if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
+
+                     int lposx=colliding_items[i]->pos().x();
+                     int lposy=colliding_items[i]->pos().y();
+
+                     scene()->removeItem(colliding_items[i]);
+                     scene()->removeItem(this);
+
+                     delete colliding_items[i];
+                     delete this;
+
+                     Lava * lava=new Lava();
+                     lava->setPos(lposx,lposy);
+                     game->scene->addItem(lava);
+
+                     return;
+                 }
+             }
         }
 }
