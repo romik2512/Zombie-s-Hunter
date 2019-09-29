@@ -12,5 +12,6 @@
         <file>player1left.png</file>
         <file>player1right.png</file>
         <file>earthwithdynamite.png</file>
+        <file>bgcolorfordigger.png</file>
     </qresource>
 </RCC>

@@ -7,10 +7,13 @@
 #include "Zombie.h"
 #include "Player.h"
 #include <QDebug>
+#include <QBrush>
 
 Game::Game(QWidget*parent){
 scene=new QGraphicsScene();
 scene->setSceneRect(0,0,900,700);
+
+ setBackgroundBrush(QBrush(QImage(":/images/bgcolorfordigger.png")));
 setScene(scene);
 
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
