@@ -11,7 +11,7 @@ extern Game * game;
 
 GBlocks::GBlocks(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
-setPixmap(QPixmap(":/images/blackblock.png"));
+setPixmap(QPixmap(":/images/black""block.png"));
 }
 
 void GBlocks::create()

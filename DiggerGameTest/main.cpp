@@ -1,27 +1,17 @@
 #include <QApplication>
 #include "Game.h"
 #include "QTime"
+#include "Zapas.h"
+#include "Kolvo.h"
+#include "Gametime.h"
 
 Game *game;
 
-/*bool blocksarray[15][15]={
-    {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
-    {false,true,true,true,false,true,false,true,false,true,false,true,true,true,false},
-    {false,true,false,false,false,false,false,true,false,false,false,false,false,true,false},
-    {false,true,false,true,true,true,false,false,false,true,true,true,false,true,false},
-    {false,true,false,false,false,false,false,true,false,false,false,false,false,true,false},
-    {false,false,false,true,true,true,false,false,false,true,true,true,false,false,false},
-    {false,true,false,true,true,false,false,true,false,false,true,true,false,true,false},
-    {false,false,false,false,false,false,true,true,true,false,false,false,false,false,false},
-    {false,true,false,true,true,false,false,true,false,false,true,true,false,true,false},
-    {false,false,false,true,true,true,false,false,false,true,true,true,false,false,false},
-    {false,true,false,false,false,false,false,true,false,false,false,false,false,true,false},
-    {false,true,false,true,true,true,false,false,false,true,true,true,false,true,false},
-    {false,true,false,false,false,false,false,true,false,false,false,false,false,true,false},
-    {false,true,true,true,false,true,false,true,false,true,false,true,true,true,false},
-    {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
-};*/
+Zapas * zapas;
 
+Kolvo * kolvo;
+
+GTime * gametime;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -29,6 +19,21 @@ int main(int argc, char *argv[])
 
     game=new Game();
     game->show();
+
+    gametime=new GTime();
+    gametime->setPos(770,85);
+    game->scene->addItem(gametime);
+
+    zapas=new Zapas();
+    zapas->setPos(785,372);
+    game->scene->addItem(zapas);
+
+    kolvo=new Kolvo();
+    kolvo->setPos(785,222);
+    game->scene->addItem(kolvo);
+
+
+
 
     return a.exec();
 }

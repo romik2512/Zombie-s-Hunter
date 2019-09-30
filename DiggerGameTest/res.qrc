@@ -5,13 +5,14 @@
         <file>earth3.png</file>
         <file>earth5.png</file>
         <file>earth6.png</file>
-        <file>zombie1.png</file>
         <file>Zombie2.png</file>
-        <file>diggerfire.png</file>
         <file>lavablock.png</file>
         <file>player1left.png</file>
         <file>player1right.png</file>
         <file>earthwithdynamite.png</file>
-        <file>bgcolorfordigger.png</file>
+        <file>Zombie2fire2.png</file>
+        <file>Zombie2fire.png</file>
+        <file>Zombie22.png</file>
+        <file>bgcolorfordigger2.png</file>
     </qresource>
 </RCC>

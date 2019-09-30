@@ -20,9 +20,12 @@ SOURCES += \
     EarthBlocks.cpp \
     GBlocks.cpp \
     Game.cpp \
+    Gametime.cpp \
+    Kolvo.cpp \
     LavaBlocks.cpp \
     Menu.cpp \
     Player.cpp \
+    Zapas.cpp \
     Zombie.cpp \
     main.cpp
 
@@ -31,9 +34,12 @@ HEADERS += \
     EarthBlocks.h \
     GBlocks.h \
     Game.h \
+    Gametime.h \
+    Kolvo.h \
     LavaBlocks.h \
     Menu.h \
     Player.h \
+    Zapas.h \
     Zombie.h
 
 # Default rules for deployment.

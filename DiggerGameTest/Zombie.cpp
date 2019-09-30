@@ -9,8 +9,10 @@
 #include "Dynamit.h"
 #include "LavaBlocks.h"
 #include "Player.h"
+#include "Kolvo.h"
 
 extern Game * game;
+extern Kolvo* kolvo;
 
 Zombie::Zombie(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
@@ -204,6 +206,8 @@ if(pos().y()<571){
                     //checker=true;
 
                     scene()->removeItem(this);
+                    delete this;
+                    kolvo->decrease();
 
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
@@ -221,6 +225,7 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                 } else {
                                     delete vzryv[z];
+                                    kolvo->decrease();
                                 }
                             }else {
                                 delete vzryv[z];
@@ -251,6 +256,8 @@ if(pos().y()<571){
                     //checker=true;
 
                     scene()->removeItem(this);
+                    delete this;
+                    kolvo->decrease();
 
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
@@ -268,6 +275,7 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                 } else {
                                     delete vzryv[z];
+                                    kolvo->decrease();
                                 }
                             }else {
                                 delete vzryv[z];
@@ -297,6 +305,8 @@ if(pos().y()<571){
                     //checker=true;
 
                     scene()->removeItem(this);
+                    delete this;
+                    kolvo->decrease();
 
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
@@ -314,6 +324,7 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                 } else {
                                     delete vzryv[z];
+                                    kolvo->decrease();
                                 }
                             }else {
                                 delete vzryv[z];
@@ -343,6 +354,8 @@ if(pos().y()<571){
                     //checker=true;
 
                     scene()->removeItem(this);
+                    delete this;
+                    kolvo->decrease();
 
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
@@ -360,6 +373,7 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                 } else {
                                     delete vzryv[z];
+                                    kolvo->decrease();
                                 }
                             }else {
                                 delete vzryv[z];

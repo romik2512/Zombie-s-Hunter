@@ -8,12 +8,15 @@
 #include "Player.h"
 #include <QDebug>
 #include <QBrush>
+#include "Gametime.h"
+#include "Zapas.h"
+#include "Kolvo.h"
 
 Game::Game(QWidget*parent){
 scene=new QGraphicsScene();
 scene->setSceneRect(0,0,900,700);
 
- setBackgroundBrush(QBrush(QImage(":/images/bgcolorfordigger.png")));
+ setBackgroundBrush(QBrush(QImage(":/images/bgcolorfordigger2.png")));
 setScene(scene);
 
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -46,6 +49,11 @@ player->setPos(random_posx*40+50,random_posy*40+50);
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
 scene->addItem(player);
+
+/*GTime* gametime=new GTime();
+
+gametime->setPos(770,85);
+scene->addItem(gametime);*/
 
 for (int i=0;i<6;i++){
     int zrandom_posy;

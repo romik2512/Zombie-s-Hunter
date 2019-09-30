@@ -7,9 +7,11 @@
 #include "QList"
 #include "Dynamit.h"
 #include "Zombie.h"
-
+#include "LavaBlocks.h"
+#include "Zapas.h"
 
 extern Game * game;
+extern Zapas * zapas;
 Player::Player(QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     setPixmap(QPixmap(":/images/player1right.png"));
 }
@@ -23,6 +25,8 @@ void Player::keyPressEvent(QKeyEvent *event)
     }*/
 
 if   (event->key() ==Qt::Key_Space){
+if(zapas->bomb>0) {
+   zapas->decrease();
 
     int posx=pos().x();
     int ostx=(posx-50) % 40;
@@ -36,9 +40,11 @@ if   (event->key() ==Qt::Key_Space){
     if (ostx>20) ostx=ostx-40;
     if (osty>20) osty=osty-40;
 
-     QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
+     QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform()); // Перед сном здесь ковырялся, именнно проверку зомби добавил хз зачем )))
            for(int i =0,n=kopatel.size();i<n;++i){
+               if(!((typeid(Zombie))==(typeid (*(kopatel[i]))))){
                       scene()->removeItem(kopatel[i]);
+           }
            }
 
 Dynamit* dynamit=new Dynamit();
@@ -51,6 +57,7 @@ player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
 game->scene->addItem(player);
 
+}
 }
 
 if (event->key() ==Qt::Key_Left){
@@ -66,7 +73,7 @@ if (event->key() ==Qt::Key_Left){
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
-             if (typeid(*(collides[i]))==typeid(Zombie)){
+             if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                  scene()->removeItem(this);
                  delete this;
                  return;
@@ -82,7 +89,7 @@ if (event->key() ==Qt::Key_Left){
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
 
-                if (typeid(*(collides[i]))==typeid(Zombie)){
+               if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                     scene()->removeItem(this);
                     delete this;
                     return;
@@ -108,7 +115,7 @@ if(pos().x()+40<650){
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
-             if (typeid(*(collides[i]))==typeid(Zombie)){
+             if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                  scene()->removeItem(this);
                  delete this;
                  return;
@@ -123,7 +130,7 @@ if(pos().x()+40<650){
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
 
-                if (typeid(*(collides[i]))==typeid(Zombie)){
+                if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                     scene()->removeItem(this);
                     delete this;
                     return;
@@ -148,7 +155,7 @@ if(pos().x()+40<650){
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
 
-                 if (typeid(*(collides[i]))==typeid(Zombie)){
+                 if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                      scene()->removeItem(this);
                      delete this;
                      return;
@@ -165,7 +172,7 @@ if(pos().x()+40<650){
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
 
-         if (typeid(*(collides[i]))==typeid(Zombie)){
+         if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
              scene()->removeItem(this);
              delete this;
              return;
@@ -188,7 +195,7 @@ if(pos().x()+40<650){
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
 
-                 if (typeid(*(collides[i]))==typeid(Zombie)){
+                 if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                      scene()->removeItem(this);
                      delete this;
                      return;
@@ -205,7 +212,7 @@ if(pos().x()+40<650){
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
 
-         if (typeid(*(collides[i]))==typeid(Zombie)){
+         if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
              scene()->removeItem(this);
              delete this;
              return;
