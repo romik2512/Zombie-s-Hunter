@@ -11,8 +11,14 @@ class GTime: public QGraphicsTextItem{
     GTime(QGraphicsItem*parent=nullptr);
 private:
     int gtime;
+    int gbx;
+    int gby;
+    int ugol;
+    bool blocksnapr;
+    int kolvo;
 public slots:
     void increase();
+    void addblocks();
 };
 
 #endif // GAMETIME_H

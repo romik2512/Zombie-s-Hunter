@@ -24,6 +24,7 @@ SOURCES += \
     Kolvo.cpp \
     LavaBlocks.cpp \
     Menu.cpp \
+    NG.cpp \
     Player.cpp \
     Zapas.cpp \
     Zombie.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     Kolvo.h \
     LavaBlocks.h \
     Menu.h \
+    NG.h \
     Player.h \
     Zapas.h \
     Zombie.h

@@ -12,34 +12,31 @@
 
 extern Game * game;
 extern Zapas * zapas;
-Player::Player(QGraphicsItem*parent): QGraphicsPixmapItem(parent){
+Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
+    if (napro==true) {
     setPixmap(QPixmap(":/images/player1right.png"));
+    napr=true;
+    } else {
+        setPixmap(QPixmap(":/images/player1left.png"));
+        napr=false;
+    }
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
 
-
-   /* if((event->key()==Qt::Key_Space)&&(event->key()==Qt::Key_Left)){
-        qDebug()<< "YEEES";
-    }*/
-
 if   (event->key() ==Qt::Key_Space){
 if(zapas->bomb>0) {
-   zapas->decrease();
 
     int posx=pos().x();
     int ostx=(posx-50) % 40;
     int posy=pos().y();
     int osty=(posy-50) % 40;
 
-
-   qDebug() << "ostX: " << ostx<<"ostY: " <<osty;
-    qDebug() << "X: " << posx-ostx<<"Y: " << posy-osty;
-
     if (ostx>20) ostx=ostx-40;
     if (osty>20) osty=osty-40;
 
+    if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))){
      QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform()); // Перед сном здесь ковырялся, именнно проверку зомби добавил хз зачем )))
            for(int i =0,n=kopatel.size();i<n;++i){
                if(!((typeid(Zombie))==(typeid (*(kopatel[i]))))){
@@ -47,29 +44,33 @@ if(zapas->bomb>0) {
            }
            }
 
+
+
 Dynamit* dynamit=new Dynamit();
 dynamit->setPos(pos().x()-ostx,pos().y()-osty);
 game->scene->addItem(dynamit);
+zapas->decrease();
 
-Player* player=new Player();
+Player* player=new Player(napr);
 player->setPos(pos().x(),pos().y());
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
 game->scene->addItem(player);
-
+}
 }
 }
 
 if (event->key() ==Qt::Key_Left){
     if(pos().x()>57){
+        int posx=pos().x();
     int posy=pos().y();
     int osty=(posy-50)%40;
-    qDebug()<<"OSTY: "<<osty;
+    qDebug()<<"NAPR: "<<napr;
 
     if (osty<10){
         if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-8,pos().y()-osty,QTransform())))))){
 
-             setPos(x()-8,y()-osty);
+             setPos(x()-8,y()-osty);           
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
@@ -79,6 +80,17 @@ if (event->key() ==Qt::Key_Left){
                  return;
              }
      }
+             if (napr==true) {
+                napr=false;
+                //delete this;
+                scene()->removeItem(this);
+
+             Player * player=new Player(napr);
+             player->setPos(posx-8,posy-osty);
+             player->setFlag(QGraphicsItem::ItemIsFocusable);
+             player->setFocus();
+             game->scene->addItem(player);
+             }
         }
     } else if (osty>30){
             qDebug()<<typeid(*(game->scene->itemAt(pos().x()-8,pos().y()+40-osty,QTransform()))).name();
@@ -95,18 +107,26 @@ if (event->key() ==Qt::Key_Left){
                     return;
                 }
         }
+                if (napr==true) {
+                   napr=false;
+                   //delete this;
+                   scene()->removeItem(this);
+
+                Player * player=new Player(napr);
+                player->setPos(posx-8,posy+40-osty);
+                player->setFlag(QGraphicsItem::ItemIsFocusable);
+                player->setFocus();
+                game->scene->addItem(player);
+                }
     }
     }
 }
 }else if(event->key()==Qt::Key_Right){
 
 if(pos().x()+40<650){
-
+    int posx=pos().x();
     int posy=pos().y();
     int osty=(posy-50)%40;
-    qDebug()<<"OSTY: "<<osty;
-
-
 
     if (osty<10){
         if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))){
@@ -121,6 +141,16 @@ if(pos().x()+40<650){
                  return;
              }
      }
+             if (napr==false) {
+                    napr=true;
+                    scene()->removeItem(this);
+                 //delete this;
+                 Player * player=new Player(napr);
+                 player->setPos(posx+8,posy-osty);
+                 player->setFlag(QGraphicsItem::ItemIsFocusable);
+                 player->setFocus();
+                 game->scene->addItem(player);
+                 }
         }
     } else if (osty>30){
             qDebug()<<typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform()))).name();
@@ -136,6 +166,16 @@ if(pos().x()+40<650){
                     return;
                 }
         }
+                if (napr==false) {
+                       napr=true;
+                       scene()->removeItem(this);
+                    //delete this;
+                    Player * player=new Player(napr);
+                    player->setPos(posx+8,posy+40-osty);
+                    player->setFlag(QGraphicsItem::ItemIsFocusable);
+                    player->setFocus();
+                    game->scene->addItem(player);
+                    }
             }
         }
     }

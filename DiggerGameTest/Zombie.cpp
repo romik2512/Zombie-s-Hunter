@@ -14,14 +14,24 @@
 extern Game * game;
 extern Kolvo* kolvo;
 
-Zombie::Zombie(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
+Zombie::Zombie(bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
-        setPixmap(QPixmap(":/images/Zombie2.png"));
-        //zmove=qrand() %4;
+    if (napru==true){
+        if (fairu==false){
+        setPixmap(QPixmap(":/images/Zombie22.png"));
+        } else {
+            setPixmap(QPixmap(":/images/Zombie2fire2.png"));
+        }
+    }else if(fairu==false){
+            setPixmap(QPixmap(":/images/Zombie2.png"));
+        } else {
+           setPixmap(QPixmap(":/images/Zombie2fire.png"));
+        }
+
         QTimer * timer =new QTimer();
         connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
-        timer->start(50);
+        timer->start(25);
  }
 
     void Zombie::move()
@@ -35,7 +45,6 @@ int zosty=(zposy-50) % 40;
 
 if(pos().x()>89) {
     if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y(),QTransform()))))))  {
-       // if (zosty>0){if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
         if (zosty>0){if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
                 if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
             path[0]=true;
@@ -61,7 +70,7 @@ else {
 if(pos().y()>89) {
     if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x(),pos().y()-2,QTransform())))))) {
        if (zostx>0){ if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-zostx,pos().y()-2,QTransform()))))))  {
-               if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
+               if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {                   //здесь траббл
         path[1]=true;
        schetchik++;
     }
@@ -73,7 +82,7 @@ if(pos().y()>89) {
            schetchik++;
        }
     } else {path[1]=false;}
-}else if (pos().y() > 52){
+}else if (pos().y() > 51){
     path[1]=true;
     schetchik++;
 } else {
@@ -127,30 +136,21 @@ if(pos().y()<571){
 
      int k=0;
       int i=0;
-     for(int z=0;z<4;z++) {if (path[z]==true) {
-            // qDebug() <<"Napravleniye razresheno: "<<z;
-         }
-     }
-   // qDebug() <<"SHETCHIK: " << schetchik;
 
     if (path[zadnapr]==true){
+        if (schetchik>1){
         int joke=qrand() % 1000;
         if (joke <1) {
+  qDebug() << "ON RESHIL RAZEVRUTSYA LOOOOOL ";
             zmove=zadnapr;
             if (zadnapr<2){
                 zadnapr=zadnapr+2;
             }else {zadnapr=zadnapr-2;}
-        } else {
-            if (schetchik>1){
+        } else {           
             path[zadnapr]=false;
-            schetchik--;
-            }
-                if (schetchik==0){
-                    //qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();
-                } else {
+            schetchik--;                          
              int randoooom=qrand()%(schetchik);
            //  qDebug() << "Random vybral: "<<randoooom+1;
-
                 while (i < randoooom+1){
                        if (path[k]==true){ i++;}
                        k++;
@@ -161,16 +161,21 @@ if(pos().y()<571){
               }else {
                   zadnapr=zmove-2;
               }
-             // qDebug() <<"Zombie idet v napravlenii: "<<zmove;
-      //  qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+              qDebug() <<"PATH[ZADNAPR]: TRUE!! ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+              qDebug() <<"PATH[ZADNAPR]: TRUE!! Zombie idet v napravlenii: "<<zmove;
+              qDebug() << "PATH[ZADNAPR]: TRUE!! Ego zadnee napravleniye: "<<zadnapr;                                   //ТРАБББЛ В ТОМ, ЧТО ЕСЛИ ЗОМБИ ИДЕТ ВНИЗ И ПОВОРАЧИВАЕТ НА ЛЕВО, ТО ЕГО ЗАДНЕЕ НАПРАВЛЕНИЕ АВТОМАТОМ СТАНОВИТСЯ ПРАВО,ХОТЯ ДОЛЖЕН БЫТЬ ВВЕРХ?
             }
+        } else {
+            zmove=zadnapr;
+            if (zadnapr<2){
+                zadnapr=zadnapr+2;
+            }else {zadnapr=zadnapr-2;}
         }
    } else{
     if (schetchik==0){
-        //qDebug() << "POSX: "<<pos().x() <<" POSY: "<<pos().y();
+        zmove=5;
     } else {
      int randoooom=qrand()%(schetchik);
-     //qDebug() << "Random vybral: "<<randoooom+1;
 
         while (i < randoooom+1){
                if (path[k]==true){ i++;}
@@ -183,13 +188,17 @@ if(pos().y()<571){
       }else {
           zadnapr=zmove-2;
       }
-    //  qDebug() <<"Zombie idet v napravlenii: "<<zmove;
-//qDebug() <<"ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+
+qDebug() <<"PATH[ZADNAPR]: ELSE!! ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
+qDebug() <<"PATH[ZADNAPR]: ELSE!! Zombie idet v napravlenii: "<<zmove;
+qDebug() << "PATH[ZADNAPR]: ELSE!! Ego zadnee napravleniye: "<<zadnapr;
     }
     }
         if (zmove==0) {
+            zposx=x()-2;
+            zposy=y(); // МЕЙБИ ЗДЕСЬ ТРАББЛЫ!!
             setPos(x()-2,y());
-            bool checker=false;
+            bool lol=false;
             QList<QGraphicsItem*> colliding_items=collidingItems();
             for(int i =0,n=colliding_items.size();i<n;++i){
 
@@ -203,7 +212,6 @@ if(pos().y()<571){
 
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    //checker=true;
 
                     scene()->removeItem(this);
                     delete this;
@@ -218,8 +226,7 @@ if(pos().y()<571){
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
                             int lavx=vzryv[z]->pos().x();
                             int lavy=vzryv[z]->pos().y();
-                            qDebug() << "THIS ISSSSSSSSSSSSSSSSSSSSSSS:   " <<typeid(*(vzryv[z])).name();
-                              delete vzryv[z];
+                               delete vzryv[z];
                               Lava * lava=new Lava();
                                lava->setPos(lavx,lavy);
                                game->scene->addItem(lava);
@@ -234,11 +241,48 @@ if(pos().y()<571){
                     }
 
                     break;
-                }
-            }
+                } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
+if (fire==false){
+    int zzadnapr=zadnapr;
+                    delete this;
+                    Zombie * zombie=new Zombie(false,true);
+                    zombie->setPos(zposx,zposy);
+                    game->scene->addItem(zombie);
+                    zombie->fire=true;
+                    zombie->znapr=false;
+                    zombie->zadnapr=zzadnapr;
+}
 
+                } else {
+                    lol=true;
+                   /* if (napr==true){
+                       bool sr=fire;
+                       delete this;
+                       Zombie * zombie=new Zombie(false,sr);
+                       zombie->setPos(zposx,zposy);
+                       game->scene->addItem(zombie);
+                       zombie->napr=false;
+                       zombie->fire=sr;
+                       break;
+                    }*/
+                }
+            } if (lol==true){
+                if (znapr==true){                                                    //ПРОБЛЕМА В ТОМ ЧТО Я ЗАДНЕЕ НАПРАВЛЕНИЕ НЕ СОХРАНЯЮ У ЗОМБАКА!!!!!!!!!!!!!!!!!!!!!!! гениально )))
+                    bool sr=fire;
+                    int zzadnapr=zadnapr;
+                    delete this;
+                    Zombie * zombie=new Zombie(false,sr);
+                    zombie->setPos(zposx,zposy);
+                    game->scene->addItem(zombie);
+                    zombie->znapr=false;
+                    zombie->fire=sr;
+                    zombie->zadnapr=zzadnapr;
+                 }
+            }
         }
         else if(zmove==1){
+            zposx=x();
+            zposy=y()-2;
              setPos(x(),y()-2);
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
@@ -284,10 +328,25 @@ if(pos().y()<571){
                     }
 
                     break;
-                }
+                } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
+                     if (fire==false){
+                         bool nnapr=znapr;
+                         int zzadnapr=zadnapr;
+                     delete this;
+                     Zombie * zombie=new Zombie(nnapr,true);
+                     zombie->setPos(zposx,zposy);
+                     game->scene->addItem(zombie);
+                     zombie->fire=true;
+                     zombie->znapr=nnapr;
+                     zombie->zadnapr=zzadnapr;
+                     }
+                 }
             }
 
         }else if(zmove==2){
+            zposx=x()+2;
+            zposy=y();
+            bool lol=false;
              setPos(x()+2,y());
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
@@ -333,10 +392,38 @@ if(pos().y()<571){
                     }
 
                     break;
-                }
+                }  else if (typeid(*(colliding_items[i]))==typeid(Lava)){
+                     if (fire==false){
+                         int zzadnapr=zadnapr;
+                                         delete this;
+                                         Zombie * zombie=new Zombie(true,true);
+                                         zombie->setPos(zposx,zposy);
+                                         game->scene->addItem(zombie);
+                                         zombie->fire=true;
+                                         zombie->znapr=true;
+                                         zombie->zadnapr=zzadnapr;
+                     }
+
+                                     } else {
+                     lol=true;                                     
+                                     }
             }
+             if (lol==true){
+                 if (znapr==false){
+                     int zzadnapr=zadnapr;
+                                                             bool sr=fire;
+                                                             delete this;
+                                                             Zombie * zombie=new Zombie(true,sr);
+                                                             zombie->setPos(zposx,zposy);
+                                                             game->scene->addItem(zombie);
+                                                             zombie->znapr=true;
+                                                             zombie->zadnapr=zzadnapr;
+                                                             zombie->fire=sr;}
+             }
 
         }else if(zmove==3){
+            zposx=x();
+            zposy=y()+2;
              setPos(x(),y()+2);
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
@@ -351,7 +438,7 @@ if(pos().y()<571){
 
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    //checker=true;
+                    //checker=true;                                                                   /////ВЕРТЯТСЯ ОНИ ПОТОМУ ЧТО В МАССИВЕ ПРИ ДВУХ ЗЕМЛЯНЫХ БЛОКАХ БУДЕТ ДВА РАЗА ГЕРОЯ УБИВАТЬ И СОЗДАВАТЬ"!!!!!!!!!! ИЛИ ЖЕ ТРАББЛ В ТОМ, ЧТО МЫ С САМОГО НАЧАЛА ДЕЛАЕМ ИМ ПОЗИЦИЮ!!
 
                     scene()->removeItem(this);
                     delete this;
@@ -382,7 +469,19 @@ if(pos().y()<571){
                     }
 
                     break;
-                }
+                } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
+                     if (fire==false){
+                         bool nnapr=znapr;
+                         int zzadnapr=zadnapr;
+                     delete this;
+                     Zombie * zombie=new Zombie(nnapr,true);
+                     zombie->setPos(zposx,zposy);
+                     game->scene->addItem(zombie);
+                     zombie->fire=true;
+                     zombie->znapr=nnapr;
+                     zombie->zadnapr=zzadnapr;
+                     }
+                 }
             }
 
         }

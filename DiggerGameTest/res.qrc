@@ -14,5 +14,7 @@
         <file>Zombie2fire.png</file>
         <file>Zombie22.png</file>
         <file>bgcolorfordigger2.png</file>
+        <file>testmenu2.png</file>
+        <file>newgame.png</file>
     </qresource>
 </RCC>

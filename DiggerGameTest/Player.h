@@ -10,11 +10,9 @@
 class Player:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:
-    Player(QGraphicsItem* parent=nullptr);
+    Player(bool napro,QGraphicsItem* parent=nullptr);
 void keyPressEvent(QKeyEvent * event);
-//private:
-int w,h;
-
+bool napr;
 };
 
 #endif // PLAYER_H

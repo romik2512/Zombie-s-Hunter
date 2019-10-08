@@ -4,6 +4,7 @@
 #include "Zapas.h"
 #include "Kolvo.h"
 #include "Gametime.h"
+#include "Menu.h"
 
 Game *game;
 
@@ -12,6 +13,8 @@ Zapas * zapas;
 Kolvo * kolvo;
 
 GTime * gametime;
+
+Menu * menu;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -19,6 +22,9 @@ int main(int argc, char *argv[])
 
     game=new Game();
     game->show();
+
+    //menu=new Menu();
+   // menu->show();
 
     gametime=new GTime();
     gametime->setPos(770,85);
