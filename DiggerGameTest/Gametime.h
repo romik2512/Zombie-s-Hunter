@@ -15,7 +15,9 @@ private:
     int gby;
     int ugol;
     bool blocksnapr;
-    int kolvo;
+    int kvadr;
+    int line;
+    int schet;
 public slots:
     void increase();
     void addblocks();

@@ -22,6 +22,7 @@ setScene(scene);
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+enemies=8;
 for (int i=0;i<15;i++){
     for(int j=0;j<15;j++){
         if (blocksarray[i][j]==true) {
@@ -51,7 +52,7 @@ player->setFocus();
 scene->addItem(player);
 player->napr=true;
 
-for (int i=0;i<6;i++){
+for (int i=0;i<enemies;i++){
     int zrandom_posy;
     int zrandom_posx;
     do{

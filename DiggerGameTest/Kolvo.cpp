@@ -8,9 +8,9 @@ extern Game *game;
 
 Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
-    enemies=6;
+    //enemies=6;
 
-    setPlainText(QString::number(enemies));
+    setPlainText(QString::number(game->enemies));
     setDefaultTextColor(QColor(242,160,7));
     setFont(QFont("times",34));
 
@@ -18,6 +18,6 @@ Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
 void Kolvo::decrease()
 {
-    enemies--;
-    setPlainText(QString::number(enemies));
+    game->enemies--;
+    setPlainText(QString::number(game->enemies));
 }

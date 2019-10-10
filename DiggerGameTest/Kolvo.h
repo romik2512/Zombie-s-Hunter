@@ -9,7 +9,7 @@ class Kolvo: public QGraphicsTextItem{
  public:
     Kolvo(QGraphicsItem*parent=nullptr);
     void decrease();
-    int enemies;
+   // int enemies;
 };
 
 

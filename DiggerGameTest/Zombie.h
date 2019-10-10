@@ -13,8 +13,10 @@ public:
         int zadnapr=5;
         bool znapr;
         bool fire;
+        int zspeed;
  public slots:
-        void move();    
+        //void move(QTimer *timer);
+        void move();
 };
 
 #endif // ZOMBIE_H

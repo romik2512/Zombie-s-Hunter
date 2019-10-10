@@ -26,7 +26,7 @@ public:
     };
     Game(QWidget*parent=nullptr);
     QGraphicsScene*scene;
-
+int enemies;
 };
 
 
