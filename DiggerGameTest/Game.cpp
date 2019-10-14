@@ -12,7 +12,14 @@
 #include "Zapas.h"
 #include "Kolvo.h"
 
-Game::Game(QWidget*parent){
+/*Zapas * zapas;
+
+Kolvo * kolvo;
+
+GTime * gametime;*/ // А что если в игру передавать указатели на это все? ПРИЕДЕШЬ ПОДУМАЙ!!
+
+
+Game::Game(char sl,QWidget*parent){
 scene=new QGraphicsScene();
 scene->setSceneRect(0,0,900,700);
 
@@ -21,8 +28,23 @@ setScene(scene);
 
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+setFixedSize(900,700);
 
-enemies=8;
+//for(int v=1;v<100000;v++){
+//    qDebug() <<"LEVEL: "<<sl;
+//}
+
+if(sl=='e'){
+    enemies=6;
+    bomb=5;
+}else if(sl=='m'){
+enemies=10;
+bomb=7;
+}else {
+    enemies=12;
+    bomb=8;
+}
+
 for (int i=0;i<15;i++){
     for(int j=0;j<15;j++){
         if (blocksarray[i][j]==true) {
@@ -150,4 +172,10 @@ if ((zmove-1)==0) {
 }
 
 show();
+}
+
+Game::~Game(){
+//    delete kolvo;
+//    delete zapas;
+//    delete gametime;
 }

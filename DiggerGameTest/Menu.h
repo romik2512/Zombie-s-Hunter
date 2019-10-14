@@ -13,10 +13,11 @@ class Menu:public QGraphicsView{
 //class Menu:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:
-    Menu(QWidget*parent=nullptr);
+    Menu(QWidget*parent=nullptr);    
     QGraphicsScene*mscene;
-//public slots:
-    //void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    char lvl='m';
+public slots:
+    void mousePressEvent(QMouseEvent * event);
 };
 
 

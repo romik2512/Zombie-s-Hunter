@@ -9,11 +9,7 @@ extern Game *game;
 Zapas::Zapas(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
     bomb=6;
-
-
-
-    //setPlainText(QString("Time: ")+QString::number(gtime));
-    setPlainText(QString::number(bomb));
+    setPlainText(QString::number(game->bomb));
     setDefaultTextColor(Qt::green);
     setFont(QFont("times",34));
 
@@ -21,10 +17,6 @@ Zapas::Zapas(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
 void Zapas::decrease()
 {
-    qDebug() <<"POGCHAMP!!!!!!!!!!!!!!!!!!!!";
-    bomb--;
-    //setPlainText(QString("Time: ")+QString::number(gtime));
-    setPlainText(QString::number(bomb));
-   // setDefaultTextColor(Qt::yellow);
-    //setFont(QFont("times",30));
+    game->bomb--;
+    setPlainText(QString::number(game->bomb));
 }

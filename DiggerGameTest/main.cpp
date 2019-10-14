@@ -6,13 +6,13 @@
 #include "Gametime.h"
 #include "Menu.h"
 
-Game *game;
+//Game *game;
 
-Zapas * zapas;
+//Zapas * zapas;
 
-Kolvo * kolvo;
+//Kolvo * kolvo;
 
-GTime * gametime;
+//GTime * gametime;
 
 Menu * menu;
 int main(int argc, char *argv[])
@@ -20,26 +20,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
      qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
-    game=new Game();
-    game->show();
-
-    //menu=new Menu();
-   // menu->show();
-
-    gametime=new GTime();
-    gametime->setPos(770,85);
-    game->scene->addItem(gametime);
-
-    zapas=new Zapas();
-    zapas->setPos(785,372);
-    game->scene->addItem(zapas);
-
-    kolvo=new Kolvo();
-    kolvo->setPos(785,222);
-    game->scene->addItem(kolvo);
-
-
-
+     menu=new Menu();
+     menu->show();
 
     return a.exec();
 }

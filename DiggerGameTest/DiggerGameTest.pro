@@ -18,14 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Dynamit.cpp \
     EarthBlocks.cpp \
+    Easylvl.cpp \
     GBlocks.cpp \
     Game.cpp \
     Gametime.cpp \
+    Hardlvl.cpp \
     Kolvo.cpp \
     LavaBlocks.cpp \
+    Mediumlvl.cpp \
     Menu.cpp \
     NG.cpp \
     Player.cpp \
+    Settings.cpp \
     Zapas.cpp \
     Zombie.cpp \
     main.cpp
@@ -33,14 +37,18 @@ SOURCES += \
 HEADERS += \
     Dynamit.h \
     EarthBlocks.h \
+    Easylvl.h \
     GBlocks.h \
     Game.h \
     Gametime.h \
+    Hardlvl.h \
     Kolvo.h \
     LavaBlocks.h \
+    Mediumlvl.h \
     Menu.h \
     NG.h \
     Player.h \
+    Settings.h \
     Zapas.h \
     Zombie.h
 

@@ -51,14 +51,14 @@ void GTime::increase()
 {
     gtime++;   
     setPlainText(QString::number(gtime));
+    //this->setPos(10,10);
 }
 
-void GTime::addblocks(){                                  // Можно добавить переменную, которая будет считать сколько уже построил, нализировать и поворачивать когда уже все ) это допустим schectchik , while (schetchik<=i*4 -4 ); где i это сколько нужно ставить блоков в линии и будем идти по квадрату как раз
+void GTime::addblocks(){
     if (kvadr>-1){
-    if (gtime>9){
-       // QList<QGraphicsItem*> colliding_items=collidingItems();
-       // for(int i =0,n=colliding_items.size();i<n;++i){
-QList<QGraphicsItem*> colliding_items=game->scene->items(gbx,gby,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
+    if (gtime>4){
+
+QList<QGraphicsItem*> colliding_items=game->scene->items(gbx,gby,35,35,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
 for (int i=0,n=colliding_items.size();i<n;++i){
     if(typeid (*(colliding_items[i]))==typeid(Player)) {
 
@@ -69,7 +69,7 @@ for (int i=0,n=colliding_items.size();i<n;++i){
     scene()->removeItem(colliding_items[i]);
     delete colliding_items[i];
 }
-        //game->scene->removeItem(game->scene->itemAt(gbx,gby,QTransform()));  Здесь может быть траббл если будет зомби и еще что-то удалит верхний элемент же )
+
          GBlocks* gblocks=new GBlocks();
          gblocks->setPos(gbx,gby);
          schet++;

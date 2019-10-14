@@ -249,11 +249,13 @@ if (fire==false){
                     zombie->setPos(zposx,zposy);
                     game->scene->addItem(zombie);
                     zombie->fire=true;
-                   // timer->stop();
-                   // timer->start(15);
-                    //delete timer;
+                  /* delete timer;
+                    QTimer * timer =new QTimer();
+                    connect(timer,SIGNAL(timeout()),this,SLOT(move(timer)));
 
-                 //   zspeed=10;
+                    timer->start(15);*/
+
+
                     zombie->znapr=false;
                     zombie->zadnapr=zzadnapr;
 }
@@ -342,8 +344,6 @@ if (fire==false){
                      zombie->setPos(zposx,zposy);
                      game->scene->addItem(zombie);
                      zombie->fire=true;
-                    // timer->stop();
-                    // timer->start(15);
                      zombie->znapr=nnapr;
                      zombie->zadnapr=zzadnapr;
                      }
@@ -406,9 +406,7 @@ if (fire==false){
                                          Zombie * zombie=new Zombie(true,true);
                                          zombie->setPos(zposx,zposy);
                                          game->scene->addItem(zombie);
-                                         zombie->fire=true;
-                                        // timer->stop();
-                                       //  timer->start(15);
+                                         zombie->fire=true;                                        
                                          zombie->znapr=true;
                                          zombie->zadnapr=zzadnapr;
                      }

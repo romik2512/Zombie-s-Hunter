@@ -24,7 +24,9 @@ Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
 
 void Player::keyPressEvent(QKeyEvent *event)
 {
-
+/*if (event->key()==Qt::Key_Up+Qt::Key_Right){
+    delete game;
+}*/
 if   (event->key() ==Qt::Key_Space){
 if(zapas->bomb>0) {
 

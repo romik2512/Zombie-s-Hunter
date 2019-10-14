@@ -16,5 +16,12 @@
         <file>bgcolorfordigger2.png</file>
         <file>testmenu2.png</file>
         <file>newgame.png</file>
+        <file>activeeasyselect.png</file>
+        <file>activehardselect.png</file>
+        <file>activemediumselect.png</file>
+        <file>hardselect.png</file>
+        <file>easyselect.png</file>
+        <file>mediumselect.png</file>
+        <file>selectsettings.png</file>
     </qresource>
 </RCC>
