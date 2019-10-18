@@ -8,7 +8,7 @@ extern Game *game;
 
 Zapas::Zapas(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
-    bomb=6;
+    //bomb=6;
     setPlainText(QString::number(game->bomb));
     setDefaultTextColor(Qt::green);
     setFont(QFont("times",34));

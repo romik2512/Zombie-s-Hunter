@@ -36,6 +36,7 @@ setScene(mscene);
 
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+setFixedSize(900,700);
 
 NG* ng=new NG();
 ng->setPos(250,200);
@@ -62,16 +63,12 @@ mscene->addItem(hard);
 void Menu::mousePressEvent(QMouseEvent *event)
 {
 
-qDebug() <<"POSX: " << event->pos().x() <<" POSY: "<<event->pos().y();
-
 QList<QGraphicsItem*> clicked=mscene->items(event->pos().x(),event->pos().y(),1,1,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
 for (int i=0,n=clicked.size();i<n;++i){
     if(typeid (*(clicked[i]))==typeid(NG)) {
-qDebug() << "ROMAN TY POPAL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-
     game=new Game(lvl);
    game->show();
-   delete this;
+  delete this;
 
    gametime=new GTime();
    gametime->setPos(770,85);
@@ -86,6 +83,8 @@ qDebug() << "ROMAN TY POPAL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
    kolvo->setPos(785,222);}
    else{kolvo->setPos(777,222);}
    game->scene->addItem(kolvo);
+   /*game->show();
+   delete this;*/
 
 } else if(typeid (*(clicked[i]))==typeid(Easy)){
 if (lvl!='e'){

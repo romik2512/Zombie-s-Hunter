@@ -52,6 +52,7 @@ void GTime::increase()
     gtime++;   
     setPlainText(QString::number(gtime));
     //this->setPos(10,10);
+    //qDebug() << "KOLVO VZRYVOV NA KARTE: "<<game->boom;
 }
 
 void GTime::addblocks(){

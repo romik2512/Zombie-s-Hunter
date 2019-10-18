@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Bam.cpp \
+    Crash.cpp \
     Dynamit.cpp \
     EarthBlocks.cpp \
     Easylvl.cpp \
@@ -35,6 +37,8 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    Bam.h \
+    Crash.h \
     Dynamit.h \
     EarthBlocks.h \
     Easylvl.h \

@@ -30,12 +30,13 @@ Zombie::Zombie(bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsP
 
         QTimer * timer =new QTimer();
         connect(timer,SIGNAL(timeout()),this,SLOT(move()));
-
+        forme=0;
         timer->start(25);
  }
 
     void Zombie::move()
     {
+       // qDebug() <<"ZOMBIE POYAVILSYA PRI "<< lavakol<<" LAVE!!!";
 schetchik=0;
 int zposx=pos().x();
 int zostx=(zposx-50) % 40;
@@ -70,7 +71,7 @@ else {
 if(pos().y()>89) {
     if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x(),pos().y()-2,QTransform())))))) {
        if (zostx>0){ if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-zostx,pos().y()-2,QTransform()))))))  {
-               if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {                   //здесь траббл
+               if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
         path[1]=true;
        schetchik++;
     }
@@ -91,7 +92,7 @@ if(pos().y()>89) {
 
 if(pos().x()<571){
     if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y(),QTransform())))))) {
-      if(zosty>0){  if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-zosty,QTransform()))))))  { // ТРАБЛЫ В ТОМ, ЧТО КОГДА ОСТАТОК 0, ПРОВЕРКА ЛАВЫ НЕ ПРОИСХОДИТ!!! исправь как вернешься домой!!!
+      if(zosty>0){  if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-zosty,QTransform()))))))  {
               if (!((typeid(Lava))==(typeid(*(game->scene->itemAt(pos().x()-2,pos().y()+40-zosty,QTransform()))))))  {
         path[2]=true;
         schetchik++;
@@ -141,16 +142,14 @@ if(pos().y()<571){
         if (schetchik>1){
         int joke=qrand() % 1000;
         if (joke <1) {
-  qDebug() << "ON RESHIL RAZEVRUTSYA LOOOOOL ";
             zmove=zadnapr;
             if (zadnapr<2){
                 zadnapr=zadnapr+2;
             }else {zadnapr=zadnapr-2;}
-        } else {           
+        } else {
             path[zadnapr]=false;
-            schetchik--;                          
+            schetchik--;
              int randoooom=qrand()%(schetchik);
-           //  qDebug() << "Random vybral: "<<randoooom+1;
                 while (i < randoooom+1){
                        if (path[k]==true){ i++;}
                        k++;
@@ -161,9 +160,6 @@ if(pos().y()<571){
               }else {
                   zadnapr=zmove-2;
               }
-              qDebug() <<"PATH[ZADNAPR]: TRUE!! ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
-              qDebug() <<"PATH[ZADNAPR]: TRUE!! Zombie idet v napravlenii: "<<zmove;
-              qDebug() << "PATH[ZADNAPR]: TRUE!! Ego zadnee napravleniye: "<<zadnapr;                                   //ТРАБББЛ В ТОМ, ЧТО ЕСЛИ ЗОМБИ ИДЕТ ВНИЗ И ПОВОРАЧИВАЕТ НА ЛЕВО, ТО ЕГО ЗАДНЕЕ НАПРАВЛЕНИЕ АВТОМАТОМ СТАНОВИТСЯ ПРАВО,ХОТЯ ДОЛЖЕН БЫТЬ ВВЕРХ?
             }
         } else {
             zmove=zadnapr;
@@ -188,17 +184,14 @@ if(pos().y()<571){
       }else {
           zadnapr=zmove-2;
       }
-
-qDebug() <<"PATH[ZADNAPR]: ELSE!! ZOMBIE POSX: " <<pos().x()<<" ZOMBIE POSY"<<pos().y();
-qDebug() <<"PATH[ZADNAPR]: ELSE!! Zombie idet v napravlenii: "<<zmove;
-qDebug() << "PATH[ZADNAPR]: ELSE!! Ego zadnee napravleniye: "<<zadnapr;
     }
     }
         if (zmove==0) {
+            bool nope=false;
+            bool checker=false;
             zposx=x()-2;
-            zposy=y(); // МЕЙБИ ЗДЕСЬ ТРАББЛЫ!!
+            zposy=y();
             setPos(x()-2,y());
-            bool lol=false;
             QList<QGraphicsItem*> colliding_items=collidingItems();
             for(int i =0,n=colliding_items.size();i<n;++i){
 
@@ -209,7 +202,7 @@ qDebug() << "PATH[ZADNAPR]: ELSE!! Ego zadnee napravleniye: "<<zadnapr;
             } else
 
                 if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
-
+                        game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
 
@@ -242,52 +235,71 @@ qDebug() << "PATH[ZADNAPR]: ELSE!! Ego zadnee napravleniye: "<<zadnapr;
 
                     break;
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
-if (fire==false){
-    int zzadnapr=zadnapr;
+                    //if (fire==false){
+                    if (checker==false){
+                    if (lavakol!=(game->boom)){
+                        if (checker==false){
+                        qDebug() <<"lavakol menshe vzryvov!!!";
+                    int zzadnapr=zadnapr;
+                    forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                     delete this;
                     Zombie * zombie=new Zombie(false,true);
                     zombie->setPos(zposx,zposy);
                     game->scene->addItem(zombie);
                     zombie->fire=true;
-                  /* delete timer;
-                    QTimer * timer =new QTimer();
-                    connect(timer,SIGNAL(timeout()),this,SLOT(move(timer)));
-
-                    timer->start(15);*/
-
-
                     zombie->znapr=false;
                     zombie->zadnapr=zzadnapr;
+                    zombie->lavakol=game->boom;
+                    checker=true;
+                    }
+                        }
+                    else if(znapr==true){
+                        int zzadnapr=zadnapr;
+                        forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
+                        delete this;
+                        Zombie * zombie=new Zombie(false,true);
+                        zombie->setPos(zposx,zposy);
+                        game->scene->addItem(zombie);
+                        zombie->znapr=false;
+                        zombie->fire=true;
+                        zombie->zadnapr=zzadnapr;
+                        zombie->lavakol=game->boom;
+                        checker=true;               //Ошибка в участке кода else когда понимает что нет столкновения с лавой! Фишка в том, что при взрыве динамита когда какойто зомбак на лаве происходит ошибка ХОТЯ БЕЗ ЛАВЫ ВСЕ РАБОТАЕТ!!!1
+                    }
+                    }
 }
-
-                } else {
-                    lol=true;
-                   /* if (napr==true){
-                       bool sr=fire;
-                       delete this;
-                       Zombie * zombie=new Zombie(false,sr);
-                       zombie->setPos(zposx,zposy);
-                       game->scene->addItem(zombie);
-                       zombie->napr=false;
-                       zombie->fire=sr;
-                       break;
-                    }*/
-                }
-            } if (lol==true){
-                if (znapr==true){                                                    //ПРОБЛЕМА В ТОМ ЧТО Я ЗАДНЕЕ НАПРАВЛЕНИЕ НЕ СОХРАНЯЮ У ЗОМБАКА!!!!!!!!!!!!!!!!!!!!!!! гениально )))
+                else if(nope==false){
+                if (znapr==true){
+                    qDebug() <<"VYZVANO IZ 0, ZNAPR: "<<znapr<<" ZPOSX: "<<zposx<<" ZPOSY: "<<zposy;
                     bool sr=fire;
+                    int joke=lavakol;
                     int zzadnapr=zadnapr;
                     delete this;
-                    Zombie * zombie=new Zombie(false,sr);
+                    Zombie * zombie=new Zombie(false,sr); //Можно сразу lavalol присвпивать новому зомбаку, просто delte this перенести в конец )
                     zombie->setPos(zposx,zposy);
                     game->scene->addItem(zombie);
                     zombie->znapr=false;
                     zombie->fire=sr;
                     zombie->zadnapr=zzadnapr;
-                 }
+                    zombie->lavakol=joke;
+                    nope=true;
+                 } /*else if(fire==true){
+                    int zzadnapr=zadnapr;
+                    delete this;
+                    Zombie * zombie=new Zombie(false,false);
+                    zombie->setPos(zposx,zposy);
+                    game->scene->addItem(zombie);
+                    zombie->znapr=false;
+                    zombie->fire=false;
+                    zombie->zadnapr=zzadnapr;
+                }*/
+                }
             }
         }
+
         else if(zmove==1){
+
+            bool checker=false;
             zposx=x();
             zposy=y()-2;
              setPos(x(),y()-2);
@@ -301,7 +313,7 @@ if (fire==false){
              } else
 
                  if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
-
+                     game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
                     //checker=true;
@@ -319,7 +331,6 @@ if (fire==false){
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
                             int lavx=vzryv[z]->pos().x();
                             int lavy=vzryv[z]->pos().y();
-                            qDebug() << "THIS ISSSSSSSSSSSSSSSSSSSSSSS:   " <<typeid(*(vzryv[z])).name();
                               delete vzryv[z];
                               Lava * lava=new Lava();
                                lava->setPos(lavx,lavy);
@@ -336,9 +347,13 @@ if (fire==false){
 
                     break;
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
-                     if (fire==false){
-                         bool nnapr=znapr;
+                      //if(fire==false){
+                     if (checker==false){
+                     if (lavakol!=(game->boom)){
+                         qDebug() <<"lavakol menshe vzryvov!!!";
+                     bool nnapr=znapr;
                          int zzadnapr=zadnapr;
+                     forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                      delete this;
                      Zombie * zombie=new Zombie(nnapr,true);
                      zombie->setPos(zposx,zposy);
@@ -346,18 +361,37 @@ if (fire==false){
                      zombie->fire=true;
                      zombie->znapr=nnapr;
                      zombie->zadnapr=zzadnapr;
-                     }
-                 }
+                     zombie->lavakol=game->boom;
+                     checker=true;
+                      }
+}
+                 }/*else if(fire==true){
+                     bool nnapr=znapr;
+                         int zzadnapr=zadnapr;
+                     delete this;
+                     Zombie * zombie=new Zombie(nnapr,false);
+                     zombie->setPos(zposx,zposy);
+                     game->scene->addItem(zombie);
+                     zombie->fire=false;
+                     zombie->znapr=nnapr;
+                     zombie->zadnapr=zzadnapr;
+                 }*/
             }
 
         }else if(zmove==2){
+            bool nope=false;
+           // int pogchamp=0;
+            bool checker=false;
             zposx=x()+2;
             zposy=y();
-            bool lol=false;
+            //bool lol=false;
              setPos(x()+2,y());
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
-
+                 //if (pogchamp==1){continue;}
+/*if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
+    continue;
+}else*/
                  if(typeid (*(colliding_items[i]))==typeid(Player)) {
                      scene()->removeItem(colliding_items[i]);
                      delete colliding_items[i];
@@ -365,7 +399,7 @@ if (fire==false){
              } else
 
                  if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
-
+                     game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
                     //checker=true;
@@ -383,7 +417,6 @@ if (fire==false){
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
                             int lavx=vzryv[z]->pos().x();
                             int lavy=vzryv[z]->pos().y();
-                            qDebug() << "THIS ISSSSSSSSSSSSSSSSSSSSSSS:   " <<typeid(*(vzryv[z])).name();
                               delete vzryv[z];
                               Lava * lava=new Lava();
                                lava->setPos(lavx,lavy);
@@ -400,35 +433,69 @@ if (fire==false){
 
                     break;
                 }  else if (typeid(*(colliding_items[i]))==typeid(Lava)){
-                     if (fire==false){
+                     //if(fire==false){
+                     if (checker==false){
+                     if(lavakol!=(game->boom)){
+                         qDebug() <<"lavakol menshe vzryvov!!!";
                          int zzadnapr=zadnapr;
-                                         delete this;
+                         forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
+                         delete this;
                                          Zombie * zombie=new Zombie(true,true);
                                          zombie->setPos(zposx,zposy);
                                          game->scene->addItem(zombie);
-                                         zombie->fire=true;                                        
+                                         zombie->fire=true;
                                          zombie->znapr=true;
                                          zombie->zadnapr=zzadnapr;
+                                         zombie->lavakol=game->boom;
+                                         checker=true;
                      }
-
-                                     } else {
-                     lol=true;                                     
-                                     }
-            }
-             if (lol==true){
+                         else if(znapr==false){
+                         int zzadnapr=zadnapr;
+                         forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
+                         delete this;
+                         Zombie * zombie=new Zombie(true,true);
+                         zombie->setPos(zposx,zposy);
+                         game->scene->addItem(zombie);
+                         zombie->znapr=true;
+                         zombie->fire=true;
+                         zombie->zadnapr=zzadnapr;
+                         zombie->lavakol=game->boom;
+                         checker=true;
+                     }
+                     }
+           } else if(nope==false){
                  if (znapr==false){
+                     //pogchamp++;
+                     qDebug() <<"VYZVANO IZ 2, ZNAPR: "<<znapr<<" ZPOSX: "<<zposx<<" ZPOSY: "<<zposy<<" ZASHEL V ELSE RAZ: ";
+int zzadnapr=zadnapr;
+bool sr=fire;
+int joke=lavakol;
+delete this;
+Zombie * zombie=new Zombie(true,sr);
+zombie->setPos(zposx,zposy);
+game->scene->addItem(zombie);
+zombie->znapr=true;
+zombie->zadnapr=zzadnapr;
+zombie->fire=sr;
+zombie->lavakol=joke;
+nope=true;
+qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
+                 } /*else if (fire==true){
                      int zzadnapr=zadnapr;
-                                                             bool sr=fire;
-                                                             delete this;
-                                                             Zombie * zombie=new Zombie(true,sr);
-                                                             zombie->setPos(zposx,zposy);
-                                                             game->scene->addItem(zombie);
-                                                             zombie->znapr=true;
-                                                             zombie->zadnapr=zzadnapr;
-                                                             zombie->fire=sr;}
+                     delete this;
+                     Zombie * zombie=new Zombie(true,false);
+                     zombie->setPos(zposx,zposy);
+                     game->scene->addItem(zombie);
+                     zombie->znapr=true;
+                     zombie->fire=false;
+                     zombie->zadnapr=zzadnapr;
+                 }*/
              }
+             }
+}
 
-        }else if(zmove==3){
+        else if(zmove==3){
+            bool checker=false;
             zposx=x();
             zposy=y()+2;
              setPos(x(),y()+2);
@@ -442,11 +509,9 @@ if (fire==false){
              } else
 
                  if (typeid(*(colliding_items[i]))==typeid(Dynamit)){
-
+                     game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    //checker=true;                                                                   /////ВЕРТЯТСЯ ОНИ ПОТОМУ ЧТО В МАССИВЕ ПРИ ДВУХ ЗЕМЛЯНЫХ БЛОКАХ БУДЕТ ДВА РАЗА ГЕРОЯ УБИВАТЬ И СОЗДАВАТЬ"!!!!!!!!!! ИЛИ ЖЕ ТРАББЛ В ТОМ, ЧТО МЫ С САМОГО НАЧАЛА ДЕЛАЕМ ИМ ПОЗИЦИЮ!!
-
                     scene()->removeItem(this);
                     delete this;
                     kolvo->decrease();
@@ -460,7 +525,6 @@ if (fire==false){
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
                             int lavx=vzryv[z]->pos().x();
                             int lavy=vzryv[z]->pos().y();
-                            qDebug() << "THIS ISSSSSSSSSSSSSSSSSSSSSSS:   " <<typeid(*(vzryv[z])).name();
                               delete vzryv[z];
                               Lava * lava=new Lava();
                                lava->setPos(lavx,lavy);
@@ -477,21 +541,35 @@ if (fire==false){
 
                     break;
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
-                     if (fire==false){
-                         bool nnapr=znapr;
+                        // if(fire==false){
+                     if (checker==false){
+                     if(lavakol!=(game->boom)){
+                         qDebug() <<"lavakol menshe vzryvov!!!";
+                     bool nnapr=znapr;
                          int zzadnapr=zadnapr;
-                     delete this;
+                         forme++;qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
+                         delete this;
                      Zombie * zombie=new Zombie(nnapr,true);
                      zombie->setPos(zposx,zposy);
                      game->scene->addItem(zombie);
                      zombie->fire=true;
-                    // timer->stop();
-                    // timer->start(15);
                      zombie->znapr=nnapr;
                      zombie->zadnapr=zzadnapr;
-                     }
+                     zombie->lavakol=game->boom;
+                     checker=true;
+                         }
                  }
+                     }/*else if(fire==true){
+                     bool nnapr=znapr;
+                         int zzadnapr=zadnapr;
+                     delete this;
+                     Zombie * zombie=new Zombie(nnapr,false);
+                     zombie->setPos(zposx,zposy);
+                     game->scene->addItem(zombie);
+                     zombie->fire=false;
+                     zombie->znapr=nnapr;
+                     zombie->zadnapr=zzadnapr;
+                 }*/
             }
-
         }
 }

@@ -25,14 +25,11 @@ public:
         {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
     };
     Game(char sl='m',QWidget*parent=nullptr);
-    ~Game();
+    //~Game();
 
     QGraphicsScene*scene;
 int enemies;
 int bomb;
-
+int boom;
 };
-
-
-
 #endif // GAME_H

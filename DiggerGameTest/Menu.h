@@ -10,7 +10,6 @@
 
 
 class Menu:public QGraphicsView{
-//class Menu:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:
     Menu(QWidget*parent=nullptr);    

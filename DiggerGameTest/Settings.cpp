@@ -5,7 +5,7 @@
 #include "Menu.h"
 #include <QGraphicsSceneMouseEvent>
 
-extern Menu * menu;
+//extern Menu * menu;
 
 Settings::Settings(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {

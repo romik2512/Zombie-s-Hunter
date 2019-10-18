@@ -23,5 +23,7 @@
         <file>easyselect.png</file>
         <file>mediumselect.png</file>
         <file>selectsettings.png</file>
+        <file>crash.png</file>
+        <file>bam.png</file>
     </qresource>
 </RCC>

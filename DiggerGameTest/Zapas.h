@@ -10,7 +10,7 @@ class Zapas: public QGraphicsTextItem{
  public:
     Zapas(QGraphicsItem*parent=nullptr);
     void decrease();
-    int bomb;
+    //int bomb;
 
 
 };

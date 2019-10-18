@@ -29,10 +29,7 @@ setScene(scene);
 setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 setFixedSize(900,700);
-
-//for(int v=1;v<100000;v++){
-//    qDebug() <<"LEVEL: "<<sl;
-//}
+boom=0;
 
 if(sl=='e'){
     enemies=6;
@@ -88,7 +85,7 @@ zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
 scene->addItem(zombie);
 zombie->znapr=true;
 zombie->fire=false;
-
+//zombie->lavakol=0;
         if((zrandom_posx*40+50)>89) {
 
             if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+10),zrandom_posy*40+50,QTransform()))))))  {
@@ -121,9 +118,7 @@ zombie->fire=false;
                zombie->path[3]=true;
                zombie->schetchik++;
              }
-            }else zombie->path[3]=false;
-
-        qDebug() <<"SCHETCHIK: "<<zombie->schetchik;
+            }else zombie->path[3]=false;       
 
 int randomys=qrand()%zombie->schetchik;
 int lol=0;
@@ -142,40 +137,23 @@ zombie->zadnapr=zmove+1;
 }
 
 
-qDebug() <<"napravleniye zombie: "<<zmove-1<<"zadneenapravleniye: "<<zombie->zadnapr;
-
-if ((zmove-1)==0) {
-         // zombie->setPos(zrandom_posx*40+48,zrandom_posy*40+50);
+if ((zmove-1)==0) {         
           delete zombie;
           Zombie * zombie=new Zombie(false,false);
           zombie->setPos(zrandom_posx*40+48,zrandom_posy*40+50);
           scene->addItem(zombie);
           zombie->znapr=false;
           zombie->fire=false;
-         // qDebug() << "POSX: "<<zrandom_posx*40+48<<" POSY: "<<zrandom_posy*40+50;
         }
         else if((zmove-1)==1){
              zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+48);
-            // qDebug() << "POSX: "<<zrandom_posx*40+50<<" POSY: "<<zrandom_posy*40+48;
         }else if((zmove-1)==2){
              zombie->setPos(zrandom_posx*40+52,zrandom_posy*40+50);
-            // qDebug() << "POSX: "<<zrandom_posx*40+52<<" POSY: "<<zrandom_posy*40+50;
         }else if((zmove-1)==3){
              zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+52);
-            // qDebug() << "POSX: "<<zrandom_posx*40+50<<" POSY: "<<zrandom_posy*40+52;
         }
-
-       /* for (int i=0;i<=zombie->schetchik;i++){
-
-        }*/
-
 }
 
 show();
 }
 
-Game::~Game(){
-//    delete kolvo;
-//    delete zapas;
-//    delete gametime;
-}

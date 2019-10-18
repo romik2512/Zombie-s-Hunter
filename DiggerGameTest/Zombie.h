@@ -13,7 +13,9 @@ public:
         int zadnapr=5;
         bool znapr;
         bool fire;
-        int zspeed;
+        int forme=0;
+        int lavakol=0;
+        //int zspeed;
  public slots:
         //void move(QTimer *timer);
         void move();
