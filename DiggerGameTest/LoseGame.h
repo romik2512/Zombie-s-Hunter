@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef LOSEGAME_H
+#define LOSEGAME_H
 
 #include <QGraphicsView>
 #include <QWidget>
@@ -9,16 +9,15 @@
 #include <QGraphicsItem>
 
 
-class Menu:public QGraphicsView{
+class LoseGame:public QGraphicsView{
 Q_OBJECT
 public:
-    Menu(QWidget*parent=nullptr);    
-    QGraphicsScene*mscene;
-    char lvl='m';
-    QList<QGraphicsItem*> knopki;
+    LoseGame(QWidget*parent=nullptr);
+    QGraphicsScene*losescene;
+    //char lvl='m';
+    //QList<QGraphicsItem*> knopki;
 public slots:
     void mousePressEvent(QMouseEvent * event);
 };
 
-
-#endif // MENU_H
+#endif // LOSEGAME_H

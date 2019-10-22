@@ -5,12 +5,10 @@
 #include "Menu.h"
 #include <QGraphicsSceneMouseEvent>
 
-//extern Menu * menu;
+extern Menu * menu;
 
 Easy::Easy(QGraphicsItem *parent,bool active):QObject(),QGraphicsPixmapItem(parent)
 {
-
-
     if (active==true){
     setPixmap(QPixmap(":/images/activeeasyselect.png"));
     }else{

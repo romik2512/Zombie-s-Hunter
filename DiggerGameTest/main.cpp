@@ -5,6 +5,7 @@
 #include "Kolvo.h"
 #include "Gametime.h"
 #include "Menu.h"
+#include "WinGame.h"
 
 //Game *game;
 
@@ -15,6 +16,7 @@
 //GTime * gametime;
 
 Menu * menu;
+WinGame *wingame;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -22,6 +24,9 @@ int main(int argc, char *argv[])
 
      menu=new Menu();
      menu->show();
+
+     wingame=new WinGame();
+     wingame->show();
 
     return a.exec();
 }

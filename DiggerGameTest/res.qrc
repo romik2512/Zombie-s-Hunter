@@ -25,5 +25,11 @@
         <file>selectsettings.png</file>
         <file>crash.png</file>
         <file>bam.png</file>
+        <file>wingame.png</file>
+        <file>lostgame.png</file>
+        <file>losetomenu.png</file>
+        <file>wintomenu.png</file>
+        <file>restartlosegame.png</file>
+        <file>restartwingame.png</file>
     </qresource>
 </RCC>

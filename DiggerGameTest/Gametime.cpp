@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Zombie.h"
 #include "Kolvo.h"
+#include "Crash.h"
 
 extern Game *game;
 extern Kolvo * kolvo;
@@ -56,6 +57,7 @@ void GTime::increase()
 }
 
 void GTime::addblocks(){
+    bool checkzombie=false;
     if (kvadr>-1){
     if (gtime>4){
 
@@ -66,6 +68,7 @@ for (int i=0,n=colliding_items.size();i<n;++i){
         // ТУТ КОНЕЦ ИГРЫ ЛУЗ.
 }if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
         kolvo->decrease();
+        checkzombie=true;
 }
     scene()->removeItem(colliding_items[i]);
     delete colliding_items[i];
@@ -75,7 +78,14 @@ for (int i=0,n=colliding_items.size();i<n;++i){
          gblocks->setPos(gbx,gby);
          schet++;
          game->scene->addItem(gblocks);
-        if (blocksnapr==false){
+
+         if(checkzombie==true){
+         Crash* crash=new Crash();
+                 crash->setPos(gbx-10,gby-10);
+                 game->scene->addItem(crash);
+         }
+
+         if (blocksnapr==false){
             if (line==0){
 
 if (ugol==0){

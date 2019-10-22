@@ -3,6 +3,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
+#include <QGraphicsItem>
 class Hard: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:

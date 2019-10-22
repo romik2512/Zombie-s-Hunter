@@ -5,8 +5,6 @@
 #include <QObject>
 #include <QGraphicsItem>
 
-
-
 class Player:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:

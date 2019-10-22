@@ -27,11 +27,14 @@ SOURCES += \
     Hardlvl.cpp \
     Kolvo.cpp \
     LavaBlocks.cpp \
+    LoseGame.cpp \
     Mediumlvl.cpp \
     Menu.cpp \
     NG.cpp \
     Player.cpp \
     Settings.cpp \
+    WPixmapButtons.cpp \
+    WinGame.cpp \
     Zapas.cpp \
     Zombie.cpp \
     main.cpp
@@ -48,11 +51,14 @@ HEADERS += \
     Hardlvl.h \
     Kolvo.h \
     LavaBlocks.h \
+    LoseGame.h \
     Mediumlvl.h \
     Menu.h \
     NG.h \
     Player.h \
     Settings.h \
+    WPixmapButtons.h \
+    WinGame.h \
     Zapas.h \
     Zombie.h
 
