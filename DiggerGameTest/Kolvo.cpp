@@ -3,8 +3,10 @@
 #include <QTimer>
 #include "Game.h"
 #include <QDebug>
+#include "Menu.h"
 
 extern Game *game;
+extern Menu * menu;
 
 Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
@@ -17,5 +19,9 @@ Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 void Kolvo::decrease()
 {
     game->enemies--;
+    if (game->enemies==0){
+        menu=new Menu('w');
+        delete game;
+    }
     setPlainText(QString::number(game->enemies));
 }

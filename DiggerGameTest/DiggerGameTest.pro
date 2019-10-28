@@ -17,48 +17,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Bam.cpp \
+    Buttons.cpp \
     Crash.cpp \
     Dynamit.cpp \
     EarthBlocks.cpp \
-    Easylvl.cpp \
     GBlocks.cpp \
     Game.cpp \
     Gametime.cpp \
-    Hardlvl.cpp \
     Kolvo.cpp \
     LavaBlocks.cpp \
-    LoseGame.cpp \
-    Mediumlvl.cpp \
     Menu.cpp \
-    NG.cpp \
     Player.cpp \
-    Settings.cpp \
-    WPixmapButtons.cpp \
-    WinGame.cpp \
     Zapas.cpp \
     Zombie.cpp \
     main.cpp
 
 HEADERS += \
     Bam.h \
+    Buttons.h \
     Crash.h \
     Dynamit.h \
     EarthBlocks.h \
-    Easylvl.h \
     GBlocks.h \
     Game.h \
     Gametime.h \
-    Hardlvl.h \
     Kolvo.h \
     LavaBlocks.h \
-    LoseGame.h \
-    Mediumlvl.h \
     Menu.h \
-    NG.h \
     Player.h \
-    Settings.h \
-    WPixmapButtons.h \
-    WinGame.h \
     Zapas.h \
     Zombie.h
 

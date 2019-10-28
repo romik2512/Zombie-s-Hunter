@@ -12,12 +12,10 @@
 class Menu:public QGraphicsView{
 Q_OBJECT
 public:
-    Menu(QWidget*parent=nullptr);    
+    Menu(char scenevalue='m',QWidget*parent=nullptr);
     QGraphicsScene*mscene;
     char lvl='m';
     QList<QGraphicsItem*> knopki;
-public slots:
-    void mousePressEvent(QMouseEvent * event);
 };
 
 

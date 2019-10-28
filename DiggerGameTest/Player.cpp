@@ -9,9 +9,16 @@
 #include "Zombie.h"
 #include "LavaBlocks.h"
 #include "Zapas.h"
+#include "Menu.h"
+#include "Kolvo.h"
+#include "Gametime.h"
 
 extern Game * game;
 extern Zapas * zapas;
+extern Menu*menu;
+extern GTime *gametime;
+extern Kolvo *kolvo;
+
 Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     if (napro==true) {
     setPixmap(QPixmap(":/images/player1right.png"));
@@ -22,11 +29,26 @@ Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     }
 }
 
+Player::~Player(){
+    menu=new Menu('l');
+    delete gametime;
+    delete zapas;
+    delete kolvo;
+//    delete game;
+    game->~Game();
+//    for(int i =0,n=game->vse.size();i<n;++i){
+//        qDebug()<<"UDALENIYE: "<<game->vse[i];
+//    //delete game->vse[i];
+//    }
+
+
+    //game->close();
+    //delete game;
+}
+
 void Player::keyPressEvent(QKeyEvent *event)
 {
-/*if (event->key()==Qt::Key_Up+Qt::Key_Right){
-    delete game;
-}*/
+
 if   (event->key() ==Qt::Key_Space){
 if(game->bomb>0) {
 
@@ -76,7 +98,7 @@ if (event->key() ==Qt::Key_Left){
 
              if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                  scene()->removeItem(this);
-                 delete this;
+                 delete this;                 
                  return;
              }
      }
@@ -100,7 +122,7 @@ if (event->key() ==Qt::Key_Left){
 
                if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
                     scene()->removeItem(this);
-                    delete this;
+                    delete this;                  
                     return;
                 }
         }
@@ -141,7 +163,7 @@ if(pos().x()+40<650){
              if (napr==false) {
                     napr=true;
                     scene()->removeItem(this);
-                 //delete this;
+                // delete this;
                  Player * player=new Player(napr);
                  player->setPos(posx+8,posy-osty);
                  player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -245,6 +267,8 @@ if(pos().x()+40<650){
 }
  }
 }
+
+
 
 
 

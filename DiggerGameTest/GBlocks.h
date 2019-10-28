@@ -7,7 +7,7 @@ class GBlocks: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         GBlocks(QGraphicsItem*parent=nullptr);
-        void create();
+        int nomergblocka;
 };
 
 #endif // GBLOCKS_H

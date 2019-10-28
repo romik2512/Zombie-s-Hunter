@@ -6,15 +6,9 @@
 #include <stdlib.h>
 #include "Game.h"
 
-
 extern Game * game;
 
 GBlocks::GBlocks(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
-setPixmap(QPixmap(":/images/black""block.png"));
-}
-
-void GBlocks::create()
-{
-
+setPixmap(QPixmap(":/images/blackblock.png"));
 }

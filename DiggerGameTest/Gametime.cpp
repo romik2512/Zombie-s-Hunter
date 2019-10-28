@@ -8,9 +8,11 @@
 #include "Zombie.h"
 #include "Kolvo.h"
 #include "Crash.h"
+#include "Menu.h"
 
 extern Game *game;
 extern Kolvo * kolvo;
+extern Menu*menu;
 
 GTime::GTime(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
@@ -64,20 +66,26 @@ void GTime::addblocks(){
 QList<QGraphicsItem*> colliding_items=game->scene->items(gbx,gby,35,35,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
 for (int i=0,n=colliding_items.size();i<n;++i){
     if(typeid (*(colliding_items[i]))==typeid(Player)) {
-
-        // ТУТ КОНЕЦ ИГРЫ ЛУЗ.
+        delete colliding_items[i];
+       // menu=new Menu('l');
+       // game->~Game();
+        return;
 }if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
-        kolvo->decrease();
+        //game->scene->removeItem(colliding_items[i]);
+       // delete colliding_items[i];
+        kolvo->decrease();       
         checkzombie=true;
 }
-    scene()->removeItem(colliding_items[i]);
+    game->scene->removeItem(colliding_items[i]);
     delete colliding_items[i];
+   // colliding_items[i]=nullptr;
 }
 
          GBlocks* gblocks=new GBlocks();
          gblocks->setPos(gbx,gby);
          schet++;
          game->scene->addItem(gblocks);
+         game->gblist<<gblocks;
 
          if(checkzombie==true){
          Crash* crash=new Crash();

@@ -4,6 +4,9 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QGraphicsScene>
+#include "Zombie.h"
+#include "GBlocks.h"
+#include "EarthBlocks.h"
 
 class Game: public QGraphicsView{
 public:
@@ -25,9 +28,17 @@ public:
         {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
     };
     Game(char sl='m',QWidget*parent=nullptr);
-    //~Game();
+    ~Game();
 
     QGraphicsScene*scene;
+//    QList<QGraphicsPixmapItem*> eblist;
+//    QList<QGraphicsPixmapItem*> gblist;
+//    QList<QGraphicsPixmapItem*> zombielist;
+
+    QList<Zombie*>zombielist;
+    QList<GBlocks*>gblist;
+    QList<EBlocks*>eblist;
+
 int enemies;
 int bomb;
 int boom;

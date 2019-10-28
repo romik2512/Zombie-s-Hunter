@@ -7,7 +7,7 @@ class EBlocks: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         EBlocks(QGraphicsItem*parent=nullptr);
-        void create();
+        int nomereblocka;
 };
 
 #endif // EARTHBLOCKS_H

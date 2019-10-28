@@ -15,7 +15,7 @@ public:
         bool fire;
         int forme=0;
         int lavakol=0;
-        //int zspeed;
+        int nomerzombie;
  public slots:
         //void move(QTimer *timer);
         void move();

@@ -4,9 +4,6 @@
 #include <QDebug>
 #include <QList>
 #include <stdlib.h>
-#include "Game.h"
-
-//extern Game * game;
 
 EBlocks::EBlocks(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
@@ -24,7 +21,3 @@ setPixmap(QPixmap(":/images/earth3.png"));
     }
 }
 
-void EBlocks::create()
-{
-
-}
