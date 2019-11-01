@@ -26,6 +26,7 @@ SOURCES += \
     Gametime.cpp \
     Kolvo.cpp \
     LavaBlocks.cpp \
+    LoadGame.cpp \
     Menu.cpp \
     Player.cpp \
     Zapas.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     Gametime.h \
     Kolvo.h \
     LavaBlocks.h \
+    LoadGame.h \
     Menu.h \
     Player.h \
     Zapas.h \

@@ -12,6 +12,7 @@
 #include "Zapas.h"
 #include "Kolvo.h"
 
+extern Menu* menu;
 extern Zapas * zapas;
 extern GTime *gametime;
 extern Kolvo *kolvo;
@@ -91,7 +92,6 @@ zrandom_posx=qrand() % 15;
 zrandom_posy=qrand() % 15;
 }while ((blocksarray[zrandom_posx][zrandom_posy] ==true)||((!((zrandom_posy < random_posy-3)||(zrandom_posy>random_posy+3)))&&(!((zrandom_posx < random_posx-3)||(zrandom_posx>random_posx+3)))));
 qDebug() << "SDES UNOZTHOZHAYETSA KARTINKA I IGRA PRORISOVIVAETSYA!!";
-
 
 Zombie * zombie=new Zombie(true,false);
 zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
@@ -187,7 +187,6 @@ if ((zmove-1)==0) {
              zombie->fire=false;
         }
 }
-
 //show();
 }
 

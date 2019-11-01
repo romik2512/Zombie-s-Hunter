@@ -6,6 +6,7 @@
 #include "Gametime.h"
 #include "Game.h"
 #include "Zapas.h"
+#include "LoadGame.h"
 
 extern Menu* menu;
 Game *game;
@@ -90,8 +91,8 @@ void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer){
         menu=new Menu('m');
         menu->show();
     }
-    else if(buttontype=='n'){
-        game=new Game(menu->lvl);
+    else if(buttontype=='n'){        
+        game=new Game(menu->lvl);      
         gametime=new GTime();
         gametime->setPos(770,85);
         game->scene->addItem(gametime);
