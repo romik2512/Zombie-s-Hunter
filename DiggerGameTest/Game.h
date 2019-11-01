@@ -31,14 +31,7 @@ public:
     ~Game();
 
     QGraphicsScene*scene;
-//    QList<QGraphicsPixmapItem*> eblist;
-//    QList<QGraphicsPixmapItem*> gblist;
-//    QList<QGraphicsPixmapItem*> zombielist;
-
-    QList<Zombie*>zombielist;
-    QList<GBlocks*>gblist;
-    QList<EBlocks*>eblist;
-
+char gamelevel;
 int enemies;
 int bomb;
 int boom;

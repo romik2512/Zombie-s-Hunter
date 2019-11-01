@@ -37,5 +37,6 @@
         <file>images/Zombie2fire.png</file>
         <file>images/Zombie2fire2.png</file>
         <file>images/Zombie22.png</file>
+        <file>images/loadgame.png</file>
     </qresource>
 </RCC>

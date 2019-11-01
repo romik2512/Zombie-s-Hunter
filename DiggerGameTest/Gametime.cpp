@@ -66,18 +66,19 @@ void GTime::addblocks(){
 QList<QGraphicsItem*> colliding_items=game->scene->items(gbx,gby,35,35,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
 for (int i=0,n=colliding_items.size();i<n;++i){
     if(typeid (*(colliding_items[i]))==typeid(Player)) {
+        game->scene->removeItem(colliding_items[i]);
         delete colliding_items[i];
-       // menu=new Menu('l');
-       // game->~Game();
         return;
-}if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
-        //game->scene->removeItem(colliding_items[i]);
-       // delete colliding_items[i];
-        kolvo->decrease();       
+}else if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
+        game->scene->removeItem(colliding_items[i]);
+       // scene()->removeItem(colliding_items[i]);
+        delete colliding_items[i];
+       // kolvo->decrease();
         checkzombie=true;
-}
+}else{
     game->scene->removeItem(colliding_items[i]);
     delete colliding_items[i];
+    }
    // colliding_items[i]=nullptr;
 }
 
@@ -85,9 +86,9 @@ for (int i=0,n=colliding_items.size();i<n;++i){
          gblocks->setPos(gbx,gby);
          schet++;
          game->scene->addItem(gblocks);
-         game->gblist<<gblocks;
 
          if(checkzombie==true){
+             kolvo->decrease();
          Crash* crash=new Crash();
                  crash->setPos(gbx-10,gby-10);
                  game->scene->addItem(crash);

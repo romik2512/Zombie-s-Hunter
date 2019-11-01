@@ -197,12 +197,12 @@ if(pos().y()<571){
             QList<QGraphicsItem*> colliding_items=collidingItems();
             for(int i =0,n=colliding_items.size();i<n;++i){
                 qDebug() <<"VIZVANO IZ 0, PROVERYAETSYA OBJECT: "<<typeid(*(colliding_items[i])).name()<<" EGO NOMER V SPISKE: "<<i;
-                if(typeid (*(colliding_items[i]))==typeid(Zombie)){
+                if((typeid (*(colliding_items[i]))==typeid(Zombie))||(typeid (*(colliding_items[i]))==typeid(Bam))){
                     continue;
                 }
 
                 else if(typeid (*(colliding_items[i]))==typeid(Player)) {
-                    scene()->removeItem(colliding_items[i]);
+                    game->scene->removeItem(colliding_items[i]);
                     delete colliding_items[i];
                     return;
             } else
@@ -212,27 +212,14 @@ if(pos().y()<571){
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
 
-                    scene()->removeItem(this);
-                    //game->zombielist[this->nomerzombie]=nullptr;
+                    game->scene->removeItem(this);
+                   delete this;
+                    //kolvo->decrease();
 
-//                    for(int qq =0,nn=game->enemies;qq<nn;++qq){
-//                    if (colliding_items[i]==game->zombielist[qq]){
-//                        for(int ll=qq;ll<nn-1;ll++){
-//                            game->zombielist[ll]=game->zombielist[ll+1];
-//                            game->zombielist[ll]->nomerzombie--;
-//                        }
-//                        game->zombielist[nn-1]=nullptr;
-//                        delete game->zombielist[nn-1];
-//                        break;
-//                    }
-//                    }
-                    delete this;
-                    kolvo->decrease();
-
-                   //QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::DescendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size();z<v;++z){
+qDebug()<<"VZRYVAETSA: "<<typeid(*(vzryv[z])).name()<<"  EGO NOMER: #"<<z;
 
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
@@ -246,22 +233,8 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                     }
                                 } else {
-//                                    for(int iii =0,nnn=game->zombielist.size();iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        if (vzryv[z]==this){
-//                                            qDebug() <<"PROISOSHEL TROLLING ROMANA!";
-//                                        }
-//                                       // scene()->removeItem(vzryv[z]);
-//                                        game->zombielist[iii]=nullptr;
-//                                        delete vzryv[z];
-//                                        //game->zombielist[iii];
-//                                        break;
-//                                        }
-//                                    }
-                                    //delete game->zombielist[n-1];
-                                    game->scene->removeItem(this);
-                              //delete vzryv[z];
-                                    //vzryv[z]=nullptr;
+                                    game->scene->removeItem(vzryv[z]);
+                                    delete vzryv[z];
                                     kolvo->decrease();
                                 }
                             }else {
@@ -274,6 +247,7 @@ if(pos().y()<571){
                     Bam*bam=new Bam();
                     bam->setPos(lposx-5,lposy-20);
                     game->scene->addItem(bam);
+                    kolvo->decrease();
                     break;
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
                     //if (fire==false){
@@ -285,14 +259,10 @@ if(pos().y()<571){
                     forme++;
                     qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                     game->scene->removeItem(this);
-                    int index=nomerzombie;
-                    //delete this;
-                    delete game->zombielist[index];
+                    delete this;
                     Zombie * zombie=new Zombie(false,true);
                     zombie->setPos(zposx,zposy);
                     game->scene->addItem(zombie);
-                    game->zombielist[index]=zombie;
-                    zombie->nomerzombie=index;
                     zombie->fire=true;
                     zombie->znapr=false;
                     zombie->zadnapr=zzadnapr;
@@ -305,14 +275,10 @@ if(pos().y()<571){
                         forme++;
                         qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                         game->scene->removeItem(this);
-                        int index=nomerzombie;
-                        //delete this;
-                        delete game->zombielist[index];
+                        delete this;
                         Zombie * zombie=new Zombie(false,true);
                         zombie->setPos(zposx,zposy);
                         game->scene->addItem(zombie);
-                        game->zombielist[index]=zombie;
-                        zombie->nomerzombie=index;
                         zombie->znapr=false;
                         zombie->fire=true;
                         zombie->zadnapr=zzadnapr;
@@ -321,36 +287,24 @@ if(pos().y()<571){
                     }
                     }
 }
-                else if(nope==false){
+                else if((nope==false)&&(checker==false)){
                 if (znapr==true){
                     qDebug() <<"VYZVANO IZ 0, ZNAPR: "<<znapr<<" ZPOSX: "<<zposx<<" ZPOSY: "<<zposy;
                     bool sr=fire;
                     int joke=lavakol;
                     int zzadnapr=zadnapr;
                     game->scene->removeItem(this);
-                    int index=nomerzombie;
-                    //delete this;
-                    delete game->zombielist[index];
+                    delete this;
                     Zombie * zombie=new Zombie(false,sr); //Можно сразу lavalol присвпивать новому зомбаку, просто delte this перенести в конец )
                     zombie->setPos(zposx,zposy);
                     game->scene->addItem(zombie);
-                    game->zombielist[index]=zombie;
-                    zombie->nomerzombie=index;
                     zombie->znapr=false;
                     zombie->fire=sr;
                     zombie->zadnapr=zzadnapr;
                     zombie->lavakol=joke;
                     nope=true;
-                 } /*else if(fire==true){
-                    int zzadnapr=zadnapr;
-                    delete this;
-                    Zombie * zombie=new Zombie(false,false);
-                    zombie->setPos(zposx,zposy);
-                    game->scene->addItem(zombie);
-                    zombie->znapr=false;
-                    zombie->fire=false;
-                    zombie->zadnapr=zzadnapr;
-                }*/
+                    checker=true;
+                 }
                 }
             }
         }
@@ -363,9 +317,12 @@ if(pos().y()<571){
              setPos(x(),y()-2);
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
+                 if((typeid (*(colliding_items[i]))==typeid(Zombie))||(typeid (*(colliding_items[i]))==typeid(Bam))){
+                     continue;
+                 }else
 
                  if(typeid (*(colliding_items[i]))==typeid(Player)) {
-                     scene()->removeItem(colliding_items[i]);
+                     game->scene->removeItem(colliding_items[i]);
                      delete colliding_items[i];
                      return;
              } else
@@ -374,29 +331,14 @@ if(pos().y()<571){
                      game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    //checker=true;
 
-                    scene()->removeItem(this);
-
-//                    for(int qq =0,nn=game->enemies;qq<nn;++qq){
-//                    if (colliding_items[i]==game->zombielist[qq]){
-//                        for(int ll=qq;ll<nn-1;ll++){
-//                            game->zombielist[ll]=game->zombielist[ll+1];
-//                            game->zombielist[ll]->nomerzombie--;
-//                        }
-//                        game->zombielist[nn-1]=nullptr;
-//                        delete game->zombielist[nn-1];
-//                        break;
-//                    }
-//                    }
-                    //game->zombielist[this->nomerzombie]=nullptr;
+                    game->scene->removeItem(this);
                     delete this;
-                    kolvo->decrease();
-
-                   // QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
+                   // kolvo->decrease();
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::DescendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size();z<v;++z){
+                        qDebug()<<"VZRYVAETSA: "<<typeid(*(vzryv[z])).name()<<"  EGO NOMER: #"<<z;
 
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
@@ -410,32 +352,8 @@ if(pos().y()<571){
                                game->scene->addItem(lava);
                                     }
                                 } else {
-//                                    for(int iii =0,nnn=game->enemies;iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        for(int lll=iii;lll<nnn-1;lll++){
-//                                            game->zombielist[lll]=game->zombielist[lll+1];
-//                                            game->zombielist[lll]->nomerzombie--;
-//                                        }
-//                                        game->zombielist[nnn-1]=nullptr;
-//                                        delete game->zombielist[nnn-1];
-//                                        break;
-//                                    }
-//                                    //delete game->zombielist[n-1];
-//                                    }
-                                    game->scene->removeItem(this);
-                                   // delete vzryv[z];
-//                                    for(int iii =0,nnn=game->zombielist.size();iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        if (vzryv[z]==this){
-//                                            qDebug() <<"PROISOSHEL TROLLING ROMANA!";
-//                                        }
-//                                        //scene()->removeItem(vzryv[z]);
-//                                        game->zombielist[iii]=nullptr;
-//                                        delete vzryv[z];
-//                                        break;
-//                                        }
-//                                    }
-
+                                    game->scene->removeItem(vzryv[z]);
+                                    delete vzryv[z];
                                     kolvo->decrease();
                                 }
                             }else {
@@ -448,7 +366,8 @@ if(pos().y()<571){
                     Bam*bam=new Bam();
                     bam->setPos(lposx-5,lposy-20);
                     game->scene->addItem(bam);
-                    break;
+                    kolvo->decrease();
+                    break;                    
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
                       //if(fire==false){
                      if (checker==false){
@@ -459,14 +378,10 @@ if(pos().y()<571){
                      forme++;
                      qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                      game->scene->removeItem(this);
-                     int index=nomerzombie;
-                     //delete this;
-                     delete game->zombielist[index];
+                     delete this;
                      Zombie * zombie=new Zombie(nnapr,true);
                      zombie->setPos(zposx,zposy);
                      game->scene->addItem(zombie);
-                     game->zombielist[index]=zombie;
-                     zombie->nomerzombie=index;
                      zombie->fire=true;
                      zombie->znapr=nnapr;
                      zombie->zadnapr=zzadnapr;
@@ -474,17 +389,7 @@ if(pos().y()<571){
                      checker=true;
                       }
 }
-                 }/*else if(fire==true){
-                     bool nnapr=znapr;
-                         int zzadnapr=zadnapr;
-                     delete this;
-                     Zombie * zombie=new Zombie(nnapr,false);
-                     zombie->setPos(zposx,zposy);
-                     game->scene->addItem(zombie);
-                     zombie->fire=false;
-                     zombie->znapr=nnapr;
-                     zombie->zadnapr=zzadnapr;
-                 }*/
+                 }
             }
 
         }else if(zmove==2){
@@ -498,11 +403,11 @@ if(pos().y()<571){
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
                  qDebug() <<"VIZVANO IZ 2, PROVERYAETSYA OBJECT: "<<typeid(*(colliding_items[i])).name()<<" EGO NOMER V SPISKE: "<<i;
-if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
+if((typeid (*(colliding_items[i]))==typeid(Zombie))||(typeid (*(colliding_items[i]))==typeid(Bam))){
     continue;
 }else
                  if(typeid (*(colliding_items[i]))==typeid(Player)) {
-                     scene()->removeItem(colliding_items[i]);
+                     game->scene->removeItem(colliding_items[i]);
                      delete colliding_items[i];
                      return;
              } else
@@ -511,28 +416,14 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                      game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    //checker=true;
 
-                    scene()->removeItem(this);
-//                    for(int qq =0,nn=game->enemies;qq<nn;++qq){
-//                    if (colliding_items[i]==game->zombielist[qq]){
-//                        for(int ll=qq;ll<nn-1;ll++){
-//                            game->zombielist[ll]=game->zombielist[ll+1];
-//                            game->zombielist[ll]->nomerzombie--;
-//                        }
-//                        game->zombielist[nn-1]=nullptr;
-//                        delete game->zombielist[nn-1];
-//                        break;
-//                    }
-//                    }
-                    //game->zombielist[this->nomerzombie]=nullptr;
+                    game->scene->removeItem(this);
                     delete this;
-                    kolvo->decrease();
-
-                   // QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
+                    //kolvo->decrease();
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::DescendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size();z<v;++z){
+                        qDebug()<<"VZRYVAETSA: "<<typeid(*(vzryv[z])).name()<<"  EGO NOMER: #"<<z;
 
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
@@ -546,31 +437,8 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                                game->scene->addItem(lava);
                                     }
                                 } else {
-//                                    for(int iii =0,nnn=game->enemies;iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        for(int lll=iii;lll<nnn-1;lll++){
-//                                            game->zombielist[lll]=game->zombielist[lll+1];
-//                                            game->zombielist[lll]->nomerzombie--;
-//                                        }
-//                                        game->zombielist[nnn-1]=nullptr;
-//                                        delete game->zombielist[nnn-1];
-//                                        break;
-//                                    }
-//                                    //delete game->zombielist[n-1];
-//                                    }
-//                                    for(int iii =0,nnn=game->zombielist.size();iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        if (vzryv[z]==this){
-//                                            qDebug() <<"PROISOSHEL TROLLING ROMANA!";
-//                                        }
-//                                       // scene()->removeItem(vzryv[z]);
-//                                        game->zombielist[iii]=nullptr;
-//                                        delete vzryv[z];
-//                                        break;
-//                                        }
-//                                    }
-                                    game->scene->removeItem(this);
-                                    //delete vzryv[z];
+                                    game->scene->removeItem(vzryv[z]);
+                                    delete vzryv[z];
                                     kolvo->decrease();
 
                                 }
@@ -584,9 +452,9 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                     Bam*bam=new Bam();
                     bam->setPos(lposx-5,lposy-20);
                     game->scene->addItem(bam);
+                    kolvo->decrease();
                     break;
                 }  else if (typeid(*(colliding_items[i]))==typeid(Lava)){
-                     //if(fire==false){
                      if (checker==false){
                      if(lavakol!=(game->boom)){
                          qDebug() <<"lavakol menshe vzryvov!!! VIZVANO IS ZMOVE 2!!!";
@@ -595,14 +463,10 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                          qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!! vizvano iz zmove 2!!! POSX: "<<zposx<<" ZPOSY: "<<zposy;
                          qDebug() << "IMYA OBJECTA S KOTORYM VSTUPAET V KONTANKT: "<<(typeid(*(colliding_items[i])).name());
                          game->scene->removeItem(this);
-                         int index=nomerzombie;
-                         //delete this;
-                         delete game->zombielist[index];
+                         delete this;
                                          Zombie * zombie=new Zombie(true,true);
                                          zombie->setPos(zposx,zposy);
                                          game->scene->addItem(zombie);
-                                         game->zombielist[index]=zombie;
-                                         zombie->nomerzombie=index;
                                          zombie->fire=true;
                                          zombie->znapr=true;
                                          zombie->zadnapr=zzadnapr;
@@ -615,14 +479,10 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                          qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!vizvano iz zmove 2!!! POSX: "<<zposx<<" ZPOSY: "<<zposy<<" PRICHEM POPALO V ZNAPRS==FALSE!!";
                          qDebug() << "IMYA OBJECTA S KOTORYM VSTUPAET V KONTANKT: "<<(typeid(*(colliding_items[i])).name());
                          game->scene->removeItem(this);
-                         int index=nomerzombie;
-                         //delete this;
-                         delete game->zombielist[index];
+                         delete this;
                          Zombie * zombie=new Zombie(true,true);
                          zombie->setPos(zposx,zposy);
                          game->scene->addItem(zombie);
-                         game->zombielist[index]=zombie;
-                         zombie->nomerzombie=index;
                          zombie->znapr=true;
                          zombie->fire=true;
                          zombie->zadnapr=zzadnapr;
@@ -630,7 +490,7 @@ if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                          checker=true;
                      }
                      }
-           } else if(nope==false){
+           } else if((nope==false)&&(checker==false)){
                  if (znapr==false){
                      //pogchamp++;
                      qDebug() <<"VYZVANO IZ 2, ZNAPR: "<<znapr<<" ZPOSX: "<<zposx<<" ZPOSY: "<<zposy<<" ZASHEL V ELSE RAZ: ";
@@ -642,32 +502,20 @@ qDebug() <<"PRODOLZHENIYE 2 VHODA PERED DELETE";
 qDebug() << "IMYA OBJECTA S KOTORYM VSTUPAET V KONTANKT: "<<(typeid(*(colliding_items[i])).name());
 qDebug() << "IMYA OBJECTA S KOTORYM VSTUPAET V KONTANKT: "<<(typeid(*(colliding_items[i])).name())<<"  UKAZATEL THIS: "<<chekogo;
 game->scene->removeItem(this);
-int index=nomerzombie;
-//delete this;
-delete game->zombielist[index];
+delete this;
 qDebug() <<"ZOMBIE UDALILSYA!!!";
 Zombie * zombie=new Zombie(true,sr);
 zombie->setPos(zposx,zposy);
 game->scene->addItem(zombie);
-game->zombielist[index]=zombie;
-zombie->nomerzombie=index;
 qDebug() <<"ZOMBIE SOZDALSYA USPESHNO!!!";
 zombie->znapr=true;
 zombie->zadnapr=zzadnapr;
 zombie->fire=sr;
 zombie->lavakol=joke;
 nope=true;
+checker=true;
 qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
-                 } /*else if (fire==true){
-                     int zzadnapr=zadnapr;
-                     delete this;
-                     Zombie * zombie=new Zombie(true,false);
-                     zombie->setPos(zposx,zposy);
-                     game->scene->addItem(zombie);
-                     zombie->znapr=true;
-                     zombie->fire=false;
-                     zombie->zadnapr=zzadnapr;
-                 }*/
+                 }
              }
              }
 }
@@ -679,9 +527,12 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
              setPos(x(),y()+2);
              QList<QGraphicsItem*> colliding_items=collidingItems();
              for(int i =0,n=colliding_items.size();i<n;++i){
+                 if((typeid (*(colliding_items[i]))==typeid(Zombie))||(typeid (*(colliding_items[i]))==typeid(Bam))){
+                     continue;
+                 }else
 
                  if(typeid (*(colliding_items[i]))==typeid(Player)) {
-                     scene()->removeItem(colliding_items[i]);
+                     game->scene->removeItem(colliding_items[i]);
                      delete colliding_items[i];
                      return;
              } else
@@ -690,26 +541,14 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
                      game->boom++;
                      int lposx=colliding_items[i]->pos().x();
                      int lposy=colliding_items[i]->pos().y();
-                    scene()->removeItem(this);
-//                    for(int qq =0,nn=game->enemies;qq<nn;++qq){
-//                    if (colliding_items[i]==game->zombielist[qq]){
-//                        for(int ll=qq;ll<nn-1;ll++){
-//                            game->zombielist[ll]=game->zombielist[ll+1];
-//                            game->zombielist[ll]->nomerzombie--;
-//                        }
-//                        game->zombielist[nn-1]=nullptr;
-//                        delete game->zombielist[nn-1];
-//                        break;
-//                    }
-//                    }
-                    //game->zombielist[this->nomerzombie]=nullptr;
+                    game->scene->removeItem(this);
                     delete this;
-                    kolvo->decrease();
+                    //kolvo->decrease();
 
-                   // QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::DescendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size();z<v;++z){
+                        qDebug()<<"VZRYVAETSA: "<<typeid(*(vzryv[z])).name()<<"  EGO NOMER: #"<<z;
 
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
@@ -723,31 +562,8 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
                                game->scene->addItem(lava);
                                     }
                                 } else {
-//                                    for(int iii =0,nnn=game->enemies;iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        for(int lll=iii;lll<nnn-1;lll++){
-//                                            game->zombielist[lll]=game->zombielist[lll+1];
-//                                            game->zombielist[lll]->nomerzombie--;
-//                                        }
-//                                        game->zombielist[nnn-1]=nullptr;
-//                                        delete game->zombielist[nnn-1];
-//                                        break;
-//                                    }
-//                                    //delete game->zombielist[n-1];
-//                                    }
-//                                    for(int iii =0,nnn=game->zombielist.size();iii<nnn;++iii){
-//                                    if (vzryv[z]==game->zombielist[iii]){
-//                                        if (vzryv[z]==this){
-//                                            qDebug() <<"PROISOSHEL TROLLING ROMANA!";
-//                                        }
-//                                       // scene()->removeItem(vzryv[z]);
-//                                        game->zombielist[iii]=nullptr;
-//                                        delete vzryv[z];
-//                                        break;
-//                                        }
-//                                    }
-                                    game->scene->removeItem(this);
-                                    //delete vzryv[z];
+                                    game->scene->removeItem(vzryv[z]);
+                                    delete vzryv[z];
                                     kolvo->decrease();
                                 }
                             }else {                                
@@ -760,6 +576,7 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
                     Bam*bam=new Bam();
                     bam->setPos(lposx-5,lposy-20);
                     game->scene->addItem(bam);
+                    kolvo->decrease();
                     break;
                 } else if (typeid(*(colliding_items[i]))==typeid(Lava)){
                         // if(fire==false){
@@ -771,14 +588,10 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
                          forme++;
                          qDebug()<<"Zombie sodalos na Lave: "<<forme<<" RAZ!!" ;
                          game->scene->removeItem(this);
-                         int index=nomerzombie;
-                         //delete this;
-                         delete game->zombielist[index];
+                         delete this;
                      Zombie * zombie=new Zombie(nnapr,true);
                      zombie->setPos(zposx,zposy);
                      game->scene->addItem(zombie);
-                     game->zombielist[index]=zombie;
-                     zombie->nomerzombie=index;
                      zombie->fire=true;
                      zombie->znapr=nnapr;
                      zombie->zadnapr=zzadnapr;
@@ -786,17 +599,7 @@ qDebug() << "NOVOGO ZOMBIE SODAL POSLE ZAHODA V ELSE!!!";
                      checker=true;
                          }
                  }
-                     }/*else if(fire==true){
-                     bool nnapr=znapr;
-                         int zzadnapr=zadnapr;
-                     delete this;
-                     Zombie * zombie=new Zombie(nnapr,false);
-                     zombie->setPos(zposx,zposy);
-                     game->scene->addItem(zombie);
-                     zombie->fire=false;
-                     zombie->znapr=nnapr;
-                     zombie->zadnapr=zzadnapr;
-                 }*/
+                     }
             }
         }
 }

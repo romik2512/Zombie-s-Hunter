@@ -67,7 +67,7 @@ buttontype='3';
 
 void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer){
     if(buttontype=='r'){
-       game=new Game();
+       game=new Game(menu->lvl);
        gametime=new GTime();
        gametime->setPos(770,85);
        game->scene->addItem(gametime);

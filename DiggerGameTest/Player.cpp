@@ -16,8 +16,9 @@
 extern Game * game;
 extern Zapas * zapas;
 extern Menu*menu;
-extern GTime *gametime;
-extern Kolvo *kolvo;
+extern Player *player;
+//extern GTime *gametime;
+//extern Kolvo *kolvo;
 
 Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     if (napro==true) {
@@ -30,20 +31,10 @@ Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
 }
 
 Player::~Player(){
-    menu=new Menu('l');
-    delete gametime;
-    delete zapas;
-    delete kolvo;
-//    delete game;
+    if (game->enemies>0){
+    menu=new Menu('l',game->gamelevel);
     game->~Game();
-//    for(int i =0,n=game->vse.size();i<n;++i){
-//        qDebug()<<"UDALENIYE: "<<game->vse[i];
-//    //delete game->vse[i];
-//    }
-
-
-    //game->close();
-    //delete game;
+    }
 }
 
 void Player::keyPressEvent(QKeyEvent *event)
@@ -75,7 +66,8 @@ dynamit->setPos(pos().x()-ostx,pos().y()-osty);
 game->scene->addItem(dynamit);
 zapas->decrease();
 
-Player* player=new Player(napr);
+//Player* player=new Player(napr);
+player=new Player(napr);
 player->setPos(pos().x(),pos().y());
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
@@ -106,7 +98,8 @@ if (event->key() ==Qt::Key_Left){
                 napr=false;                
                 scene()->removeItem(this);
 
-             Player * player=new Player(napr);
+             //Player * player=new Player(napr);
+             player=new Player(napr);
              player->setPos(posx-8,posy-osty);
              player->setFlag(QGraphicsItem::ItemIsFocusable);
              player->setFocus();
@@ -131,7 +124,8 @@ if (event->key() ==Qt::Key_Left){
                    //delete this;
                    scene()->removeItem(this);
 
-                Player * player=new Player(napr);
+                //Player * player=new Player(napr);
+                player=new Player(napr);
                 player->setPos(posx-8,posy+40-osty);
                 player->setFlag(QGraphicsItem::ItemIsFocusable);
                 player->setFocus();
@@ -164,7 +158,8 @@ if(pos().x()+40<650){
                     napr=true;
                     scene()->removeItem(this);
                 // delete this;
-                 Player * player=new Player(napr);
+                // Player * player=new Player(napr);
+                 player=new Player(napr);
                  player->setPos(posx+8,posy-osty);
                  player->setFlag(QGraphicsItem::ItemIsFocusable);
                  player->setFocus();
@@ -186,7 +181,8 @@ if(pos().x()+40<650){
                 if (napr==false) {
                        napr=true;
                        scene()->removeItem(this);
-                    Player * player=new Player(napr);
+                    //Player * player=new Player(napr);
+                    player=new Player(napr);
                     player->setPos(posx+8,posy+40-osty);
                     player->setFlag(QGraphicsItem::ItemIsFocusable);
                     player->setFocus();

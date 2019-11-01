@@ -4,9 +4,11 @@
 #include "Game.h"
 #include <QDebug>
 #include "Menu.h"
+#include "Player.h" //??
 
 extern Game *game;
 extern Menu * menu;
+extern Player *player;
 
 Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
@@ -19,9 +21,12 @@ Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
 void Kolvo::decrease()
 {
     game->enemies--;
-    if (game->enemies==0){
-        menu=new Menu('w');
-        delete game;
-    }
     setPlainText(QString::number(game->enemies));
+    if (game->enemies==0){
+        scene()->removeItem(player);
+        delete player;
+        menu=new Menu('w',game->gamelevel);
+        game->~Game();
+    }
+    //setPlainText(QString::number(game->enemies));
 }

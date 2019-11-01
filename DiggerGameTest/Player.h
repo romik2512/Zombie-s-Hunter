@@ -10,7 +10,7 @@ class Player:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:
     Player(bool napro,QGraphicsItem* parent=nullptr);
-    ~Player();
+    ~Player();   
 void keyPressEvent(QKeyEvent * event);
 bool napr;
 };

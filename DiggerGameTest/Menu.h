@@ -12,9 +12,9 @@
 class Menu:public QGraphicsView{
 Q_OBJECT
 public:
-    Menu(char scenevalue='m',QWidget*parent=nullptr);
+    Menu(char scenevalue='m',char scenelevel='m',QWidget*parent=nullptr);
     QGraphicsScene*mscene;
-    char lvl='m';
+    char lvl;
     QList<QGraphicsItem*> knopki;
 };
 

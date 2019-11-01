@@ -3,7 +3,7 @@
 #include <QBrush>
 #include "Buttons.h"
 
-Menu::Menu(char scenevalue,QWidget*parent){
+Menu::Menu(char scenevalue,char sceneglevel,QWidget*parent){
     if (scenevalue=='m'){
 mscene=new QGraphicsScene();
 mscene->setSceneRect(0,0,900,700);
@@ -44,7 +44,7 @@ knopki<<hard;
     else if(scenevalue=='w'){
         mscene=new QGraphicsScene();
         mscene->setSceneRect(0,0,900,700);
-
+        lvl=sceneglevel;
         setBackgroundBrush(QBrush(QImage(":/images/wingame.png")));
         setScene(mscene);
 
@@ -64,7 +64,7 @@ knopki<<hard;
     else if(scenevalue=='l'){
         mscene=new QGraphicsScene();
         mscene->setSceneRect(0,0,900,700);
-
+        lvl=sceneglevel;
         setBackgroundBrush(QBrush(QImage(":/images/lostgame.png")));
         setScene(mscene);
 
