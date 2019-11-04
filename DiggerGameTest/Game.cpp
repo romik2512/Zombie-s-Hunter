@@ -73,7 +73,8 @@ do{
 qDebug() << "WHILE1 ZAVERSHEN!!!";
 
 //Player * player=new Player(true);
-player=new Player(true);
+bool massforplayer[5]={false,false,false,false,false};
+player=new Player(true,massforplayer);
 player->setPos(random_posx*40+50,random_posy*40+50);
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();

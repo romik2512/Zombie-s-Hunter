@@ -12,6 +12,7 @@
 #include "Menu.h"
 #include "Kolvo.h"
 #include "Gametime.h"
+#include <QTimer>
 
 extern Game * game;
 extern Zapas * zapas;
@@ -20,7 +21,7 @@ extern Player *player;
 //extern GTime *gametime;
 //extern Kolvo *kolvo;
 
-Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
+Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     if (napro==true) {
     setPixmap(QPixmap(":/images/player1right.png"));
     napr=true;
@@ -28,19 +29,44 @@ Player::Player(bool napro,QGraphicsItem*parent): QGraphicsPixmapItem(parent){
         setPixmap(QPixmap(":/images/player1left.png"));
         napr=false;
     }
+
+    for(int m=0;m<5;m++){
+        playermoves[m]=massnapr[m];
+    }
+    QTimer * timer =new QTimer();
+    connect(timer,SIGNAL(timeout()),this,SLOT(pmove()));
+    timer->start(40);
 }
 
 Player::~Player(){
     if (game->enemies>0){
+    qDebug() <<"DO MENU!";
     menu=new Menu('l',game->gamelevel);
+    qDebug() <<"PO MENU!";
     game->~Game();
+    qDebug() <<"DO G!";
     }
 }
 
-void Player::keyPressEvent(QKeyEvent *event)
-{
+void Player::keyPressEvent(QKeyEvent *event){
+   if (event->key() ==Qt::Key_Space) {playermoves[4]=true;}
+   else if (event->key() ==Qt::Key_Left) {playermoves[0]=true;}
+   else if (event->key() ==Qt::Key_Up) {playermoves[1]=true;}
+   else if (event->key() ==Qt::Key_Right) {playermoves[2]=true;}
+   else if (event->key() ==Qt::Key_Down) {playermoves[3]=true;}
+}
 
-if   (event->key() ==Qt::Key_Space){
+void Player::keyReleaseEvent(QKeyEvent *revent){
+   if (revent->key() ==Qt::Key_Space) {playermoves[4]=false;}
+   else if (revent->key() ==Qt::Key_Left) {playermoves[0]=false;}
+   else if (revent->key() ==Qt::Key_Up) {playermoves[1]=false;}
+   else if (revent->key() ==Qt::Key_Right) {playermoves[2]=false;}
+   else if (revent->key() ==Qt::Key_Down) {playermoves[3]=false;}
+}
+
+void Player::pmove(){
+
+if (playermoves[4]==true){
 if(game->bomb>0) {
 
     int posx=pos().x();
@@ -54,20 +80,25 @@ if(game->bomb>0) {
     if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))){
      QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform()); // Перед сном здесь ковырялся, именнно проверку зомби добавил хз зачем )))
            for(int i =0,n=kopatel.size();i<n;++i){
-               if(!((typeid(Zombie))==(typeid (*(kopatel[i]))))){
+               if(!(((typeid(Zombie))==(typeid (*(kopatel[i]))))||((typeid(Player))==(typeid (*(kopatel[i])))))){
                       scene()->removeItem(kopatel[i]);
            }
            }
+//               if(!((typeid(Zombie))==(typeid (*(kopatel[i]))))){
+//                    scene()->removeItem(kopatel[i]);
+//           }
 
-
+//           }
 
 Dynamit* dynamit=new Dynamit();
 dynamit->setPos(pos().x()-ostx,pos().y()-osty);
 game->scene->addItem(dynamit);
 zapas->decrease();
 
-//Player* player=new Player(napr);
-player=new Player(napr);
+
+//player=new Player(napr,playermoves);
+scene()->removeItem(player);
+//setPixmap(QPixmap(":/images/player1left.png"));
 player->setPos(pos().x(),pos().y());
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
@@ -76,7 +107,8 @@ game->scene->addItem(player);
 }
 }
 
-if (event->key() ==Qt::Key_Left){
+if (playermoves[0]==true){
+    if(playermoves[2]==false){
     if(pos().x()>57){
         int posx=pos().x();
     int posy=pos().y();
@@ -96,14 +128,14 @@ if (event->key() ==Qt::Key_Left){
      }
              if (napr==true) {
                 napr=false;                
-                scene()->removeItem(this);
+                //scene()->removeItem(this);
 
-             //Player * player=new Player(napr);
-             player=new Player(napr);
+             //player=new Player(napr,playermoves);
+             setPixmap(QPixmap(":/images/player1left.png"));
              player->setPos(posx-8,posy-osty);
              player->setFlag(QGraphicsItem::ItemIsFocusable);
              player->setFocus();
-             game->scene->addItem(player);
+             //game->scene->addItem(player);
              }
         }
     } else if (osty>30){            
@@ -121,21 +153,22 @@ if (event->key() ==Qt::Key_Left){
         }
                 if (napr==true) {
                    napr=false;
-                   //delete this;
-                   scene()->removeItem(this);
+                   //scene()->removeItem(this);
 
-                //Player * player=new Player(napr);
-                player=new Player(napr);
+               // player=new Player(napr,playermoves);
+                   setPixmap(QPixmap(":/images/player1left.png"));
                 player->setPos(posx-8,posy+40-osty);
                 player->setFlag(QGraphicsItem::ItemIsFocusable);
                 player->setFocus();
-                game->scene->addItem(player);
+                //game->scene->addItem(player);
                 }
     }
     }
 }
-}else if(event->key()==Qt::Key_Right){
-
+}
+}
+if (playermoves[2]==true){
+    if(playermoves[0]==false){
 if(pos().x()+40<650){
     int posx=pos().x();
     int posy=pos().y();
@@ -156,17 +189,16 @@ if(pos().x()+40<650){
      }
              if (napr==false) {
                     napr=true;
-                    scene()->removeItem(this);
-                // delete this;
-                // Player * player=new Player(napr);
-                 player=new Player(napr);
+                   // scene()->removeItem(this);
+                // player=new Player(napr,playermoves);
+                    setPixmap(QPixmap(":/images/player1right.png"));
                  player->setPos(posx+8,posy-osty);
                  player->setFlag(QGraphicsItem::ItemIsFocusable);
                  player->setFocus();
-                 game->scene->addItem(player);
+                // game->scene->addItem(player);
                  }
         }
-    } else if (osty>30){            
+    } else if (osty>30){
             if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))){
                 setPos(x()+8,y()+40-osty);
                 QList<QGraphicsItem*> collides=collidingItems();
@@ -180,20 +212,21 @@ if(pos().x()+40<650){
         }
                 if (napr==false) {
                        napr=true;
-                       scene()->removeItem(this);
-                    //Player * player=new Player(napr);
-                    player=new Player(napr);
+                       //scene()->removeItem(this);
+                    //player=new Player(napr,playermoves);
+                    setPixmap(QPixmap(":/images/player1right.png"));
                     player->setPos(posx+8,posy+40-osty);
                     player->setFlag(QGraphicsItem::ItemIsFocusable);
                     player->setFocus();
-                    game->scene->addItem(player);
+                   // game->scene->addItem(player);
                     }
             }
         }
     }
 
-
-}else if(event->key()==Qt::Key_Up){
+    }
+}
+if (playermoves[1]==true){
     if (pos().y()>57){
 
         int posx=pos().x();
@@ -227,7 +260,9 @@ if(pos().x()+40<650){
     }
  }
 }
-}else if(event->key()==Qt::Key_Down){
+}
+
+if (playermoves[3]==true){
     if (pos().y()+40<650){
         int posx=pos().x();
         int ostx=(posx-50)%40;

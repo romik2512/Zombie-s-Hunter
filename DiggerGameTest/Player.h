@@ -9,10 +9,14 @@
 class Player:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
 public:
-    Player(bool napro,QGraphicsItem* parent=nullptr);
+    Player(bool napro,bool massnapr[5],QGraphicsItem* parent=nullptr);
     ~Player();   
 void keyPressEvent(QKeyEvent * event);
+void keyReleaseEvent(QKeyEvent *revent);
 bool napr;
+bool playermoves[5];//={false,false,false,false,false};
+public slots:
+       void pmove();
 };
 
 #endif // PLAYER_H
