@@ -18,8 +18,6 @@ extern Game * game;
 extern Zapas * zapas;
 extern Menu*menu;
 extern Player *player;
-//extern GTime *gametime;
-//extern Kolvo *kolvo;
 
 Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixmapItem(parent){
     if (napro==true) {
@@ -33,9 +31,10 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
     for(int m=0;m<5;m++){
         playermoves[m]=massnapr[m];
     }
+    playermovevalue=2;
     QTimer * timer =new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(pmove()));
-    timer->start(40);
+    timer->start(15);
 }
 
 Player::~Player(){
@@ -84,21 +83,13 @@ if(game->bomb>0) {
                       scene()->removeItem(kopatel[i]);
            }
            }
-//               if(!((typeid(Zombie))==(typeid (*(kopatel[i]))))){
-//                    scene()->removeItem(kopatel[i]);
-//           }
-
-//           }
 
 Dynamit* dynamit=new Dynamit();
 dynamit->setPos(pos().x()-ostx,pos().y()-osty);
 game->scene->addItem(dynamit);
 zapas->decrease();
 
-
-//player=new Player(napr,playermoves);
 scene()->removeItem(player);
-//setPixmap(QPixmap(":/images/player1left.png"));
 player->setPos(pos().x(),pos().y());
 player->setFlag(QGraphicsItem::ItemIsFocusable);
 player->setFocus();
@@ -109,14 +100,14 @@ game->scene->addItem(player);
 
 if (playermoves[0]==true){
     if(playermoves[2]==false){
-    if(pos().x()>57){
+    if(pos().x()>50+playermovevalue-1){
         int posx=pos().x();
     int posy=pos().y();
     int osty=(posy-50)%40;
     if (osty<10){
-        if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-8,pos().y()-osty,QTransform())))))){
+        if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))){
 
-             setPos(x()-8,y()-osty);           
+             setPos(x()-playermovevalue,y()-osty);
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
@@ -128,19 +119,16 @@ if (playermoves[0]==true){
      }
              if (napr==true) {
                 napr=false;                
-                //scene()->removeItem(this);
 
-             //player=new Player(napr,playermoves);
              setPixmap(QPixmap(":/images/player1left.png"));
-             player->setPos(posx-8,posy-osty);
+             player->setPos(posx-playermovevalue,posy-osty);
              player->setFlag(QGraphicsItem::ItemIsFocusable);
              player->setFocus();
-             //game->scene->addItem(player);
              }
         }
-    } else if (osty>30){            
-            if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-8,pos().y()+40-osty,QTransform())))))){
-                setPos(x()-8,y()+40-osty);
+    } else if (osty>40-playermovevalue-1){
+            if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()+40-osty,QTransform())))))){
+                setPos(x()-playermovevalue,y()+40-osty);
 
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
@@ -153,14 +141,10 @@ if (playermoves[0]==true){
         }
                 if (napr==true) {
                    napr=false;
-                   //scene()->removeItem(this);
-
-               // player=new Player(napr,playermoves);
                    setPixmap(QPixmap(":/images/player1left.png"));
-                player->setPos(posx-8,posy+40-osty);
+                player->setPos(posx-playermovevalue,posy+40-osty);
                 player->setFlag(QGraphicsItem::ItemIsFocusable);
                 player->setFocus();
-                //game->scene->addItem(player);
                 }
     }
     }
@@ -177,7 +161,7 @@ if(pos().x()+40<650){
     if (osty<10){
         if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))){
 
-             setPos(x()+8,y()-osty);
+             setPos(x()+playermovevalue,y()-osty);
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
@@ -189,18 +173,15 @@ if(pos().x()+40<650){
      }
              if (napr==false) {
                     napr=true;
-                   // scene()->removeItem(this);
-                // player=new Player(napr,playermoves);
                     setPixmap(QPixmap(":/images/player1right.png"));
-                 player->setPos(posx+8,posy-osty);
+                 player->setPos(posx+playermovevalue,posy-osty);
                  player->setFlag(QGraphicsItem::ItemIsFocusable);
                  player->setFocus();
-                // game->scene->addItem(player);
                  }
         }
-    } else if (osty>30){
+    } else if (osty>40-playermovevalue-1){
             if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))){
-                setPos(x()+8,y()+40-osty);
+                setPos(x()+playermovevalue,y()+40-osty);
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
 
@@ -212,13 +193,10 @@ if(pos().x()+40<650){
         }
                 if (napr==false) {
                        napr=true;
-                       //scene()->removeItem(this);
-                    //player=new Player(napr,playermoves);
                     setPixmap(QPixmap(":/images/player1right.png"));
-                    player->setPos(posx+8,posy+40-osty);
+                    player->setPos(posx+playermovevalue,posy+40-osty);
                     player->setFlag(QGraphicsItem::ItemIsFocusable);
                     player->setFocus();
-                   // game->scene->addItem(player);
                     }
             }
         }
@@ -227,13 +205,14 @@ if(pos().x()+40<650){
     }
 }
 if (playermoves[1]==true){
-    if (pos().y()>57){
+    if(playermoves[3]==false){
+    if (pos().y()>50+playermovevalue-1){
 
         int posx=pos().x();
         int ostx=(posx-50)%40;
-        if (ostx < 10) {
-            if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-8,QTransform()))))))){               
-                 setPos(x()-ostx,y()-8);
+        if (ostx < playermovevalue+1) {
+            if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-playermovevalue,QTransform()))))))){
+                 setPos(x()-ostx,y()-playermovevalue);
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
 
@@ -244,10 +223,10 @@ if (playermoves[1]==true){
                  }
          }
             }
-        }else if (ostx>30) {
+        }else if (ostx>40-playermovevalue-1) {
 
-            if(!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-8,QTransform())))))){       
-         setPos(x()+40-ostx,y()-8);
+            if(!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))){
+         setPos(x()+40-ostx,y()-playermovevalue);
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
 
@@ -261,15 +240,17 @@ if (playermoves[1]==true){
  }
 }
 }
+}
 
 if (playermoves[3]==true){
+    if(playermoves[1]==false){
     if (pos().y()+40<650){
         int posx=pos().x();
         int ostx=(posx-50)%40;
 
-        if (ostx < 10) {
+        if (ostx < playermovevalue+1) {
             if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform()))))))){               
-                 setPos(x()-ostx,y()+8);
+                 setPos(x()-ostx,y()+playermovevalue);
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
 
@@ -280,10 +261,10 @@ if (playermoves[3]==true){
                  }
          }                
             }
-        }else if (ostx>30) {
+        }else if (ostx>40-playermovevalue-1) {
 
             if(!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()+40,QTransform())))))){
-         setPos(x()+40-ostx,y()+8);
+         setPos(x()+40-ostx,y()+playermovevalue);
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
 
@@ -297,6 +278,7 @@ if (playermoves[3]==true){
  }
 }
  }
+}
 }
 
 

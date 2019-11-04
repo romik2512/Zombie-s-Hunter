@@ -14,6 +14,7 @@ public:
 void keyPressEvent(QKeyEvent * event);
 void keyReleaseEvent(QKeyEvent *revent);
 bool napr;
+int playermovevalue;
 bool playermoves[5];//={false,false,false,false,false};
 public slots:
        void pmove();
