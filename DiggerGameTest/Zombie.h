@@ -13,7 +13,6 @@ public:
         int zadnapr=5;
         bool znapr;
         bool fire;
-        int forme=0;
         int lavakol=0;
  public slots:
         void move();

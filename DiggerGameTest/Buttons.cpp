@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include "Buttons.h"
 #include "Menu.h"
@@ -112,7 +111,6 @@ void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer){
     }
     else if(buttontype=='e'){
         if ((menu->lvl)!='e'){
-            qDebug()<<typeid(*(menu->knopki[1])).name();
             delete menu->knopki[1];
 
             Buttons* easy=new Buttons('1');

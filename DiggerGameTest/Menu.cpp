@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include <QDebug>
 #include <QBrush>
 #include "Buttons.h"
 

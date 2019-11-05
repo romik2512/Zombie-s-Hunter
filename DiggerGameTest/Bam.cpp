@@ -1,11 +1,5 @@
 #include "Bam.h"
-#include <QGraphicsScene>
-#include <QDebug>
-#include <stdlib.h>
-#include "Menu.h"
-#include <QGraphicsSceneMouseEvent>
 #include <QTimer>
-//extern Game * game;
 Bam::Bam(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
 setPixmap(QPixmap(":/images/bam.png"));

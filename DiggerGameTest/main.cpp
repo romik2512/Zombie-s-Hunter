@@ -9,7 +9,5 @@ int main(int argc, char *argv[])
      qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
      menu=new Menu();
-     //menu->show();
-
     return a.exec();
 }

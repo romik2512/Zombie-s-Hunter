@@ -1,16 +1,13 @@
 #include "Game.h"
-#include <QTimer>
-#include <QGraphicsTextItem>
-#include <QFont>
 #include "GBlocks.h"
 #include "EarthBlocks.h"
 #include "Zombie.h"
 #include "Player.h"
-#include <QDebug>
 #include <QBrush>
 #include "Gametime.h"
 #include "Zapas.h"
 #include "Kolvo.h"
+
 
 extern Menu* menu;
 extern Zapas * zapas;
@@ -61,7 +58,6 @@ for (int i=0;i<15;i++){
     }
 }
 
-qDebug() << "EBLOCS AND GBLOCKS WAS CREATED!!!";
 
 int random_posx=qrand() %15;
 int random_posy;
@@ -70,9 +66,6 @@ do{
 
 }while (blocksarray[random_posx][random_posy]==true);
 
-qDebug() << "WHILE1 ZAVERSHEN!!!";
-
-//Player * player=new Player(true);
 bool massforplayer[5]={false,false,false,false,false};
 player=new Player(true,massforplayer);
 player->setPos(random_posx*40+50,random_posy*40+50);
@@ -84,22 +77,16 @@ player->napr=true;
 for (int i=0;i<enemies;i++){
     int zrandom_posy;
     int zrandom_posx;
-
-    qDebug() <<"SUDA MOZNBO DOBAVIT OBJECT KARTINKI ZAGRUZKI KOTORIY UNIZTOZHITSA POSLE ETOGO WHILE!";
-
-
     do{
 zrandom_posx=qrand() % 15;
 zrandom_posy=qrand() % 15;
 }while ((blocksarray[zrandom_posx][zrandom_posy] ==true)||((!((zrandom_posy < random_posy-3)||(zrandom_posy>random_posy+3)))&&(!((zrandom_posx < random_posx-3)||(zrandom_posx>random_posx+3)))));
-qDebug() << "SDES UNOZTHOZHAYETSA KARTINKA I IGRA PRORISOVIVAETSYA!!";
 
 Zombie * zombie=new Zombie(true,false);
 zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
 scene->addItem(zombie);
 zombie->znapr=true;
 zombie->fire=false;
-//zombie->lavakol=0;
         if((zrandom_posx*40+50)>89) {
 
             if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+10),zrandom_posy*40+50,QTransform()))))))  {
@@ -188,7 +175,6 @@ if ((zmove-1)==0) {
              zombie->fire=false;
         }
 }
-//show();
 }
 
 Game::~Game(){
@@ -197,7 +183,6 @@ Game::~Game(){
     delete kolvo;
     QList <QGraphicsItem*> vseob=scene->items();
     for(int z=0,k=vseob.size();z<k;z++){
-        qDebug()<<"UDALYAYETSYA: "<<typeid(*(vseob[z])).name()<<"  EGO NOMER NA SCENE: #"<<z;
         delete vseob[z];
     }
 

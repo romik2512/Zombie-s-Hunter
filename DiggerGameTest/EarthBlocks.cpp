@@ -1,9 +1,4 @@
 #include "EarthBlocks.h"
-#include <QTimer>
-#include <QGraphicsScene>
-#include <QDebug>
-#include <QList>
-#include <stdlib.h>
 
 EBlocks::EBlocks(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {

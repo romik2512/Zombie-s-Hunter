@@ -1,10 +1,7 @@
 #include "Kolvo.h"
-#include <QFont>
-#include <QTimer>
 #include "Game.h"
-#include <QDebug>
 #include "Menu.h"
-#include "Player.h" //??
+#include "Player.h"
 
 extern Game *game;
 extern Menu * menu;
@@ -28,5 +25,4 @@ void Kolvo::decrease()
         menu=new Menu('w',game->gamelevel);
         game->~Game();
     }
-    //setPlainText(QString::number(game->enemies));
 }

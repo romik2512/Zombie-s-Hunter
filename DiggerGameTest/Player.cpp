@@ -1,18 +1,12 @@
 #include "Player.h"
-#include <QGraphicsScene>
 #include <QKeyEvent>
-#include <QDebug>
 #include "Game.h"
 #include "GBlocks.h"
-#include "QList"
 #include "Dynamit.h"
 #include "Zombie.h"
 #include "LavaBlocks.h"
 #include "Zapas.h"
-#include "Menu.h"
-#include "Kolvo.h"
-#include "Gametime.h"
-#include <QTimer>
+#include <QDebug>
 
 extern Game * game;
 extern Zapas * zapas;
@@ -32,6 +26,7 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
         playermoves[m]=massnapr[m];
     }
     playermovevalue=2;
+    usetimer=false;
     QTimer * timer =new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(pmove()));
     timer->start(15);
@@ -39,11 +34,8 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
 
 Player::~Player(){
     if (game->enemies>0){
-    qDebug() <<"DO MENU!";
     menu=new Menu('l',game->gamelevel);
-    qDebug() <<"PO MENU!";
     game->~Game();
-    qDebug() <<"DO G!";
     }
 }
 
@@ -77,7 +69,7 @@ if(game->bomb>0) {
     if (osty>20) osty=osty-40;
 
     if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))){
-     QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform()); // Перед сном здесь ковырялся, именнно проверку зомби добавил хз зачем )))
+     QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
            for(int i =0,n=kopatel.size();i<n;++i){
                if(!(((typeid(Zombie))==(typeid (*(kopatel[i]))))||((typeid(Player))==(typeid (*(kopatel[i])))))){
                       scene()->removeItem(kopatel[i]);
@@ -111,16 +103,32 @@ if (playermoves[0]==true){
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
-             if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                 scene()->removeItem(this);
-                 delete this;                 
-                 return;
-             }
+                 if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                         scene()->removeItem(this);
+                         delete this;
+                         return;
+                 }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                      if(usetimer==false){
+                                          if(napr==true){
+                                          setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                          else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                          scene()->removeItem(player);
+                                          player->setPos(posx-playermovevalue,posy-osty);
+                                          player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                          player->setFocus();
+                                          game->scene->addItem(player);
+                                          usetimer=true;
+                                      firetimer =new QTimer();
+                                      connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                      firetimer->start(500);
+                                      }
+                 }
      }
              if (napr==true) {
                 napr=false;                
-
-             setPixmap(QPixmap(":/images/player1left.png"));
+             if (usetimer==true){
+              setPixmap(QPixmap(":/images/player1leftfire.png"));
+             }else { setPixmap(QPixmap(":/images/player1left.png"));}
              player->setPos(posx-playermovevalue,posy-osty);
              player->setFlag(QGraphicsItem::ItemIsFocusable);
              player->setFocus();
@@ -133,15 +141,32 @@ if (playermoves[0]==true){
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
 
-               if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                    scene()->removeItem(this);
-                    delete this;                  
-                    return;
-                }
+                    if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                            scene()->removeItem(this);
+                            delete this;
+                            return;
+                    }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                         if(usetimer==false){
+                                             if(napr==true){
+                                             setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                             else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                             scene()->removeItem(player);
+                                             player->setPos(posx-playermovevalue,posy+40-osty);
+                                             player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                             player->setFocus();
+                                             game->scene->addItem(player);
+                                             usetimer=true;
+                                         firetimer =new QTimer();
+                                         connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                         firetimer->start(500);
+                                         }
+                    }
         }
                 if (napr==true) {
                    napr=false;
-                   setPixmap(QPixmap(":/images/player1left.png"));
+                   if (usetimer==true){
+                    setPixmap(QPixmap(":/images/player1leftfire.png"));
+                   }else { setPixmap(QPixmap(":/images/player1left.png"));}
                 player->setPos(posx-playermovevalue,posy+40-osty);
                 player->setFlag(QGraphicsItem::ItemIsFocusable);
                 player->setFocus();
@@ -165,15 +190,32 @@ if(pos().x()+40<650){
              QList<QGraphicsItem*> collides=collidingItems();
              for(int i =0,n=collides.size();i<n;++i){
 
-             if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                 scene()->removeItem(this);
-                 delete this;
-                 return;
-             }
+             if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                     scene()->removeItem(this);
+                     delete this;
+                     return;
+             }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                  if(usetimer==false){
+                                      if(napr==true){
+                                      setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                      else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                      scene()->removeItem(player);
+                                      player->setPos(posx+playermovevalue,posy-osty);
+                                      player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                      player->setFocus();
+                                      game->scene->addItem(player);
+                                      usetimer=true;
+                                  firetimer =new QTimer();
+                                  connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                  firetimer->start(500);
+                                  }
+             }             
      }
              if (napr==false) {
                     napr=true;
-                    setPixmap(QPixmap(":/images/player1right.png"));
+                    if (usetimer==true){
+                     setPixmap(QPixmap(":/images/player1rightfire.png"));
+                    }else { setPixmap(QPixmap(":/images/player1right.png"));}
                  player->setPos(posx+playermovevalue,posy-osty);
                  player->setFlag(QGraphicsItem::ItemIsFocusable);
                  player->setFocus();
@@ -184,16 +226,32 @@ if(pos().x()+40<650){
                 setPos(x()+playermovevalue,y()+40-osty);
                 QList<QGraphicsItem*> collides=collidingItems();
                 for(int i =0,n=collides.size();i<n;++i){
-
-                if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                    scene()->removeItem(this);
-                    delete this;
-                    return;
-                }
+                    if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                            scene()->removeItem(this);
+                            delete this;
+                            return;
+                    }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                         if(usetimer==false){
+                                             if(napr==true){
+                                             setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                             else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                             scene()->removeItem(player);
+                                             player->setPos(posx+playermovevalue,posy+40-osty);
+                                             player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                             player->setFocus();
+                                             game->scene->addItem(player);
+                                             usetimer=true;
+                                         firetimer =new QTimer();
+                                         connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                         firetimer->start(500);
+                                         }
+                    }
         }
                 if (napr==false) {
                        napr=true;
-                    setPixmap(QPixmap(":/images/player1right.png"));
+                       if (usetimer==true){
+                        setPixmap(QPixmap(":/images/player1rightfire.png"));
+                       }else { setPixmap(QPixmap(":/images/player1right.png"));}
                     player->setPos(posx+playermovevalue,posy+40-osty);
                     player->setFlag(QGraphicsItem::ItemIsFocusable);
                     player->setFocus();
@@ -209,18 +267,33 @@ if (playermoves[1]==true){
     if (pos().y()>50+playermovevalue-1){
 
         int posx=pos().x();
+        int posy=pos().y();
         int ostx=(posx-50)%40;
         if (ostx < playermovevalue+1) {
             if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-playermovevalue,QTransform()))))))){
                  setPos(x()-ostx,y()-playermovevalue);
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
-
-                 if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                     scene()->removeItem(this);
-                     delete this;
-                     return;
-                 }
+                     if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                             scene()->removeItem(this);
+                             delete this;
+                             return;
+                     }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                          if(usetimer==false){
+                                              if(napr==true){
+                                              setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                              else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                              scene()->removeItem(player);
+                                              player->setPos(posx-ostx,posy-playermovevalue);
+                                              player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                              player->setFocus();
+                                              game->scene->addItem(player);
+                                              usetimer=true;
+                                          firetimer =new QTimer();
+                                          connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                          firetimer->start(500);
+                                          }
+                     }
          }
             }
         }else if (ostx>40-playermovevalue-1) {
@@ -229,12 +302,26 @@ if (playermoves[1]==true){
          setPos(x()+40-ostx,y()-playermovevalue);
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
-
-         if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-             scene()->removeItem(this);
-             delete this;
-             return;
-         }
+             if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                     scene()->removeItem(this);
+                     delete this;
+                     return;
+             }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                  if(usetimer==false){
+                                      if(napr==true){
+                                      setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                      else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                      scene()->removeItem(player);
+                                      player->setPos(posx+40-ostx,posy-playermovevalue);
+                                      player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                      player->setFocus();
+                                      game->scene->addItem(player);
+                                      usetimer=true;
+                                  firetimer =new QTimer();
+                                  connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                  firetimer->start(500);
+                                  }
+             }
  }         
     }
  }
@@ -246,6 +333,7 @@ if (playermoves[3]==true){
     if(playermoves[1]==false){
     if (pos().y()+40<650){
         int posx=pos().x();
+        int posy=pos().y();
         int ostx=(posx-50)%40;
 
         if (ostx < playermovevalue+1) {
@@ -253,12 +341,26 @@ if (playermoves[3]==true){
                  setPos(x()-ostx,y()+playermovevalue);
                  QList<QGraphicsItem*> collides=collidingItems();
                  for(int i =0,n=collides.size();i<n;++i){
-
-                 if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-                     scene()->removeItem(this);
-                     delete this;
-                     return;
-                 }
+                     if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                             scene()->removeItem(this);
+                             delete this;
+                             return;
+                     }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                          if(usetimer==false){
+                                              if(napr==true){
+                                              setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                              else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                              scene()->removeItem(player);
+                                              player->setPos(posx-ostx,posy+playermovevalue);
+                                              player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                              player->setFocus();
+                                              game->scene->addItem(player);
+                                              usetimer=true;
+                                          firetimer =new QTimer();
+                                          connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                          firetimer->start(500);
+                                          }
+                     }
          }                
             }
         }else if (ostx>40-playermovevalue-1) {
@@ -268,11 +370,26 @@ if (playermoves[3]==true){
          QList<QGraphicsItem*> collides=collidingItems();
          for(int i =0,n=collides.size();i<n;++i){
 
-         if ((typeid(*(collides[i]))==typeid(Zombie))||(typeid(*(collides[i]))==typeid(Lava))){
-             scene()->removeItem(this);
-             delete this;
-             return;
-         }
+             if ((typeid(*(collides[i])))==(typeid(Zombie))){
+                     scene()->removeItem(this);
+                     delete this;
+                     return;
+             }  else if ((typeid(*(collides[i])))==(typeid(Lava))){
+                                  if(usetimer==false){
+                                      if(napr==true){
+                                      setPixmap(QPixmap(":/images/player1rightfire.png"));}
+                                      else{setPixmap(QPixmap(":/images/player1leftfire.png"));}
+                                      scene()->removeItem(player);
+                                      player->setPos(posx+40-ostx,posy+playermovevalue);
+                                      player->setFlag(QGraphicsItem::ItemIsFocusable);
+                                      player->setFocus();
+                                      game->scene->addItem(player);
+                                      usetimer=true;
+                                  firetimer =new QTimer();
+                                  connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
+                                  firetimer->start(500);
+                                  }
+             }
  }         
     }
  }
@@ -281,6 +398,21 @@ if (playermoves[3]==true){
 }
 }
 
+void Player::checkfire(){
+    usetimer=false;
+    firetimer->stop();
+    if(napr==true){
+    setPixmap(QPixmap(":/images/player1right.png"));}
+    else{setPixmap(QPixmap(":/images/player1left.png"));}
+    QList<QGraphicsItem*> collides=collidingItems();
+    for(int i =0,n=collides.size();i<n;++i){
+    if (typeid(*(collides[i]))==typeid(Lava)){
+        scene()->removeItem(this);
+        delete this;
+        break;
+    }
+    }
+}
 
 
 

@@ -3,8 +3,8 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
-#include <QGraphicsItem>
 #include "Menu.h"
+#include <QTimer>
 
 class Player:public QObject, public QGraphicsPixmapItem{
 Q_OBJECT
@@ -15,9 +15,12 @@ void keyPressEvent(QKeyEvent * event);
 void keyReleaseEvent(QKeyEvent *revent);
 bool napr;
 int playermovevalue;
-bool playermoves[5];//={false,false,false,false,false};
+bool playermoves[5];
+bool usetimer;
+QTimer *firetimer;
 public slots:
        void pmove();
+       void checkfire();
 };
 
 #endif // PLAYER_H

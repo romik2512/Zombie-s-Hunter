@@ -2,7 +2,6 @@
 #include <QFont>
 #include <QTimer>
 #include "Game.h"
-#include <QDebug>
 #include "GBlocks.h"
 #include "Player.h"
 #include "Zombie.h"
@@ -54,8 +53,6 @@ void GTime::increase()
 {
     gtime++;   
     setPlainText(QString::number(gtime));
-    //this->setPos(10,10);
-    //qDebug() << "KOLVO VZRYVOV NA KARTE: "<<game->boom;
 }
 
 void GTime::addblocks(){
@@ -70,16 +67,13 @@ for (int i=0,n=colliding_items.size();i<n;++i){
         delete colliding_items[i];
         return;
 }else if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
-        game->scene->removeItem(colliding_items[i]);
-       // scene()->removeItem(colliding_items[i]);
+        game->scene->removeItem(colliding_items[i]);      
         delete colliding_items[i];
-       // kolvo->decrease();
         checkzombie=true;
 }else{
     game->scene->removeItem(colliding_items[i]);
     delete colliding_items[i];
     }
-   // colliding_items[i]=nullptr;
 }
 
          GBlocks* gblocks=new GBlocks();

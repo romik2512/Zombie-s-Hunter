@@ -4,9 +4,6 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QGraphicsScene>
-#include "Zombie.h"
-#include "GBlocks.h"
-#include "EarthBlocks.h"
 
 class Game: public QGraphicsView{
 public:

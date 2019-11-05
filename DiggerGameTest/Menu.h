@@ -3,10 +3,10 @@
 
 #include <QGraphicsView>
 #include <QWidget>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
+//#include <QGraphicsScene>
+//#include <QGraphicsPixmapItem>
 #include <QObject>
-#include <QGraphicsItem>
+//#include <QGraphicsItem>
 
 
 class Menu:public QGraphicsView{

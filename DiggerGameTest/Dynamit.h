@@ -3,7 +3,6 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
-#include "Zombie.h"
 class Dynamit: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
