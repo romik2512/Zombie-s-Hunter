@@ -11,16 +11,17 @@ Q_OBJECT
 public:
     Player(bool napro,bool massnapr[5],QGraphicsItem* parent=nullptr);
     ~Player();   
-void keyPressEvent(QKeyEvent * event);
-void keyReleaseEvent(QKeyEvent *revent);
-bool napr;
-int playermovevalue;
-bool playermoves[5];
-bool usetimer;
-QTimer *firetimer;
+    void keyPressEvent(QKeyEvent * event);
+    void keyReleaseEvent(QKeyEvent *revent);
+    bool napr;
+    int ironmode=1;
+    int playermovevalue;
+    bool playermoves[5];
+    bool usetimer;
+    QTimer *firetimer;
 public slots:
-       void pmove();
-       void checkfire();
+    void pmove();
+    void checkfire();
 };
 
 #endif // PLAYER_H

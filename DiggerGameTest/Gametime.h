@@ -7,7 +7,7 @@
 
 class GTime: public QGraphicsTextItem{
     Q_OBJECT
- public:
+public:
     GTime(QGraphicsItem*parent=nullptr);
 private:
     int gtime;

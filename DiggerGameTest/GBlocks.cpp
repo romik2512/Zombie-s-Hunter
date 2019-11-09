@@ -2,5 +2,5 @@
 
 GBlocks::GBlocks(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
-setPixmap(QPixmap(":/images/blackblock.png"));
+    setPixmap(QPixmap(":/images/blackblock.png"));
 }

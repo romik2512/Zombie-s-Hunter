@@ -13,85 +13,60 @@ Zapas * zapas;
 Kolvo * kolvo;
 GTime * gametime;
 
-Buttons::Buttons(char button,QGraphicsItem*parent){
-if (button=='w'){
-    buttontype='r';
-setPixmap(QPixmap(":/images/restartwingame.png"));
-}
-else if(button=='t'){
-setPixmap(QPixmap(":/images/wintomenu.png"));
-buttontype='t';
-}
-else if(button=='o'){
-setPixmap(QPixmap(":/images/losetomenu.png"));
-buttontype='t';
-}
-else if(button=='l'){
-setPixmap(QPixmap(":/images/restartlosegame.png"));
-buttontype='r';
-}
-else if(button=='s'){
-setPixmap(QPixmap(":/images/selectsettings.png"));
-buttontype='s';
-}
-else if(button=='n'){
-setPixmap(QPixmap(":/images/newgame.png"));
-buttontype='n';
-}
-else if(button=='e'){
-setPixmap(QPixmap(":/images/easyselect.png"));
-buttontype='e';
-}
-else if(button=='h'){
-setPixmap(QPixmap(":/images/hardselect.png"));
-buttontype='h';
-}
-else if(button=='m'){
-setPixmap(QPixmap(":/images/mediumselect.png"));
-buttontype='m';
-}
-else if(button=='2'){
-setPixmap(QPixmap(":/images/activemediumselect.png"));
-buttontype='2';
-}
-else if(button=='1'){
-setPixmap(QPixmap(":/images/activeeasyselect.png"));
-buttontype='1';
-}
-else if(button=='3'){
-setPixmap(QPixmap(":/images/activehardselect.png"));
-buttontype='3';
-}
-
-}
-
-void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer){
-    if(buttontype=='r'){
-       game=new Game(menu->lvl);
-       gametime=new GTime();
-       gametime->setPos(770,85);
-       game->scene->addItem(gametime);
-
-       zapas=new Zapas();
-       zapas->setPos(785,372);
-       game->scene->addItem(zapas);
-
-       kolvo=new Kolvo();
-       if(game->enemies<10){
-       kolvo->setPos(785,222);}
-       else{kolvo->setPos(777,222);}
-       game->scene->addItem(kolvo);
-       game->show();
-       delete this;
-       delete menu;
-}
-    else if(buttontype=='t'){
-        delete menu;
-        menu=new Menu('m');
-        menu->show();
+Buttons::Buttons(ButtonAction buttonaction,QGraphicsItem*parent){
+    if (buttonaction==RestartWinGame){
+        buttonused=RestartWinGame;
+        setPixmap(QPixmap(":/images/restartwingame.png"));
     }
-    else if(buttontype=='n'){        
-        game=new Game(menu->lvl);      
+    else if (buttonaction==FromWinToMenu){
+        setPixmap(QPixmap(":/images/wintomenu.png"));
+        buttonused=FromWinToMenu;
+    }
+    else if (buttonaction==FromLoseToMenu){
+        setPixmap(QPixmap(":/images/losetomenu.png"));
+        buttonused=FromWinToMenu;
+    }
+    else if (buttonaction==RestartLoseGame){
+        setPixmap(QPixmap(":/images/restartlosegame.png"));
+        buttonused=RestartWinGame;
+    }
+    else if (buttonaction==Settings){
+        setPixmap(QPixmap(":/images/selectsettings.png"));
+        buttonused=Settings;
+    }
+    else if (buttonaction==NewGame){
+        setPixmap(QPixmap(":/images/newgame.png"));
+        buttonused=NewGame;
+    }
+    else if (buttonaction==EasyLevel){
+        setPixmap(QPixmap(":/images/easyselect.png"));
+        buttonused=EasyLevel;
+    }
+    else if (buttonaction==HardLevel){
+        setPixmap(QPixmap(":/images/hardselect.png"));
+        buttonused=HardLevel;
+    }
+    else if (buttonaction==MediumLevel){
+        setPixmap(QPixmap(":/images/mediumselect.png"));
+        buttonused=MediumLevel;
+    }
+    else if (buttonaction==ActiveMediumLevel){
+        setPixmap(QPixmap(":/images/activemediumselect.png"));
+        buttonused=ActiveMediumLevel;
+    }
+    else if (buttonaction==ActiveEasyLevel){
+        setPixmap(QPixmap(":/images/activeeasyselect.png"));
+        buttonused=ActiveEasyLevel;
+    }
+    else if (buttonaction==ActiveHardLevel){
+        setPixmap(QPixmap(":/images/activehardselect.png"));
+        buttonused=ActiveHardLevel;
+    }
+}
+
+void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer) {
+    if(buttonused==RestartWinGame){
+        game=new Game(menu->lvl);
         gametime=new GTime();
         gametime->setPos(770,85);
         game->scene->addItem(gametime);
@@ -101,80 +76,68 @@ void Buttons::mousePressEvent(QGraphicsSceneMouseEvent *eventer){
         game->scene->addItem(zapas);
 
         kolvo=new Kolvo();
-        if(game->enemies<10){
-        kolvo->setPos(785,222);}
-        else{kolvo->setPos(777,222);}
+        if(game->enemies<10) {
+            kolvo->setPos(785,222);
+        }
+        else {
+            kolvo->setPos(777,222);
+        }
         game->scene->addItem(kolvo);
         game->show();
         delete this;
         delete menu;
     }
-    else if(buttontype=='e'){
-        if ((menu->lvl)!='e'){
-            delete menu->knopki[1];
+    else if(buttonused==FromWinToMenu){
+        delete menu;
+        menu=new Menu('m');
+        menu->show();
+    }
+    else if(buttonused==NewGame){
+        game=new Game(menu->lvl);
+        gametime=new GTime();
+        gametime->setPos(770,85);
+        game->scene->addItem(gametime);
 
-            Buttons* easy=new Buttons('1');
-            easy->setPos(265,350);
-            menu->mscene->addItem(easy);
-            menu->knopki[1]=easy;
+        zapas=new Zapas();
+        zapas->setPos(785,372);
+        game->scene->addItem(zapas);
+
+        kolvo=new Kolvo();
+        if(game->enemies<10) {
+            kolvo->setPos(785,222);
+        }
+        else {
+            kolvo->setPos(777,222);
+        }
+        game->scene->addItem(kolvo);
+        game->show();
+        delete this;
+        delete menu;
+    }
+    else if(buttonused==EasyLevel){
+        if ((menu->lvl)!='e') {
+            menu->knopki[1]->setPixmap(QPixmap(":/images/activeeasyselect.png"));
             menu->lvl='e';
-            delete menu->knopki[2];
-            delete menu->knopki[3];
-
-            Buttons* medium=new Buttons('m');
-            medium->setPos(398,350);
-            menu->mscene->addItem(medium);
-            menu->knopki[2]=medium;
-
-            Buttons* hard=new Buttons('h');
-            hard->setPos(532,350);
-            menu->mscene->addItem(hard);
-            menu->knopki[3]=hard;
-
+            menu->knopki[2]->setPixmap(QPixmap(":/images/mediumselect.png"));
+            menu->knopki[3]->setPixmap(QPixmap(":/images/hardselect.png"));
         }
     }
-    else if(buttontype=='m'){
-        if (menu->lvl!='m'){
-                    delete menu->knopki[2];
-                    Buttons* medium=new Buttons('2');
-                    medium->setPos(398,350);
-                    menu-> mscene->addItem(medium);
-                    menu->knopki[2]=medium;
-                    menu->lvl='m';
-                    delete menu->knopki[1];
-                    delete menu->knopki[3];
-
-                    Buttons* easy=new Buttons('e');
-                    easy->setPos(265,350);
-                    menu->mscene->addItem(easy);
-                    menu->knopki[1]=easy;
-
-                    Buttons* hard=new Buttons('h');
-                    hard->setPos(532,350);
-                    menu->mscene->addItem(hard);
-                    menu->knopki[3]=hard;
-                }
+    else if(buttonused==ActiveMediumLevel){  //Именно с Active,поскольку изначально при создании сцены используется именно ActiveMediumLevel..
+        if (menu->lvl!='m') {
+              menu->lvl='m';
+              menu->knopki[1]->setPixmap(QPixmap(":/images/easyselect.png"));
+              menu->knopki[2]->setPixmap(QPixmap(":/images/activemediumselect.png"));
+              menu->knopki[3]->setPixmap(QPixmap(":/images/hardselect.png"));
+        }
     }
-    else if(buttontype=='h'){
-        if (menu->lvl!='h'){
-                    delete menu->knopki[3];
-                    Buttons* hard=new Buttons('3');
-                    hard->setPos(532,350);
-                    menu->mscene->addItem(hard);
-                    menu->knopki[3]=hard;
-                    menu->lvl='h';
-                    delete menu->knopki[1];
-                    delete menu->knopki[2];
-
-                    Buttons* easy=new Buttons('e');
-                    easy->setPos(265,350);
-                    menu->mscene->addItem(easy);
-                    menu->knopki[1]=easy;
-
-                    Buttons* medium=new Buttons('m');
-                    medium->setPos(398,350);
-                    menu->mscene->addItem(medium);
-                    menu->knopki[2]=medium;
-                }
+    else if(buttonused==HardLevel){
+        if (menu->lvl!='h') {
+              menu->lvl='h';
+              menu->knopki[1]->setPixmap(QPixmap(":/images/easyselect.png"));
+              menu->knopki[2]->setPixmap(QPixmap(":/images/mediumselect.png"));
+              menu->knopki[3]->setPixmap(QPixmap(":/images/activehardselect.png"));
+        }
     }
 }
+
+

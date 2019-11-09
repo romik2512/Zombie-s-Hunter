@@ -4,11 +4,27 @@
 #include <QGraphicsPixmapItem>
 #include <QObject>
 
+enum ButtonAction{
+    NewGame,
+    RestartWinGame,
+    RestartLoseGame,
+    FromLoseToMenu,
+    FromWinToMenu,
+    Settings,
+    EasyLevel,
+    MediumLevel,
+    HardLevel,
+    ActiveEasyLevel,
+    ActiveMediumLevel,
+    ActiveHardLevel
+};
+
 class Buttons: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
-        char buttontype;
-        Buttons(char button='r',QGraphicsItem*parent=nullptr);
+    char buttontype;
+    ButtonAction buttonused;
+    Buttons(ButtonAction buttonaction=NewGame,QGraphicsItem*parent=nullptr);
 public slots:
     void mousePressEvent(QGraphicsSceneMouseEvent * eventer);
 };

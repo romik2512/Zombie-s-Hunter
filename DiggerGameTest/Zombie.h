@@ -14,7 +14,7 @@ public:
         bool znapr;
         bool fire;
         int lavakol=0;
- public slots:
+public slots:
         void move();
 };
 

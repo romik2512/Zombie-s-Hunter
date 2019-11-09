@@ -24,13 +24,13 @@ public:
         {false,true,true,true,false,true,false,true,false,true,false,true,true,true,false},
         {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
     };
+
     Game(char sl='m',QWidget*parent=nullptr);
     ~Game();
-
     QGraphicsScene*scene;
-char gamelevel;
-int enemies;
-int bomb;
-int boom;
+    char gamelevel;
+    int enemies;
+    int bomb;
+    int boom;
 };
 #endif // GAME_H

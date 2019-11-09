@@ -2,5 +2,5 @@
 
 Dynamit::Dynamit(QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
-setPixmap(QPixmap(":/images/earthwithdynamite.png"));
+    setPixmap(QPixmap(":/images/earthwithdynamite.png"));
 }

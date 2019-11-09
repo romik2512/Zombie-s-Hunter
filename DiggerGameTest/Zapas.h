@@ -3,7 +3,7 @@
 
 #include <QGraphicsTextItem>
 class Zapas: public QGraphicsTextItem{
- public:
+public:
     Zapas(QGraphicsItem*parent=nullptr);
     void decrease();
 };

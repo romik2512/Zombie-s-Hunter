@@ -6,7 +6,7 @@
 class Crash: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
-        Crash(QGraphicsItem*parent=nullptr);
+    Crash(QGraphicsItem*parent=nullptr);
 public slots:
     void deletecrash();
 };

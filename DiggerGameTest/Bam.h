@@ -6,7 +6,7 @@
 class Bam: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
-        Bam(QGraphicsItem*parent=nullptr);
+      Bam(QGraphicsItem*parent=nullptr);
 public slots:
       void deletebam();
 };

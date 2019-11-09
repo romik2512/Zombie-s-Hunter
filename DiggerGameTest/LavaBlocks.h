@@ -6,7 +6,7 @@
 class Lava: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
-        Lava(QGraphicsItem*parent=nullptr);
+    Lava(QGraphicsItem*parent=nullptr);
 
 };
 

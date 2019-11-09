@@ -3,7 +3,7 @@
 
 #include <QGraphicsTextItem>
 class Kolvo: public QGraphicsTextItem{
- public:
+public:
     Kolvo(QGraphicsItem*parent=nullptr);
     void decrease();
 };
