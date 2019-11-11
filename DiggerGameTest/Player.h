@@ -16,12 +16,15 @@ public:
     bool napr;
     int ironmode=1;
     int playermovevalue;
+    int boostspeed=0;
     bool playermoves[5];
     bool usetimer;
+    int forfiretimers;
     QTimer *firetimer;
+    QTimer *playerspeed;
 public slots:
     void pmove();
-    void checkfire();
+    void checkfire(int howmany);
 };
 
 #endif // PLAYER_H

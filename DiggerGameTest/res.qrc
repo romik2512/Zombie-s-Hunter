@@ -4,8 +4,6 @@
         <file>images/activehardselect.png</file>
         <file>images/activemediumselect.png</file>
         <file>images/bam.png</file>
-        <file>images/bgcolorfordigger.png</file>
-        <file>images/bgcolorfordigger1.png</file>
         <file>images/bgcolorfordigger2.png</file>
         <file>images/blackblock.png</file>
         <file>images/crash.png</file>
@@ -18,7 +16,6 @@
         <file>images/easyselect.png</file>
         <file>images/hardselect.png</file>
         <file>images/lavablock.png</file>
-        <file>images/lol.png</file>
         <file>images/losetomenu.png</file>
         <file>images/lostgame.png</file>
         <file>images/mediumselect.png</file>
@@ -28,17 +25,18 @@
         <file>images/restartlosegame.png</file>
         <file>images/restartwingame.png</file>
         <file>images/selectsettings.png</file>
-        <file>images/testbgcolorfordigger.png</file>
         <file>images/testmenu2.png</file>
         <file>images/wingame.png</file>
         <file>images/wintomenu.png</file>
-        <file>images/zombie1.png</file>
         <file>images/Zombie2.png</file>
         <file>images/Zombie2fire.png</file>
         <file>images/Zombie2fire2.png</file>
         <file>images/Zombie22.png</file>
-        <file>images/loadgame.png</file>
         <file>images/player1leftfire.png</file>
         <file>images/player1rightfire.png</file>
+        <file>images/secretbox.png</file>
+        <file>images/Dynamit.png</file>
+        <file>images/forspeed.png</file>
+        <file>images/FireBoost.png</file>
     </qresource>
 </RCC>

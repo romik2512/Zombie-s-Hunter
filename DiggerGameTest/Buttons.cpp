@@ -5,7 +5,7 @@
 #include "Gametime.h"
 #include "Game.h"
 #include "Zapas.h"
-#include "LoadGame.h"
+#include "SecretBox.h"
 
 extern Menu* menu;
 Game *game;

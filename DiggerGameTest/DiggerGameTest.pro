@@ -21,14 +21,17 @@ SOURCES += \
     Crash.cpp \
     Dynamit.cpp \
     EarthBlocks.cpp \
+    FireBoost.cpp \
     GBlocks.cpp \
     Game.cpp \
     Gametime.cpp \
     Kolvo.cpp \
     LavaBlocks.cpp \
-    LoadGame.cpp \
     Menu.cpp \
+    NewDynamit.cpp \
+    NewSpeed.cpp \
     Player.cpp \
+    SecretBox.cpp \
     Zapas.cpp \
     Zombie.cpp \
     main.cpp
@@ -39,14 +42,17 @@ HEADERS += \
     Crash.h \
     Dynamit.h \
     EarthBlocks.h \
+    FireBoost.h \
     GBlocks.h \
     Game.h \
     Gametime.h \
     Kolvo.h \
     LavaBlocks.h \
-    LoadGame.h \
     Menu.h \
+    NewDynamit.h \
+    NewSpeed.h \
     Player.h \
+    SecretBox.h \
     Zapas.h \
     Zombie.h
 

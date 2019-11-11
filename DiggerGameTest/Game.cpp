@@ -7,7 +7,10 @@
 #include "Gametime.h"
 #include "Zapas.h"
 #include "Kolvo.h"
-
+#include "SecretBox.h"
+#include "NewSpeed.h"
+#include "NewDynamit.h"
+#include "FireBoost.h"
 
 extern Menu* menu;
 extern Zapas * zapas;
@@ -73,6 +76,34 @@ Game::Game(char sl,QWidget*parent) {
     player->setFocus();
     scene->addItem(player);
     player->napr=true;
+    blocksarray[random_posx][random_posy]=true;
+
+
+    for(int i=0;i<5;i++){
+        int secretbox_x;
+        int secretbox_y;
+        do {
+            secretbox_x=qrand() %15;
+            secretbox_y=qrand() %15;
+        }while (blocksarray[secretbox_x][secretbox_y]==true);
+        if (i==0){
+            NewDynamit* newdynamit=new NewDynamit();
+            newdynamit->setPos(secretbox_x*40+50,secretbox_y*40+50);
+            scene->addItem(newdynamit);
+        }else if(i==1){
+            NewSpeed* newspeed=new NewSpeed();
+            newspeed->setPos(secretbox_x*40+50,secretbox_y*40+50);
+            scene->addItem(newspeed);
+        }else if(i==3){
+            FireBoost* fireboost=new FireBoost();
+            fireboost->setPos(secretbox_x*40+50,secretbox_y*40+50);
+            scene->addItem(fireboost);
+        }
+        SecretBox *secretbox=new SecretBox();
+        secretbox->setPos(secretbox_x*40+50,secretbox_y*40+50);
+        scene->addItem(secretbox);
+        blocksarray[secretbox_x][secretbox_y]=true;
+    }
 
     for (int i=0; i<enemies; i++) {
         int zrandom_posy;
@@ -87,6 +118,9 @@ Game::Game(char sl,QWidget*parent) {
         scene->addItem(zombie);
         zombie->znapr=true;
         zombie->fire=false;
+
+        blocksarray[zrandom_posx][zrandom_posy]=true;
+
         if((zrandom_posx*40+50)>89) {
 
             if (!((typeid(GBlocks))==(typeid(*(scene->itemAt((zrandom_posx*40+10),zrandom_posy*40+50,QTransform()))))))  {

@@ -6,6 +6,11 @@
 #include "Zombie.h"
 #include "LavaBlocks.h"
 #include "Zapas.h"
+#include "SecretBox.h"
+#include "NewDynamit.h"
+#include "NewSpeed.h"
+#include "Bam.h"
+#include "FireBoost.h"
 #include <QDebug>
 
 extern Game * game;
@@ -27,9 +32,9 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
     }
     playermovevalue=2;
     usetimer=false;
-    QTimer * timer =new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(pmove()));
-    timer->start(15);
+    playerspeed=new QTimer();
+    connect(playerspeed,SIGNAL(timeout()),this,SLOT(pmove()));
+    playerspeed->start(15-boostspeed);
 }
 
 Player::~Player() {
@@ -80,6 +85,8 @@ void Player::pmove() {
     if (playermoves[4]==true) {
         if(game->bomb>0) {
 
+            bool candropbomb=true;
+
             int posx=pos().x();
             int ostx=(posx-50) % 40;
             int posy=pos().y();
@@ -88,18 +95,24 @@ void Player::pmove() {
             if (ostx>20) ostx=ostx-40;
             if (osty>20) osty=osty-40;
 
-            if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))) {
+            //if (!((typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))||(typeid(Lava)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))||(typeid(Bam)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform())))))) {
+                if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))){
                 QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
                 for(int i =0,n=kopatel.size(); i<n; ++i) {
                     if(!(((typeid(Zombie))==(typeid (*(kopatel[i]))))||((typeid(Player))==(typeid (*(kopatel[i])))))) {
+                        if(!(((typeid(Lava))==(typeid (*(kopatel[i]))))||((typeid(Bam))==(typeid (*(kopatel[i]))))||((typeid(Dynamit))==(typeid (*(kopatel[i])))))) {
                         scene()->removeItem(kopatel[i]);
+                       } else{
+                           candropbomb=false;
+                       }
                     }
                 }
-
+                if (candropbomb==true){
                 Dynamit* dynamit=new Dynamit();
                 dynamit->setPos(pos().x()-ostx,pos().y()-osty);
                 game->scene->addItem(dynamit);
                 zapas->decrease();
+                }
 
                 scene()->removeItem(player);
                 player->setPos(pos().x(),pos().y());
@@ -117,7 +130,7 @@ void Player::pmove() {
                 int posy=pos().y();
                 int osty=(posy-50)%40;
                 if (osty<10) {
-                    if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))))  {
 
                         setPos(x()-playermovevalue,y()-osty);
                         QList<QGraphicsItem*> collides=collidingItems();
@@ -127,7 +140,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -142,10 +158,20 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                         if (napr==true) {
                             napr=false;
@@ -160,7 +186,7 @@ void Player::pmove() {
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
-                    if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()+40-osty,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()+40-osty,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()+40-osty,QTransform())))))))  {
                         setPos(x()-playermovevalue,y()+40-osty);
 
                         QList<QGraphicsItem*> collides=collidingItems();
@@ -170,14 +196,17 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
-                                    }
-                                    else {
+                                                   }
+                                        else{
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
-                                    }
+                                            }
                                     scene()->removeItem(player);
                                     player->setPos(posx-playermovevalue,posy+40-osty);
                                     player->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -185,10 +214,20 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
-                                }
-                            }
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
+                                        }
+                                    } else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                     zapas->increase();
+                                     delete collides[i];
+                                    } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                     playerspeed->stop();
+                                     boostspeed+=5;
+                                     playerspeed->start(15-boostspeed);
+                                     delete collides[i];
+                                    }
                         }
                         if (napr==true) {
                             napr=false;
@@ -214,7 +253,7 @@ void Player::pmove() {
                 int osty=(posy-50)%40;
 
                 if (osty<10) {
-                    if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()-osty,QTransform())))))))  {
 
                         setPos(x()+playermovevalue,y()-osty);
                         QList<QGraphicsItem*> collides=collidingItems();
@@ -224,7 +263,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -239,10 +281,20 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                         if (napr==false) {
                             napr=true;
@@ -257,7 +309,7 @@ void Player::pmove() {
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
-                    if (!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()+40,pos().y()+40-osty,QTransform())))))))  {
                         setPos(x()+playermovevalue,y()+40-osty);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
@@ -265,7 +317,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -280,10 +335,20 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                   // connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                         if (napr==false) {
                             napr=true;
@@ -310,7 +375,7 @@ void Player::pmove() {
                 int posy=pos().y();
                 int ostx=(posx-50)%40;
                 if (ostx < playermovevalue+1) {
-                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-playermovevalue,QTransform()))))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-playermovevalue,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()-playermovevalue,QTransform())))))))  {
                         setPos(x()-ostx,y()-playermovevalue);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
@@ -318,7 +383,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -333,15 +401,25 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                     }
                 } else if (ostx>40-playermovevalue-1) {
 
-                    if(!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))))  {
                         setPos(x()+40-ostx,y()-playermovevalue);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
@@ -349,7 +427,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -364,10 +445,20 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                     }
                 }
@@ -383,7 +474,7 @@ void Player::pmove() {
                 int ostx=(posx-50)%40;
 
                 if (ostx < playermovevalue+1) {
-                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform()))))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform())))))))  {
                         setPos(x()-ostx,y()+playermovevalue);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
@@ -391,7 +482,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                                ironmode=5;
+                                delete collides[i];
+                                }else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -406,15 +500,25 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                     }
                 } else if (ostx>40-playermovevalue-1) {
 
-                    if(!((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()+40,QTransform())))))) {
+                    if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()+40,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()+40,QTransform())))))))  {
                         setPos(x()+40-ostx,y()+playermovevalue);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
@@ -423,7 +527,10 @@ void Player::pmove() {
                                 scene()->removeItem(this);
                                 delete this;
                                 return;
-                            }  else if ((typeid(*(collides[i])))==(typeid(Lava))) {
+                            }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
+                            ironmode=5;
+                            delete collides[i];
+                            }else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
                                     if(napr==true) {
                                         setPixmap(QPixmap(":/images/player1rightfire.png"));
@@ -438,10 +545,21 @@ void Player::pmove() {
                                     game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire()));
-                                    firetimer->start(500*ironmode);
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
+                                    forfiretimers=ironmode;
+                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
+                                    firetimer->start(500*forfiretimers);
                                 }
-                            }
+                            }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
+                                zapas->increase();
+                                delete collides[i];
+                               } else if ((typeid(*(collides[i])))==(typeid(NewSpeed))) {
+                                playerspeed->stop();
+                                boostspeed+=5;
+                                playerspeed->start(15-boostspeed);
+                                delete collides[i];
+                               }
                         }
                     }
                 }
@@ -450,9 +568,10 @@ void Player::pmove() {
     }
 }
 
-void Player::checkfire() {
+void Player::checkfire(int howmany) {
     usetimer=false;
     firetimer->stop();
+    if (howmany==ironmode){
     if(napr==true) {
         setPixmap(QPixmap(":/images/player1right.png"));
     }
@@ -467,6 +586,7 @@ void Player::checkfire() {
             break;
         }
     }
+}
 }
 
 

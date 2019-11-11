@@ -15,3 +15,9 @@ void Zapas::decrease()
     game->bomb--;
     setPlainText(QString::number(game->bomb));
 }
+
+void Zapas::increase()
+{
+    game->bomb++;
+    setPlainText(QString::number(game->bomb));
+}
