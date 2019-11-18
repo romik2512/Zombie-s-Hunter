@@ -13,6 +13,13 @@ public:
     QGraphicsScene*mscene;
     char lvl;
     QList<QGraphicsPixmapItem*>knopki;
+public slots:
+    void MainNewGame();
+    void FAQclicked();
+    void BackToMenu();
+    void SetEasyLevel();
+    void SetMediumLevel();
+    void SetHardLevel();
 };
 
 

@@ -3,9 +3,11 @@
 
 #include <QGraphicsView>
 #include <QWidget>
+#include <QObject>
 #include <QGraphicsScene>
 
 class Game: public QGraphicsView{
+//Q_OBJECT
 public:
     bool blocksarray[15][15]={
         {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false},
@@ -28,9 +30,12 @@ public:
     Game(char sl='m',QWidget*parent=nullptr);
     ~Game();
     QGraphicsScene*scene;
+    //QList<QGraphicsPixmapItem*>gknopki;
     char gamelevel;
     int enemies;
     int bomb;
     int boom;
+//public slots:
+//    void GameFAQ();
 };
 #endif // GAME_H

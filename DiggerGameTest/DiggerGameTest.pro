@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    AfterLoseScene.cpp \
+    AfterWinScene.cpp \
     Bam.cpp \
     Buttons.cpp \
     Crash.cpp \
@@ -37,6 +39,8 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    AfterLoseScene.h \
+    AfterWinScene.h \
     Bam.h \
     Buttons.h \
     Crash.h \

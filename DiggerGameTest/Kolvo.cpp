@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "Menu.h"
 #include "Player.h"
+#include "AfterWinScene.h"
 
 extern Game *game;
-extern Menu * menu;
 extern Player *player;
 
 Kolvo::Kolvo(QGraphicsItem *parent): QGraphicsTextItem(parent){
@@ -22,7 +22,7 @@ void Kolvo::decrease()
     if (game->enemies==0){
         scene()->removeItem(player);
         delete player;
-        menu=new Menu('w',game->gamelevel);
+        AfterWinScene*afterwinscene=new AfterWinScene(game->gamelevel);
         game->~Game();
     }
 }

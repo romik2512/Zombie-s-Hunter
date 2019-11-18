@@ -38,5 +38,9 @@
         <file>images/Dynamit.png</file>
         <file>images/forspeed.png</file>
         <file>images/FireBoost.png</file>
+        <file>images/faqforgamewithoutbutton.png</file>
+        <file>images/gamebacktomenu.png</file>
+        <file>images/faqbutton.png</file>
+        <file>images/nazad.png</file>
     </qresource>
 </RCC>

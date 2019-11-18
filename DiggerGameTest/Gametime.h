@@ -3,7 +3,7 @@
 
 #include <QGraphicsTextItem>
 #include <QObject>
-
+#include <QTimer>
 
 class GTime: public QGraphicsTextItem{
     Q_OBJECT
@@ -17,6 +17,7 @@ private:
     bool blocksnapr;
     int kvadr;
     int line;
+   // QTimer *blocksincrease;
     int schet;
 public slots:
     void increase();

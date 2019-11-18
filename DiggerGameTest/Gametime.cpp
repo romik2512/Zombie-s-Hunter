@@ -1,6 +1,5 @@
 #include "Gametime.h"
 #include <QFont>
-#include <QTimer>
 #include "Game.h"
 #include "GBlocks.h"
 #include "Player.h"
@@ -20,9 +19,13 @@ GTime::GTime(QGraphicsItem *parent): QGraphicsTextItem(parent) {
     setDefaultTextColor(Qt::yellow);
     setFont(QFont("times",30));
 
-    QTimer * gtimer =new QTimer();
-    connect(gtimer,SIGNAL(timeout()),this,SLOT(increase()));
-    connect(gtimer,SIGNAL(timeout()),this,SLOT(addblocks()));
+QTimer * gtimer =new QTimer();
+ // blocksincrease=new QTimer();
+  connect(gtimer,SIGNAL(timeout()),this,SLOT(increase()));
+  connect(gtimer,SIGNAL(timeout()),this,SLOT(addblocks()));
+  //connect(blocksincrease,SIGNAL(timeout()),this,SLOT(increase()));
+  //connect(blocksincrease,SIGNAL(timeout()),this,SLOT(addblocks()));
+   // blocksincrease->start(1000);
     gtimer->start(1000);
     kvadr=15;
     line=0;
@@ -69,7 +72,8 @@ void GTime::addblocks() {
                 } else if(typeid (*(colliding_items[i]))==typeid(Zombie)) {
                     game->scene->removeItem(colliding_items[i]);
                     delete colliding_items[i];
-                    checkzombie=true;
+                    kolvo->decrease();
+                    checkzombie=true; // При одновременном уничтожении 2, уничтожается 1 )) Поэтому kolvo decresde сюда
                 } else {
                     game->scene->removeItem(colliding_items[i]);
                     delete colliding_items[i];
@@ -82,7 +86,7 @@ void GTime::addblocks() {
             game->scene->addItem(gblocks);
 
             if(checkzombie==true) {
-                kolvo->decrease();
+                //kolvo->decrease();
                 Crash* crash=new Crash();
                 crash->setPos(gbx-10,gby-10);
                 game->scene->addItem(crash);

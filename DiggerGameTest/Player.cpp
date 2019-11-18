@@ -11,11 +11,11 @@
 #include "NewSpeed.h"
 #include "Bam.h"
 #include "FireBoost.h"
+#include "AfterLoseScene.h"
 #include <QDebug>
 
 extern Game * game;
 extern Zapas * zapas;
-extern Menu*menu;
 extern Player *player;
 
 Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixmapItem(parent) {
@@ -39,7 +39,7 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
 
 Player::~Player() {
     if (game->enemies>0) {
-        menu=new Menu('l',game->gamelevel);
+        AfterLoseScene*losegame=new AfterLoseScene(game->gamelevel);
         game->~Game();
     }
 }
@@ -81,6 +81,7 @@ void Player::keyReleaseEvent(QKeyEvent *revent) {
 }
 
 void Player::pmove() {
+player->setFocus();
 
     if (playermoves[4]==true) {
         if(game->bomb>0) {

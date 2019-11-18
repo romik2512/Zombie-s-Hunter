@@ -16,7 +16,10 @@ enum ButtonAction{
     HardLevel,
     ActiveEasyLevel,
     ActiveMediumLevel,
-    ActiveHardLevel
+    ActiveHardLevel,
+    FAQButton,
+    BackButton,
+    BackToMenuButton
 };
 
 class Buttons: public QObject,public QGraphicsPixmapItem{
@@ -27,6 +30,9 @@ public:
     Buttons(ButtonAction buttonaction=NewGame,QGraphicsItem*parent=nullptr);
 public slots:
     void mousePressEvent(QGraphicsSceneMouseEvent * eventer);
+signals:
+    void pressButton();
+
 };
 
 

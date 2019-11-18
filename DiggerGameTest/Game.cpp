@@ -11,6 +11,7 @@
 #include "NewSpeed.h"
 #include "NewDynamit.h"
 #include "FireBoost.h"
+#include "Buttons.h"
 
 extern Menu* menu;
 extern Zapas * zapas;
@@ -28,6 +29,17 @@ Game::Game(char sl,QWidget*parent) {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(900,700);
+
+    Buttons *faqbutton=new Buttons(FAQButton);
+    faqbutton->setPos(725,472);
+    scene->addItem(faqbutton);
+    //gknopki<<faqbutton;
+    //connect(faqbutton,SIGNAL(pressButton()),this,SLOT(GameFAQ()));
+
+    Buttons *backtomenu=new Buttons(BackToMenuButton);
+    backtomenu->setPos(725,547);
+    scene->addItem(backtomenu);
+
     boom=0;
     gamelevel=sl;
     if(sl=='e') {
@@ -210,6 +222,10 @@ Game::Game(char sl,QWidget*parent) {
         }
     }
 }
+
+//void Game::GameFAQ(){
+
+//}
 
 Game::~Game() {
     delete gametime;
