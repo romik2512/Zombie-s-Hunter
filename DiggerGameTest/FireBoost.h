@@ -7,7 +7,6 @@ class FireBoost: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         FireBoost(QGraphicsItem*parent=nullptr);
-
 };
 
 #endif // FIREBOOST_H

@@ -58,6 +58,9 @@ void AfterWinScene::WFAQclicked(){
 
 void AfterWinScene::RestartGame(){
             game=new Game(lvl);
+            for (int i=0,n=game->zombs.size();i<n;i++){
+                game->zombs[i]->connectingtimer();
+            }
             gametime=new GTime();
             gametime->setPos(770,85);
             game->scene->addItem(gametime);

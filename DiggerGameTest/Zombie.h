@@ -3,6 +3,8 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
+#include <QTimer>
+
 class Zombie: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
@@ -14,8 +16,12 @@ public:
         bool znapr;
         bool fire;
         int lavakol=0;
+        QTimer* zombiemove;
+        void connectingtimer();
 public slots:
         void move();
+        void stoptimer();
+        void starttimer();
 };
 
 #endif // ZOMBIE_H

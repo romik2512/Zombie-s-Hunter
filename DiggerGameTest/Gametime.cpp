@@ -7,6 +7,7 @@
 #include "Kolvo.h"
 #include "Crash.h"
 #include "Menu.h"
+#include <QDebug>
 
 extern Game *game;
 extern Kolvo * kolvo;
@@ -19,18 +20,16 @@ GTime::GTime(QGraphicsItem *parent): QGraphicsTextItem(parent) {
     setDefaultTextColor(Qt::yellow);
     setFont(QFont("times",30));
 
-QTimer * gtimer =new QTimer();
- // blocksincrease=new QTimer();
-  connect(gtimer,SIGNAL(timeout()),this,SLOT(increase()));
-  connect(gtimer,SIGNAL(timeout()),this,SLOT(addblocks()));
-  //connect(blocksincrease,SIGNAL(timeout()),this,SLOT(increase()));
-  //connect(blocksincrease,SIGNAL(timeout()),this,SLOT(addblocks()));
-   // blocksincrease->start(1000);
-    gtimer->start(1000);
+  blocksincrease=new QTimer();
+  connect(blocksincrease,SIGNAL(timeout()),this,SLOT(increase()));
+  connect(blocksincrease,SIGNAL(timeout()),this,SLOT(addblocks()));
+    blocksincrease->start(1000);
     kvadr=15;
     line=0;
     schet=0;
+
     ugol=qrand() %4;
+
     if (qrand() % 2 ==0) {
         blocksnapr=false;
     } else {
@@ -253,4 +252,9 @@ void GTime::addblocks() {
 
         }
     }
+}
+
+GTime::~GTime(){
+    blocksincrease->stop();
+    disconnect(blocksincrease,SIGNAL(timeout()));
 }

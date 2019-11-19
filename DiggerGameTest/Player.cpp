@@ -96,7 +96,6 @@ player->setFocus();
             if (ostx>20) ostx=ostx-40;
             if (osty>20) osty=osty-40;
 
-            //if (!((typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))||(typeid(Lava)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))||(typeid(Bam)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform())))))) {
                 if (!(typeid(Dynamit)==typeid(*(game->scene->itemAt(posx-ostx,posy-osty,QTransform()))))){
                 QList<QGraphicsItem *> kopatel=game->scene->items(posx-ostx,posy-osty,40,40,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
                 for(int i =0,n=kopatel.size(); i<n; ++i) {

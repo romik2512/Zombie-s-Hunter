@@ -7,7 +7,6 @@ class SecretBox: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         SecretBox(QGraphicsItem*parent=nullptr);
-
 };
 
 

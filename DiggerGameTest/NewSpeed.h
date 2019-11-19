@@ -7,7 +7,6 @@ class NewSpeed: public QObject,public QGraphicsPixmapItem{
     Q_OBJECT
 public:
         NewSpeed(QGraphicsItem*parent=nullptr);
-
 };
 
 #endif // NEWSPEED_H

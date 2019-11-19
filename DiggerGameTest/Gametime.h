@@ -5,10 +5,12 @@
 #include <QObject>
 #include <QTimer>
 
-class GTime: public QGraphicsTextItem{
-    Q_OBJECT
+class GTime:public QGraphicsTextItem{
+Q_OBJECT
 public:
     GTime(QGraphicsItem*parent=nullptr);
+    QTimer *blocksincrease;
+    ~GTime();
 private:
     int gtime;
     int gbx;
@@ -17,7 +19,6 @@ private:
     bool blocksnapr;
     int kvadr;
     int line;
-   // QTimer *blocksincrease;
     int schet;
 public slots:
     void increase();

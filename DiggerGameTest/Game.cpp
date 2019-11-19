@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "GBlocks.h"
 #include "EarthBlocks.h"
-#include "Zombie.h"
 #include "Player.h"
 #include <QBrush>
 #include "Gametime.h"
@@ -12,6 +11,7 @@
 #include "NewDynamit.h"
 #include "FireBoost.h"
 #include "Buttons.h"
+#include <QDebug>
 
 extern Menu* menu;
 extern Zapas * zapas;
@@ -33,12 +33,23 @@ Game::Game(char sl,QWidget*parent) {
     Buttons *faqbutton=new Buttons(FAQButton);
     faqbutton->setPos(725,472);
     scene->addItem(faqbutton);
-    //gknopki<<faqbutton;
-    //connect(faqbutton,SIGNAL(pressButton()),this,SLOT(GameFAQ()));
+    gknopki<<faqbutton;
+    connect(faqbutton,SIGNAL(pressButton()),this,SLOT(GameFAQ()));
 
     Buttons *backtomenu=new Buttons(BackToMenuButton);
     backtomenu->setPos(725,547);
     scene->addItem(backtomenu);
+    gknopki<<backtomenu;
+    connect(backtomenu,SIGNAL(pressButton()),this,SLOT(GBackToMenu()));
+
+    Buttons *gamebackbutton=new Buttons(BackButton);
+    gamebackbutton->setPos(580,550);
+    connect(gamebackbutton,SIGNAL(pressButton()),this,SLOT(BackToGame()));
+    gknopki<<gamebackbutton;
+
+    QGraphicsPixmapItem*fon=new QGraphicsPixmapItem();
+    fon->setPixmap(QPixmap(":/images/faqforgamewithoutbutton.png"));
+    gknopki<<fon;
 
     boom=0;
     gamelevel=sl;
@@ -128,8 +139,10 @@ Game::Game(char sl,QWidget*parent) {
         Zombie * zombie=new Zombie(true,false);
         zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+50);
         scene->addItem(zombie);
+        zombs<<zombie;
         zombie->znapr=true;
         zombie->fire=false;
+        //zombie->connectingtimer();
 
         blocksarray[zrandom_posx][zrandom_posy]=true;
 
@@ -185,56 +198,51 @@ Game::Game(char sl,QWidget*parent) {
 
 
         if ((zmove-1)==0) {
-            delete zombie;
-            Zombie * zombie=new Zombie(false,false);
             zombie->setPos(zrandom_posx*40+48,zrandom_posy*40+50);
-            scene->addItem(zombie);
-            zombie->znapr=false;
-            zombie->fire=false;
-            zombie->zadnapr=2;
         }
-        else if((zmove-1)==1) {
-            bool nnapr=zombie->znapr;
-            delete zombie;
-            Zombie * zombie=new Zombie(nnapr,false);
+          else if((zmove-1)==1) {
             zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+48);
-            scene->addItem(zombie);
-            zombie->znapr=nnapr;
-            zombie->zadnapr=3;
-            zombie->fire=false;
         } else if((zmove-1)==2) {
-            delete zombie;
-            Zombie * zombie=new Zombie(true,false);
             zombie->setPos(zrandom_posx*40+52,zrandom_posy*40+50);
-            scene->addItem(zombie);
-            zombie->znapr=true;
-            zombie->fire=false;
-            zombie->zadnapr=0;
         } else if((zmove-1)==3) {
-            bool nnapr=zombie->znapr;
-            delete zombie;
-            Zombie * zombie=new Zombie(nnapr,false);
             zombie->setPos(zrandom_posx*40+50,zrandom_posy*40+52);
-            scene->addItem(zombie);
-            zombie->znapr=nnapr;
-            zombie->zadnapr=1;
-            zombie->fire=false;
         }
     }
 }
 
-//void Game::GameFAQ(){
+void Game::GameFAQ(){
+    emit StopZombie();
+    gametime->blocksincrease->stop();
+    player->playerspeed->stop();
+    scene->removeItem(gknopki[0]);
+    scene->removeItem(gknopki[1]);
+    scene->addItem(gknopki[3]);
+    scene->addItem(gknopki[2]);
+}
 
-//}
+void Game::BackToGame(){
+    emit StartZombie();
+    gametime->blocksincrease->start();
+    player->playerspeed->start();
+    scene->addItem(gknopki[0]);
+    scene->addItem(gknopki[1]);
+    scene->removeItem(gknopki[2]);
+    scene->removeItem(gknopki[3]);
+}
+
+void Game::GBackToMenu(){
+    menu=new Menu();
+    scene->removeItem(player);
+    this->~Game();
+}
 
 Game::~Game() {
-    delete gametime;
+    gametime->~GTime();
     delete zapas;
     delete kolvo;
     QList <QGraphicsItem*> vseob=scene->items();
     for(int z=0,k=vseob.size(); z<k; z++) {
         delete vseob[z];
     }
-
 }
 
