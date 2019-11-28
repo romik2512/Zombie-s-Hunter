@@ -18,7 +18,6 @@ extern Game * game;
 extern Kolvo* kolvo;
 
 Zombie::Zombie(bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
-//Zombie::Zombie(Game*game,bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsPixmapItem(parent)
 {
     if (napru==true) {
         if (fairu==false) {
@@ -32,9 +31,6 @@ Zombie::Zombie(bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsP
         setPixmap(QPixmap(":/images/Zombie2fire.png"));
     }
 
-//    QTimer * timer =new QTimer();
-//    connect(timer,SIGNAL(timeout()),this,SLOT(move()));
-//    timer->start(25);
     zombiemove=new QTimer();
     connect(zombiemove,SIGNAL(timeout()),this,SLOT(move()));
     zombiemove->start(25);
@@ -42,8 +38,6 @@ Zombie::Zombie(bool napru,bool fairu,QGraphicsItem *parent):QObject(),QGraphicsP
 
 void Zombie::move()
 {
-//    connect(game,SIGNAL(StopZombie()),this,SLOT(stoptimer()));
-//    connect(game,SIGNAL(StartZombie()),this,SLOT(starttimer()));
     schetchik=0;
     int zposx=pos().x();
     int zostx=(zposx-50) % 40;

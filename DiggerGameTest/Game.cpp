@@ -100,6 +100,8 @@ Game::Game(char sl,QWidget*parent) {
     scene->addItem(player);
     player->napr=true;
     blocksarray[random_posx][random_posy]=true;
+    connect(player,SIGNAL(UseEscape()),this,SLOT(GameFAQ()));
+    connect(player,SIGNAL(UseEscapeSecond()),this,SLOT(BackToGame()));
 
 
     for(int i=0;i<5;i++){
@@ -142,7 +144,6 @@ Game::Game(char sl,QWidget*parent) {
         zombs<<zombie;
         zombie->znapr=true;
         zombie->fire=false;
-        //zombie->connectingtimer();
 
         blocksarray[zrandom_posx][zrandom_posy]=true;
 
@@ -211,9 +212,11 @@ Game::Game(char sl,QWidget*parent) {
 }
 
 void Game::GameFAQ(){
+    player->setFocus();
     emit StopZombie();
     gametime->blocksincrease->stop();
     player->playerspeed->stop();
+    player->useescape=true;
     scene->removeItem(gknopki[0]);
     scene->removeItem(gknopki[1]);
     scene->addItem(gknopki[3]);
@@ -221,9 +224,11 @@ void Game::GameFAQ(){
 }
 
 void Game::BackToGame(){
+    player->setFocus();
     emit StartZombie();
     gametime->blocksincrease->start();
     player->playerspeed->start();
+    player->useescape=false;
     scene->addItem(gknopki[0]);
     scene->addItem(gknopki[1]);
     scene->removeItem(gknopki[2]);

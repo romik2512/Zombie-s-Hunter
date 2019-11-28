@@ -12,7 +12,6 @@
 #include "Bam.h"
 #include "FireBoost.h"
 #include "AfterLoseScene.h"
-#include <QDebug>
 
 extern Game * game;
 extern Zapas * zapas;
@@ -32,6 +31,7 @@ Player::Player(bool napro,bool massnapr[5],QGraphicsItem*parent): QGraphicsPixma
     }
     playermovevalue=2;
     usetimer=false;
+    useescape=false;
     playerspeed=new QTimer();
     connect(playerspeed,SIGNAL(timeout()),this,SLOT(pmove()));
     playerspeed->start(15-boostspeed);
@@ -45,7 +45,14 @@ Player::~Player() {
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
-    if (event->key() ==Qt::Key_Space) {
+    if (event->key() ==Qt::Key_Escape) {
+    if (useescape==false){
+        emit UseEscape();
+        }else{
+        emit UseEscapeSecond();
+        }
+    }
+    else if (event->key() ==Qt::Key_Space) {
         playermoves[4]=true;
     }
     else if (event->key() ==Qt::Key_Left) {
@@ -116,8 +123,6 @@ player->setFocus();
 
                 scene()->removeItem(player);
                 player->setPos(pos().x(),pos().y());
-                player->setFlag(QGraphicsItem::ItemIsFocusable);
-                player->setFocus();
                 game->scene->addItem(player);
             }
         }
@@ -141,7 +146,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -151,17 +156,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx-playermovevalue,posy-osty);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -181,8 +180,6 @@ player->setFocus();
                                 setPixmap(QPixmap(":/images/player1left.png"));
                             }
                             player->setPos(posx-playermovevalue,posy-osty);
-                            player->setFlag(QGraphicsItem::ItemIsFocusable);
-                            player->setFocus();
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
@@ -197,7 +194,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -207,17 +204,11 @@ player->setFocus();
                                         else{
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                             }
-                                    scene()->removeItem(player);
                                     player->setPos(posx-playermovevalue,posy+40-osty);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                         }
                                     } else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                      zapas->increase();
@@ -237,8 +228,6 @@ player->setFocus();
                                 setPixmap(QPixmap(":/images/player1left.png"));
                             }
                             player->setPos(posx-playermovevalue,posy+40-osty);
-                            player->setFlag(QGraphicsItem::ItemIsFocusable);
-                            player->setFocus();
                         }
                     }
                 }
@@ -264,7 +253,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -274,17 +263,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx+playermovevalue,posy-osty);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -304,8 +287,6 @@ player->setFocus();
                                 setPixmap(QPixmap(":/images/player1right.png"));
                             }
                             player->setPos(posx+playermovevalue,posy-osty);
-                            player->setFlag(QGraphicsItem::ItemIsFocusable);
-                            player->setFocus();
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
@@ -318,7 +299,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -328,17 +309,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx+playermovevalue,posy+40-osty);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                   // connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -358,8 +333,6 @@ player->setFocus();
                                 setPixmap(QPixmap(":/images/player1right.png"));
                             }
                             player->setPos(posx+playermovevalue,posy+40-osty);
-                            player->setFlag(QGraphicsItem::ItemIsFocusable);
-                            player->setFocus();
                         }
                     }
                 }
@@ -384,7 +357,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -394,17 +367,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx-ostx,posy-playermovevalue);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -428,7 +395,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 } else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -438,17 +405,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx+40-ostx,posy-playermovevalue);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -483,7 +444,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                                ironmode=5;
+                                ironmode=2500;
                                 delete collides[i];
                                 }else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -493,17 +454,12 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx-ostx,posy+playermovevalue);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
+
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -528,7 +484,7 @@ player->setFocus();
                                 delete this;
                                 return;
                             }else if ((typeid(*(collides[i])))==(typeid(FireBoost))) {
-                            ironmode=5;
+                            ironmode=2500;
                             delete collides[i];
                             }else if ((typeid(*(collides[i])))==(typeid(Lava))) {
                                 if(usetimer==false) {
@@ -538,18 +494,11 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    scene()->removeItem(player);
                                     player->setPos(posx+40-ostx,posy+playermovevalue);
-                                    player->setFlag(QGraphicsItem::ItemIsFocusable);
-                                    player->setFocus();
-                                    game->scene->addItem(player);
                                     usetimer=true;
                                     firetimer =new QTimer();
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    //connect(firetimer,SIGNAL(timeout()),this,SLOT(checkfire(ironmode)));
-                                    forfiretimers=ironmode;
-                                    connect(firetimer,  &QTimer::timeout, this, [this]{checkfire(forfiretimers);});
-                                    firetimer->start(500*forfiretimers);
+                                    connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
+                                    firetimer->start(1);
                                 }
                             }else if ((typeid(*(collides[i])))==(typeid(NewDynamit))) {
                                 zapas->increase();
@@ -568,26 +517,40 @@ player->setFocus();
     }
 }
 
-void Player::checkfire(int howmany) {
-    usetimer=false;
-    firetimer->stop();
-    if (howmany==ironmode){
-    if(napr==true) {
-        setPixmap(QPixmap(":/images/player1right.png"));
-    }
-    else {
-        setPixmap(QPixmap(":/images/player1left.png"));
-    }
-    QList<QGraphicsItem*> collides=collidingItems();
-    for(int i =0,n=collides.size(); i<n; ++i) {
-        if (typeid(*(collides[i]))==typeid(Lava)) {
-            scene()->removeItem(this);
-            delete this;
+void Player::playeranimation(){
+    bool gorit=false;
+    QList<QGraphicsItem*> collidess=collidingItems();
+    for(int i =0,n=collidess.size(); i<n; ++i) {
+        if (typeid(*(collidess[i]))==typeid(Lava)) {
+            if (plavakol!=(game->boom)){
+                scene()->removeItem(this);
+                game->scene->addItem(this);
+                plavakol=game->boom;
+            }
+            gorit=true;
             break;
         }
+}
+    if (gorit==true){
+        beonfiretime++;
+    }else{
+        firetimer->stop();
+        if(napr==true) {
+            setPixmap(QPixmap(":/images/player1right.png"));
+        }
+        else {
+            setPixmap(QPixmap(":/images/player1left.png"));
+        }
+        usetimer=false;
+        beonfiretime=0;
+    }
+
+    if (beonfiretime>=ironmode){
+        scene()->removeItem(this);
+        delete this;
     }
 }
-}
+
 
 
 

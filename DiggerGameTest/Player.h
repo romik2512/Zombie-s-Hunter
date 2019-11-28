@@ -14,17 +14,22 @@ public:
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent *revent);
     bool napr;
-    int ironmode=1;
+    int ironmode=500;
     int playermovevalue;
     int boostspeed=0;
     bool playermoves[5];
     bool usetimer;
-    int forfiretimers;
+    bool useescape;
+    int beonfiretime=0;
+    int plavakol=0;
     QTimer *firetimer;
     QTimer *playerspeed;
 public slots:
-    void pmove();
-    void checkfire(int howmany);
+    void pmove();  
+    void playeranimation();
+signals:
+    void UseEscape();
+    void UseEscapeSecond();
 };
 
 #endif // PLAYER_H
