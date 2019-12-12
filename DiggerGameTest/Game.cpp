@@ -11,7 +11,6 @@
 #include "NewDynamit.h"
 #include "FireBoost.h"
 #include "Buttons.h"
-#include <QDebug>
 
 extern Menu* menu;
 extern Zapas * zapas;

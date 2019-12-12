@@ -5,7 +5,7 @@
 #include "Gametime.h"
 #include "Game.h"
 #include "Zapas.h"
-#include <QDebug>
+
 extern Menu* menu;
 extern Game *game;
 extern Zapas * zapas;
@@ -62,7 +62,7 @@ void AfterLoseScene::RestartGame(){
                 game->zombs[i]->connectingtimer();
             }
             gametime=new GTime();
-            gametime->setPos(770,85);
+            gametime->setPos(750,85);
             game->scene->addItem(gametime);
 
             zapas=new Zapas();

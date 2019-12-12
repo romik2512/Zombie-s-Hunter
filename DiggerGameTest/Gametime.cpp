@@ -7,7 +7,6 @@
 #include "Kolvo.h"
 #include "Crash.h"
 #include "Menu.h"
-#include <QDebug>
 
 extern Game *game;
 extern Kolvo * kolvo;
@@ -16,7 +15,7 @@ extern Menu*menu;
 GTime::GTime(QGraphicsItem *parent): QGraphicsTextItem(parent) {
 
     gtime=0;
-    setPlainText(QString::number(gtime));
+    setPlainText("0m:0s");
     setDefaultTextColor(Qt::yellow);
     setFont(QFont("times",30));
 
@@ -54,14 +53,18 @@ GTime::GTime(QGraphicsItem *parent): QGraphicsTextItem(parent) {
 void GTime::increase()
 {
     gtime++;
-    setPlainText(QString::number(gtime));
+    if (gtime%60>9) {
+        setPos(735,85);
+    }else {
+        setPos(740,85);
+    }
+    setPlainText(QString::number(gtime/60)+"m:"+QString::number(gtime%60)+"s");
 }
 
 void GTime::addblocks() {
     bool checkzombie=false;
     if (kvadr>-1) {
         if (gtime>4) {
-
             QList<QGraphicsItem*> colliding_items=game->scene->items(gbx,gby,35,35,Qt::IntersectsItemShape,Qt::AscendingOrder,QTransform());
             for (int i=0,n=colliding_items.size(); i<n; ++i) {
                 if(typeid (*(colliding_items[i]))==typeid(Player)) {

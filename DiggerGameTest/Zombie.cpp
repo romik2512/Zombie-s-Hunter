@@ -1,5 +1,4 @@
 #include "Zombie.h"
-//#include "Game.h"
 #include "GBlocks.h"
 #include "Dynamit.h"
 #include "LavaBlocks.h"
@@ -11,7 +10,6 @@
 #include "NewSpeed.h"
 #include "NewDynamit.h"
 #include "FireBoost.h"
-#include <QDebug>
 #include "Game.h"
 
 extern Game * game;
@@ -228,7 +226,6 @@ void Zombie::move()
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size(); z<v; ++z) {
-                        qDebug()<< typeid (*(vzryv[z])).name();
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
@@ -276,6 +273,7 @@ void Zombie::move()
                             lavakol=game->boom;
                             znapr=false;
                             checker=true;
+                            zombiemove->setInterval(19);
                         }
                         else if(znapr==true) {
                             setPixmap(QPixmap(":/images/Zombie2fire.png"));
@@ -327,8 +325,6 @@ void Zombie::move()
                         QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
                         for(int z =0,v=vzryv.size(); z<v; ++z) {
-                            qDebug()<< typeid (*(vzryv[z])).name();
-
                             if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                                 if(!(typeid(*(vzryv[z]))==typeid(Player))) {
                                     if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
@@ -379,6 +375,7 @@ void Zombie::move()
                                 lavakol=game->boom;
                                 checker=true;
                                 game->scene->addItem(this);
+                                zombiemove->setInterval(19);
                             }
                         }
                     }
@@ -410,8 +407,6 @@ void Zombie::move()
                     QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
                     for(int z =0,v=vzryv.size(); z<v; ++z) {
-                        qDebug()<< typeid (*(vzryv[z])).name();
-
                         if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                             if(!(typeid(*(vzryv[z]))==typeid(Player))) {
                                 if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
@@ -460,6 +455,7 @@ void Zombie::move()
                             setPixmap(QPixmap(":/images/Zombie2fire2.png"));
                             game->scene->addItem(this);
                             checker=true;
+                            zombiemove->setInterval(19);
                         }   else if(znapr==false) {
                             setPixmap(QPixmap(":/images/Zombie2fire2.png"));
                             znapr=true;
@@ -480,7 +476,6 @@ void Zombie::move()
                 }
         }
     }
-
     else if(zmove==3) {
         bool checker=false;
         zposx=x();
@@ -508,8 +503,6 @@ void Zombie::move()
                         QList<QGraphicsItem *> vzryv=game->scene->items(lposx-40,lposy-40,120,120,Qt::IntersectsItemShape,Qt::AscendingOrder, QTransform());
 
                         for(int z =0,v=vzryv.size(); z<v; ++z) {
-                            qDebug()<< typeid (*(vzryv[z])).name();
-
                             if(!(typeid(*(vzryv[z]))==typeid(GBlocks))) {
                                 if(!(typeid(*(vzryv[z]))==typeid(Player))) {
                                     if(!(typeid(*(vzryv[z]))==typeid(Zombie))) {
@@ -560,6 +553,7 @@ void Zombie::move()
                                 lavakol=game->boom;
                                 checker=true;
                                 game->scene->addItem(this);
+                                zombiemove->setInterval(19);
                             }
                         }
                     }

@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include <QBrush>
-#include <QDebug>
 #include "Kolvo.h"
 #include "Gametime.h"
 #include "Game.h"
@@ -94,7 +93,7 @@ void Menu::MainNewGame(){
                 game->zombs[i]->connectingtimer();
             }
             gametime=new GTime();
-            gametime->setPos(770,85);
+            gametime->setPos(750,85);
             game->scene->addItem(gametime);
 
             zapas=new Zapas();
