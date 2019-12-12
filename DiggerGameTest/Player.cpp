@@ -136,11 +136,9 @@ player->setFocus();
                 int osty=(posy-50)%40;
                 if (osty<10) {
                     if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-playermovevalue,pos().y()-osty,QTransform())))))))  {
-
                         setPos(x()-playermovevalue,y()-osty);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
-
                             if ((typeid(*(collides[i])))==(typeid(Zombie))) {
                                 scene()->removeItem(this);
                                 delete this;
@@ -156,7 +154,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx-playermovevalue,posy-osty);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -179,7 +176,6 @@ player->setFocus();
                             } else {
                                 setPixmap(QPixmap(":/images/player1left.png"));
                             }
-                            player->setPos(posx-playermovevalue,posy-osty);
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
@@ -188,7 +184,6 @@ player->setFocus();
 
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
-
                             if ((typeid(*(collides[i])))==(typeid(Zombie))) {
                                 scene()->removeItem(this);
                                 delete this;
@@ -204,7 +199,6 @@ player->setFocus();
                                         else{
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                             }
-                                    player->setPos(posx-playermovevalue,posy+40-osty);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -227,7 +221,6 @@ player->setFocus();
                             } else {
                                 setPixmap(QPixmap(":/images/player1left.png"));
                             }
-                            player->setPos(posx-playermovevalue,posy+40-osty);
                         }
                     }
                 }
@@ -247,7 +240,6 @@ player->setFocus();
                         setPos(x()+playermovevalue,y()-osty);
                         QList<QGraphicsItem*> collides=collidingItems();
                         for(int i =0,n=collides.size(); i<n; ++i) {
-
                             if ((typeid(*(collides[i])))==(typeid(Zombie))) {
                                 scene()->removeItem(this);
                                 delete this;
@@ -263,7 +255,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx+playermovevalue,posy-osty);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -286,7 +277,6 @@ player->setFocus();
                             } else {
                                 setPixmap(QPixmap(":/images/player1right.png"));
                             }
-                            player->setPos(posx+playermovevalue,posy-osty);
                         }
                     }
                 } else if (osty>40-playermovevalue-1) {
@@ -309,7 +299,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx+playermovevalue,posy+40-osty);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -332,7 +321,6 @@ player->setFocus();
                             } else {
                                 setPixmap(QPixmap(":/images/player1right.png"));
                             }
-                            player->setPos(posx+playermovevalue,posy+40-osty);
                         }
                     }
                 }
@@ -343,7 +331,6 @@ player->setFocus();
     if (playermoves[1]==true) {
         if(playermoves[3]==false) {
             if (pos().y()>50+playermovevalue-1) {
-
                 int posx=pos().x();
                 int posy=pos().y();
                 int ostx=(posx-50)%40;
@@ -367,7 +354,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx-ostx,posy-playermovevalue);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -385,7 +371,6 @@ player->setFocus();
                         }
                     }
                 } else if (ostx>40-playermovevalue-1) {
-
                     if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()+40-ostx,pos().y()-playermovevalue,QTransform())))))))  {
                         setPos(x()+40-ostx,y()-playermovevalue);
                         QList<QGraphicsItem*> collides=collidingItems();
@@ -405,7 +390,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx+40-ostx,posy-playermovevalue);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -433,7 +417,6 @@ player->setFocus();
                 int posx=pos().x();
                 int posy=pos().y();
                 int ostx=(posx-50)%40;
-
                 if (ostx < playermovevalue+1) {
                     if (!(((typeid(GBlocks))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform())))))||((typeid(SecretBox))==(typeid(*(game->scene->itemAt(pos().x()-ostx,pos().y()+40,QTransform())))))))  {
                         setPos(x()-ostx,y()+playermovevalue);
@@ -454,7 +437,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx-ostx,posy+playermovevalue);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
@@ -494,7 +476,6 @@ player->setFocus();
                                     else {
                                         setPixmap(QPixmap(":/images/player1leftfire.png"));
                                     }
-                                    player->setPos(posx+40-ostx,posy+playermovevalue);
                                     usetimer=true;
                                     firetimer =new QTimer();
                                     connect(firetimer,SIGNAL(timeout()),this,SLOT(playeranimation()));
